@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TuserMapper">
+    
+    <resultMap type="Tuser" id="TuserResult">
+        <result property="tuserid"    column="tuserid"    />
+        <result property="usercode"    column="usercode"    />
+        <result property="cname"    column="cname"    />
+        <result property="password"    column="password"    />
+        <result property="state"    column="state"    />
+        <result property="logscript"    column="logscript"    />
+        <result property="memo"    column="memo"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="ipaddress"    column="ipaddress"    />
+        <result property="isOnline"    column="is_online"    />
+        <result property="ordernum"    column="ordernum"    />
+    </resultMap>
+
+    <sql id="selectTuserVo">
+        select tuserid, usercode, cname, password, state, logscript, memo, dataversion, ipaddress, is_online, ordernum from tuser
+    </sql>
+
+    <select id="selectTuserList" parameterType="Tuser" resultMap="TuserResult">
+        <include refid="selectTuserVo"/>
+        <where>  
+            <if test="tuserid != null "> and tuserid = #{tuserid}</if>
+            <if test="usercode != null  and usercode != ''"> and usercode = #{usercode}</if>
+            <if test="cname != null  and cname != ''"> and cname like concat('%', #{cname}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="logscript != null  and logscript != ''"> and logscript = #{logscript}</if>
+            <if test="memo != null  and memo != ''"> and memo = #{memo}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="ipaddress != null  and ipaddress != ''"> and ipaddress = #{ipaddress}</if>
+            <if test="isOnline != null "> and is_online = #{isOnline}</if>
+            <if test="ordernum != null "> and ordernum = #{ordernum}</if>
+        </where>
+    </select>
+    
+    <select id="selectTuserByTuserid" parameterType="Long" resultMap="TuserResult">
+        <include refid="selectTuserVo"/>
+        where tuserid = #{tuserid}
+    </select>
+
+    <select id="selectUnallocatedList" parameterType="Tuser" resultMap="TuserResult">
+        select t.tuserid,t.usercode,t.cname,t.password,t.state,t.logscript,t.memo,t.dataversion,t.ipaddress,t.is_online,t.ordernum
+        from tuser t
+        where not exists (
+        select 1 from sys_user u where u.user_id=t.tuserid
+        )
+        <if test="usercode != null and usercode != ''">
+            AND t.usercode = #{usercode}
+        </if>
+        <if test="cname != null and cname != ''">
+            AND t.cname like concat(concat('%',#{cname}),'%')
+        </if>
+        <!-- 数据范围过滤 -->
+    </select>
+
+    <insert id="insertTuser" parameterType="Tuser">
+        insert into tuser
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tuserid != null">tuserid,</if>
+            <if test="usercode != null and usercode != ''">usercode,</if>
+            <if test="cname != null">cname,</if>
+            <if test="password != null">password,</if>
+            <if test="state != null">state,</if>
+            <if test="logscript != null">logscript,</if>
+            <if test="memo != null">memo,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="ipaddress != null">ipaddress,</if>
+            <if test="isOnline != null">is_online,</if>
+            <if test="ordernum != null">ordernum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tuserid != null">#{tuserid},</if>
+            <if test="usercode != null and usercode != ''">#{usercode},</if>
+            <if test="cname != null">#{cname},</if>
+            <if test="password != null">#{password},</if>
+            <if test="state != null">#{state},</if>
+            <if test="logscript != null">#{logscript},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="ipaddress != null">#{ipaddress},</if>
+            <if test="isOnline != null">#{isOnline},</if>
+            <if test="ordernum != null">#{ordernum},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTuser" parameterType="Tuser">
+        update tuser
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="usercode != null and usercode != ''">usercode = #{usercode},</if>
+            <if test="cname != null">cname = #{cname},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="logscript != null">logscript = #{logscript},</if>
+            <if test="memo != null">memo = #{memo},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="ipaddress != null">ipaddress = #{ipaddress},</if>
+            <if test="isOnline != null">is_online = #{isOnline},</if>
+            <if test="ordernum != null">ordernum = #{ordernum},</if>
+        </trim>
+        where tuserid = #{tuserid}
+    </update>
+
+    <delete id="deleteTuserByTuserid" parameterType="Long">
+        delete from tuser where tuserid = #{tuserid}
+    </delete>
+
+    <delete id="deleteTuserByTuserids" parameterType="String">
+        delete from tuser where tuserid in 
+        <foreach item="tuserid" collection="array" open="(" separator="," close=")">
+            #{tuserid}
+        </foreach>
+    </delete>
+</mapper>

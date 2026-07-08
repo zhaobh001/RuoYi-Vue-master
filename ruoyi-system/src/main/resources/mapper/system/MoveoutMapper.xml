@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MoveoutMapper">
+    
+    <resultMap type="Moveout" id="MoveoutResult">
+        <result property="moveoutid"    column="moveoutid"    />
+        <result property="outsite"    column="outsite"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="sn"    column="sn"    />
+        <result property="qty"    column="qty"    />
+        <result property="outdesc"    column="outdesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="repColor"    column="rep_color"    />
+        <result property="repProperty"    column="rep_property"    />
+        <result property="repOwnerCode"    column="rep_owner_code"    />
+        <result property="repOwnerName"    column="rep_owner_name"    />
+        <result property="repOrg"    column="rep_org"    />
+        <result property="erpStoreroom"    column="erp_storeroom"    />
+    </resultMap>
+
+    <sql id="selectMoveoutVo">
+        select moveoutid, outsite, materialid, batchno, sn, qty, outdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, palletno, rep_color, rep_property, rep_owner_code, rep_owner_name, rep_org, erp_storeroom from moveout
+    </sql>
+
+    <select id="selectMoveoutList" parameterType="Moveout" resultMap="MoveoutResult">
+        <include refid="selectMoveoutVo"/>
+        <where>  
+            <if test="outsite != null "> and outsite = #{outsite}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="outdesc != null  and outdesc != ''"> and outdesc = #{outdesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="repColor != null  and repColor != ''"> and rep_color = #{repColor}</if>
+            <if test="repProperty != null  and repProperty != ''"> and rep_property = #{repProperty}</if>
+            <if test="repOwnerCode != null  and repOwnerCode != ''"> and rep_owner_code = #{repOwnerCode}</if>
+            <if test="repOwnerName != null  and repOwnerName != ''"> and rep_owner_name like concat('%', #{repOwnerName}, '%')</if>
+            <if test="repOrg != null  and repOrg != ''"> and rep_org = #{repOrg}</if>
+            <if test="erpStoreroom != null  and erpStoreroom != ''"> and erp_storeroom = #{erpStoreroom}</if>
+        </where>
+    </select>
+    
+    <select id="selectMoveoutByMoveoutid" parameterType="Long" resultMap="MoveoutResult">
+    </select>
+        
+    <insert id="insertMoveout" parameterType="Moveout" useGeneratedKeys="true" keyProperty="moveoutid">
+        insert into moveout
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outsite != null">outsite,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="qty != null">qty,</if>
+            <if test="outdesc != null">outdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="repColor != null">rep_color,</if>
+            <if test="repProperty != null">rep_property,</if>
+            <if test="repOwnerCode != null">rep_owner_code,</if>
+            <if test="repOwnerName != null">rep_owner_name,</if>
+            <if test="repOrg != null">rep_org,</if>
+            <if test="erpStoreroom != null">erp_storeroom,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outsite != null">#{outsite},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="outdesc != null">#{outdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="repColor != null">#{repColor},</if>
+            <if test="repProperty != null">#{repProperty},</if>
+            <if test="repOwnerCode != null">#{repOwnerCode},</if>
+            <if test="repOwnerName != null">#{repOwnerName},</if>
+            <if test="repOrg != null">#{repOrg},</if>
+            <if test="erpStoreroom != null">#{erpStoreroom},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMoveout" parameterType="Moveout">
+        update moveout
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outsite != null">outsite = #{outsite},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="outdesc != null">outdesc = #{outdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="repColor != null">rep_color = #{repColor},</if>
+            <if test="repProperty != null">rep_property = #{repProperty},</if>
+            <if test="repOwnerCode != null">rep_owner_code = #{repOwnerCode},</if>
+            <if test="repOwnerName != null">rep_owner_name = #{repOwnerName},</if>
+            <if test="repOrg != null">rep_org = #{repOrg},</if>
+            <if test="erpStoreroom != null">erp_storeroom = #{erpStoreroom},</if>
+        </trim>
+        where moveoutid = #{moveoutid}
+    </update>
+
+    <delete id="deleteMoveoutByMoveoutid" parameterType="Long">
+        delete from moveout where moveoutid = #{moveoutid}
+    </delete>
+
+    <delete id="deleteMoveoutByMoveoutids" parameterType="String">
+        delete from moveout where moveoutid in 
+        <foreach item="moveoutid" collection="array" open="(" separator="," close=")">
+            #{moveoutid}
+        </foreach>
+    </delete>
+</mapper>

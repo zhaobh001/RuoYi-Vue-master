@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BbQueueMapper">
+    
+    <resultMap type="BbQueue" id="BbQueueResult">
+        <result property="bbQueueid"    column="bb_queueid"    />
+        <result property="cata4"    column="cata4"    />
+        <result property="cata3"    column="cata3"    />
+        <result property="cata2"    column="cata2"    />
+        <result property="cata1"    column="cata1"    />
+        <result property="sno"    column="sno"    />
+        <result property="dataversion"    column="dataversion"    />
+    </resultMap>
+
+    <sql id="selectBbQueueVo">
+        select bb_queueid, cata4, cata3, cata2, cata1, sno, dataversion from bb_queue
+    </sql>
+
+    <select id="selectBbQueueList" parameterType="BbQueue" resultMap="BbQueueResult">
+        <include refid="selectBbQueueVo"/>
+        <where>  
+            <if test="cata4 != null  and cata4 != ''"> and cata4 = #{cata4}</if>
+            <if test="cata3 != null  and cata3 != ''"> and cata3 = #{cata3}</if>
+            <if test="cata2 != null  and cata2 != ''"> and cata2 = #{cata2}</if>
+            <if test="cata1 != null  and cata1 != ''"> and cata1 = #{cata1}</if>
+            <if test="sno != null "> and sno = #{sno}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+        </where>
+    </select>
+    
+    <select id="selectBbQueueByBbQueueid" parameterType="Long" resultMap="BbQueueResult">
+    </select>
+        
+    <insert id="insertBbQueue" parameterType="BbQueue" useGeneratedKeys="true" keyProperty="bbQueueid">
+        <selectKey keyProperty="bbQueueid" resultType="long" order="BEFORE">
+            SELECT BB_OPELOG_RECID_SEQ.NEXTVAL as bbQueueid FROM DUAL
+        </selectKey>
+        insert into bb_queue
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bbQueueid != null and bbQueueid != 0 ">bb_queueid,</if>
+            <if test="cata4 != null and cata4 != ''">cata4,</if>
+            <if test="cata3 != null and cata3 != ''">cata3,</if>
+            <if test="cata2 != null and cata2 != ''">cata2,</if>
+            <if test="cata1 != null and cata1 != ''">cata1,</if>
+            <if test="sno != null">sno,</if>
+            <if test="dataversion != null">dataversion,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bbQueueid != null and bbQueueid != 0 ">#{bbQueueid},</if>
+            <if test="cata4 != null and cata4 != ''">#{cata4},</if>
+            <if test="cata3 != null and cata3 != ''">#{cata3},</if>
+            <if test="cata2 != null and cata2 != ''">#{cata2},</if>
+            <if test="cata1 != null and cata1 != ''">#{cata1},</if>
+            <if test="sno != null">#{sno},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBbQueue" parameterType="BbQueue">
+        update bb_queue
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cata4 != null and cata4 != ''">cata4 = #{cata4},</if>
+            <if test="cata3 != null and cata3 != ''">cata3 = #{cata3},</if>
+            <if test="cata2 != null and cata2 != ''">cata2 = #{cata2},</if>
+            <if test="cata1 != null and cata1 != ''">cata1 = #{cata1},</if>
+            <if test="sno != null">sno = #{sno},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+        </trim>
+        where bb_queueid = #{bbQueueid}
+    </update>
+
+    <delete id="deleteBbQueueByBbQueueid" parameterType="Long">
+        delete from bb_queue where bb_queueid = #{bbQueueid}
+    </delete>
+
+    <delete id="deleteBbQueueByBbQueueids" parameterType="String">
+        delete from bb_queue where bb_queueid in 
+        <foreach item="bbQueueid" collection="array" open="(" separator="," close=")">
+            #{bbQueueid}
+        </foreach>
+    </delete>
+</mapper>

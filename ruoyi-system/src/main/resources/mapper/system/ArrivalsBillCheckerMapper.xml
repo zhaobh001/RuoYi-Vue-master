@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArrivalsBillCheckerMapper">
+    
+    <resultMap type="ArrivalsBillChecker" id="ArrivalsBillCheckerResult">
+        <result property="abcheckerSeqid"    column="abchecker_seqid"    />
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="userid"    column="userid"    />
+    </resultMap>
+
+    <sql id="selectArrivalsBillCheckerVo">
+        select abchecker_seqid, arrivals_billid, userid from arrivals_bill_checker
+    </sql>
+
+    <select id="selectArrivalsBillCheckerList" parameterType="ArrivalsBillChecker" resultMap="ArrivalsBillCheckerResult">
+        <include refid="selectArrivalsBillCheckerVo"/>
+        <where>  
+            <if test="arrivalsBillid != null "> and arrivals_billid = #{arrivalsBillid}</if>
+            <if test="userid != null "> and userid = #{userid}</if>
+        </where>
+    </select>
+    
+    <select id="selectArrivalsBillCheckerByAbcheckerSeqid" parameterType="Long" resultMap="ArrivalsBillCheckerResult">
+    </select>
+        
+    <insert id="insertArrivalsBillChecker" parameterType="ArrivalsBillChecker" useGeneratedKeys="true" keyProperty="abcheckerSeqid">
+        <selectKey keyProperty="abcheckerSeqid" resultType="long" order="BEFORE">
+            SELECT ABCHECKER_SEQID_SEQ.NEXTVAL as abcheckerSeqid FROM DUAL
+        </selectKey>
+        insert into arrivals_bill_checker
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="abcheckerSeqid != null">abchecker_seqid,</if>
+            <if test="arrivalsBillid != null">arrivals_billid,</if>
+            <if test="userid != null">userid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="abcheckerSeqid != null">#{abcheckerSeqid},</if>
+            <if test="arrivalsBillid != null">#{arrivalsBillid},</if>
+            <if test="userid != null">#{userid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrivalsBillChecker" parameterType="ArrivalsBillChecker">
+        update arrivals_bill_checker
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid = #{arrivalsBillid},</if>
+            <if test="userid != null">userid = #{userid},</if>
+        </trim>
+        where abchecker_seqid = #{abcheckerSeqid}
+    </update>
+
+    <delete id="deleteArrivalsBillCheckerByAbcheckerSeqid" parameterType="Long">
+        delete from arrivals_bill_checker where abchecker_seqid = #{abcheckerSeqid}
+    </delete>
+
+    <delete id="deleteArrivalsBillCheckerByAbcheckerSeqids" parameterType="String">
+        delete from arrivals_bill_checker where abchecker_seqid in 
+        <foreach item="abcheckerSeqid" collection="array" open="(" separator="," close=")">
+            #{abcheckerSeqid}
+        </foreach>
+    </delete>
+</mapper>

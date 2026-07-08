@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ChecktaskMapper">
+
+    <resultMap type="Checktask" id="ChecktaskResult">
+        <result property="checktaskid" column="checktaskid"/>
+        <result property="checktaskno" column="checktaskno"/>
+        <result property="tasksource" column="tasksource"/>
+        <result property="taskcomment" column="taskcomment"/>
+        <result property="storeroomid" column="storeroomid"/>
+        <result property="checkmethod" column="checkmethod"/>
+        <result property="collecter" column="collecter"/>
+        <result property="checkstate" column="checkstate"/>
+        <result property="collectkind" column="collectkind"/>
+        <result property="checkdate" column="checkdate"/>
+        <result property="checkdesc" column="checkdesc"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="iUserId" column="iUserId"/>
+        <result property="roleoRuserId" column="roleoRuserId"/>
+        <result property="roomTag" column="roomTag"/>
+
+        <result property="storeroomno" column="storeroomno"/>
+        <result property="storesite" column="storesite"/>
+        <result property="matcode2" column="matcode2"/>
+        <result property="palletno" column="palletno"/>
+        <result property="checkmethod_nm" column="checkmethod_nm"/>
+        <result property="collectdataqty" column="collectdataqty"/>
+        <result property="subinventory_code" column="subinventory_code"/>
+        <result property="status" column="status"/>
+        <result property="co_checkitemid" column="co_checkitemid"/>
+        <result property="storesiteno" column="storesiteno"/>
+        <result property="matcode" column="matcode"/>
+        <result property="billstate" column="billstate"/>
+
+    </resultMap>
+
+    <sql id="selectChecktaskVo">
+        select checktaskid, checktaskno, tasksource, taskcomment, storeroomid, checkmethod, collecter, checkstate, collectkind, checkdate, checkdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8 from checktask
+    </sql>
+
+    <select id="selectChecktaskList" parameterType="Checktask" resultMap="ChecktaskResult">
+        <include refid="selectChecktaskVo"/>
+        <where>
+            <if test="checktaskno != null  and checktaskno != ''">and checktaskno = #{checktaskno}</if>
+            <if test="tasksource != null ">and tasksource = #{tasksource}</if>
+            <if test="taskcomment != null  and taskcomment != ''">and taskcomment = #{taskcomment}</if>
+            <if test="storeroomid != null ">and storeroomid = #{storeroomid}</if>
+            <if test="checkmethod != null ">and checkmethod = #{checkmethod}</if>
+            <if test="collecter != null ">and collecter = #{collecter}</if>
+            <if test="checkstate != null ">and checkstate = #{checkstate}</if>
+            <if test="collectkind != null  and collectkind != ''">and collectkind = #{collectkind}</if>
+            <if test="checkdate != null ">and checkdate = #{checkdate}</if>
+            <if test="checkdesc != null  and checkdesc != ''">and checkdesc = #{checkdesc}</if>
+            <if test="dataversion != null ">and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''">and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''">and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''">and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''">and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''">and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''">and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''">and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''">and data8 = #{data8}</if>
+        </where>
+    </select>
+
+    <select id="selectChecktaskByChecktaskid" parameterType="Long" resultMap="ChecktaskResult">
+    </select>
+
+    <insert id="insertChecktask" parameterType="Checktask" useGeneratedKeys="true" keyProperty="checktaskid">
+        insert into checktask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checktaskno != null">checktaskno,</if>
+            <if test="tasksource != null">tasksource,</if>
+            <if test="taskcomment != null">taskcomment,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="checkmethod != null">checkmethod,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="checkstate != null">checkstate,</if>
+            <if test="collectkind != null">collectkind,</if>
+            <if test="checkdate != null">checkdate,</if>
+            <if test="checkdesc != null">checkdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checktaskno != null">#{checktaskno},</if>
+            <if test="tasksource != null">#{tasksource},</if>
+            <if test="taskcomment != null">#{taskcomment},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="checkmethod != null">#{checkmethod},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="checkstate != null">#{checkstate},</if>
+            <if test="collectkind != null">#{collectkind},</if>
+            <if test="checkdate != null">#{checkdate},</if>
+            <if test="checkdesc != null">#{checkdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+        </trim>
+    </insert>
+
+    <update id="updateChecktask" parameterType="Checktask">
+        update checktask
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="checktaskno != null">checktaskno = #{checktaskno},</if>
+            <if test="tasksource != null">tasksource = #{tasksource},</if>
+            <if test="taskcomment != null">taskcomment = #{taskcomment},</if>
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="checkmethod != null">checkmethod = #{checkmethod},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="checkstate != null">checkstate = #{checkstate},</if>
+            <if test="collectkind != null">collectkind = #{collectkind},</if>
+            <if test="checkdate != null">checkdate = #{checkdate},</if>
+            <if test="checkdesc != null">checkdesc = #{checkdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+        </trim>
+        where checktaskid = #{checktaskid}
+    </update>
+
+    <delete id="deleteChecktaskByChecktaskid" parameterType="Long">
+        delete from checktask where checktaskid = #{checktaskid}
+    </delete>
+
+    <delete id="deleteChecktaskByChecktaskids" parameterType="String">
+        delete from checktask where checktaskid in
+        <foreach item="checktaskid" collection="array" open="(" separator="," close=")">
+            #{checktaskid}
+        </foreach>
+    </delete>
+
+    <select id="getInventoryTask" parameterType="Checktask" resultMap="ChecktaskResult">
+        select taskcomment,
+        str.storeroomno,
+        str.storeroomname,
+        i.checktaskno,
+        i.checkdesc,
+        i.checktaskid
+        from checktask i
+        join CHECKBILL bill  on i.TASKSOURCE = bill.CHECKBILLID
+        left join storeroom str   on i.storeroomid = str.storeroomid and  str.roomtag = #{roomTag}
+        join (
+        select distinct r.USER_ID as userid,
+              m.STOREROOMID as operation
+        from sys_user_role r,sys_role_room m
+        where r.ROLE_ID=m.ROLE_ID
+        and r.USER_ID=#{roleoRuserId}
+        ) u
+        on u.operation = str.storeroomid
+        where (bill.BILLSTATE = 1 or bill.BILLSTATE = 3)
+        and (
+        (i.collecter = #{iUserId} and
+
+        i.checkmethod &lt;&gt; 4) or i.checkmethod = 4)
+        order by i.checkdate desc
+    </select>
+    <select id="getInventoryTaskCol" parameterType="String" resultMap="ChecktaskResult">
+       select d.*
+from  CHECKTASK d,
+     CO_CHECKITEM i,
+     CHECKCOLLECTDATA c
+where
+d.CHECKTASKID = i.CHECKTASKID and
+i.CO_CHECKITEMID = c.CHCEKTASKITEMID and
+d.CHECKTASKNO =  #{taskcomment}
+    </select>
+
+    <select id="getInventoryTaskItem" parameterType="String" resultMap="ChecktaskResult">
+        select aa.* from(
+        SELECT stroom.storeroomno                    AS storeroomno,
+        stroom.storeroomno                         AS storesite,
+        stroom.storeroomno                         AS matcode2,
+        NULL                                       AS palletno,
+        DECODE(o.checkmethod,0,'库位',4,'全盘盘点','物料') AS checkmethod_nm,
+        0                                          AS collectdataqty,
+        o.checktaskno checktaskno,
+        cc.subinventory_code AS subinventory_code,
+        ''                   AS status,
+        oi.co_checkitemid,
+        o.taskcomment,
+        o.tasksource,
+        stroom.storeroomno storesiteno,
+        stroom.storeroomno matcode,
+        bill.billstate,
+        o.checkmethod,
+        stroom.roomtag
+        FROM checktask o
+        JOIN co_checkitem oi
+        ON o.checktaskid = oi.checktaskid
+        JOIN checkcontent cc
+        ON oi.checkcontentid = cc.checkcontentid
+        AND o.tasksource     = cc.checkbillid
+        JOIN checkbill bill
+        ON o.tasksource = bill.checkbillid
+        LEFT JOIN storeroom stroom
+        ON oi.checksite       = stroom.storeroomid
+        WHERE (bill.billstate = 1  OR bill.billstate     = 3)   AND o.checkmethod     = 4
+
+        and o.taskcomment= #{taskcomment}
+        and o.checktaskno= #{checktaskno}
+        and stroom.roomtag= #{roomTag}
+
+        UNION ALL
+        SELECT str.storeroomno AS storeroomno,
+        GetStoreSiteNoByCheckSite(bill.checkbillid,oi.checksite) storesite,
+        NVL(sts.storesiteno, pm.matcode) matcode2,
+        GetPalletNoByCheckSite(bill.checkbillid,oi.checksite) AS palletno,
+        DECODE(o.checkmethod,0,'库位',4,'全盘盘点','物料')            AS checkmethod_nm,
+        nvl(GetCheckCollectDataByCheckSite(oi.co_checkitemid),0)     AS collectdataqty,
+        o.checktaskno,
+        cc.subinventory_code AS subinventory_code,
+        ''                   AS status,
+        oi.co_checkitemid,
+        o.taskcomment,
+        o.tasksource,
+        sts.storesiteno,
+        pm.matcode,
+        bill.billstate,
+        o.checkmethod,
+        str.roomtag
+        FROM checktask o
+        JOIN co_checkitem oi
+        ON o.checktaskid = oi.checktaskid
+        JOIN checkcontent cc
+        ON oi.checkcontentid = cc.checkcontentid
+        AND o.tasksource     = cc.checkbillid
+        JOIN checkbill bill
+        ON o.tasksource = bill.checkbillid
+        JOIN storeroom str
+        ON str.storeroomid = o.storeroomid
+        LEFT JOIN pm_material pm
+        ON oi.checksite = pm.pm_materialid
+        LEFT JOIN storesite sts
+        ON oi.checksite       = sts.storesiteid
+        WHERE (bill.billstate = 1
+        OR bill.billstate     = 3)
+        AND o.checkmethod    &lt;&gt; 4
+
+        and o.taskcomment= #{taskcomment}
+        and o.checktaskno= #{checktaskno}
+        and str.roomtag= #{roomTag}
+        )aa
+        where aa.billstate = 1 or aa.billstate = 3
+        order by aa.storesiteno, aa.matcode
+    </select>
+
+    <select id="GetCheckOrderPalletNoByTaskID" parameterType="Checktask" resultMap="ChecktaskResult">
+        select distinct
+                                                    a.palletno,
+                                                    e.storesiteno,
+                                                    c.checktaskno,
+                                                    d.storeroomno,
+                                                    c.checktaskid
+                                               from checkorder a,
+                                                    checkbill b,
+                                                    checktask c,
+                                                    storeroom d,
+                                                    storesite e
+                                              where a.checkbillid = b.checkbillid
+                                                and a.checkbillid = c.tasksource
+                                                and c.storeroomid = d.storeroomid
+                                                and d.storeroomid = e.storeroomid
+                                                and a.checksite = e.storesiteid
+                                                and (b.billstate = 1 or b.billstate = 3)
+                                                and (a.checkstate = 1 or a.checkstate = 2)
+                                                and a.palletno is not null
+                                                and c.taskcomment = #{taskcomment}
+                                                and c.checktaskid = #{checktaskid}
+                                                and c.checkmethod = #{checkmethod}
+                                            order by a.palletno
+        )
+        order by a.interface_wms_to_wcs_id desc
+    </select>
+
+</mapper>

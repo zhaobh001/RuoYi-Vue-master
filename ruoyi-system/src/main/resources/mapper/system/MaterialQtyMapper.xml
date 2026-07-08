@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MaterialQtyMapper">
+    
+    <resultMap type="MaterialQty" id="MaterialQtyResult">
+        <result property="materialQtyId"    column="material_qty_id"    />
+        <result property="siteno"    column="siteno"    />
+        <result property="matcode"    column="matcode"    />
+        <result property="minQty"    column="min_qty"    />
+        <result property="deliveryQty"    column="delivery_qty"    />
+        <result property="dataversion"    column="dataversion"    />
+    </resultMap>
+
+    <sql id="selectMaterialQtyVo">
+        select material_qty_id, siteno, matcode, min_qty, delivery_qty, dataversion from material_qty
+    </sql>
+
+    <select id="selectMaterialQtyList" parameterType="MaterialQty" resultMap="MaterialQtyResult">
+        <include refid="selectMaterialQtyVo"/>
+        <where>  
+            <if test="siteno != null  and siteno != ''"> and siteno = #{siteno}</if>
+            <if test="matcode != null  and matcode != ''"> and matcode = #{matcode}</if>
+            <if test="minQty != null "> and min_qty = #{minQty}</if>
+            <if test="deliveryQty != null "> and delivery_qty = #{deliveryQty}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+        </where>
+    </select>
+    
+    <select id="selectMaterialQtyByMaterialQtyId" parameterType="Long" resultMap="MaterialQtyResult">
+        <include refid="selectMaterialQtyVo"/>
+        where material_qty_id = #{materialQtyId}
+    </select>
+        
+    <insert id="insertMaterialQty" parameterType="MaterialQty" useGeneratedKeys="true" keyProperty="materialQtyId">
+        insert into material_qty
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="siteno != null">siteno,</if>
+            <if test="matcode != null">matcode,</if>
+            <if test="minQty != null">min_qty,</if>
+            <if test="deliveryQty != null">delivery_qty,</if>
+            <if test="dataversion != null">dataversion,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="siteno != null">#{siteno},</if>
+            <if test="matcode != null">#{matcode},</if>
+            <if test="minQty != null">#{minQty},</if>
+            <if test="deliveryQty != null">#{deliveryQty},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMaterialQty" parameterType="MaterialQty">
+        update material_qty
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="siteno != null">siteno = #{siteno},</if>
+            <if test="matcode != null">matcode = #{matcode},</if>
+            <if test="minQty != null">min_qty = #{minQty},</if>
+            <if test="deliveryQty != null">delivery_qty = #{deliveryQty},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+        </trim>
+        where material_qty_id = #{materialQtyId}
+    </update>
+
+    <delete id="deleteMaterialQtyByMaterialQtyId" parameterType="Long">
+        delete from material_qty where material_qty_id = #{materialQtyId}
+    </delete>
+
+    <delete id="deleteMaterialQtyByMaterialQtyIds" parameterType="String">
+        delete from material_qty where material_qty_id in 
+        <foreach item="materialQtyId" collection="array" open="(" separator="," close=")">
+            #{materialQtyId}
+        </foreach>
+    </delete>
+</mapper>

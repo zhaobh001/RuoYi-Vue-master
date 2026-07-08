@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArrivalsBillMapper">
+    
+    <resultMap type="ArrivalsBill" id="ArrivalsBillResult">
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="arrivalsBillno"    column="arrivals_billno"    />
+        <result property="orderno"    column="orderno"    />
+        <result property="arrivaltype"    column="arrivaltype"    />
+        <result property="arrivalstate"    column="arrivalstate"    />
+        <result property="arrivaldate"    column="arrivaldate"    />
+        <result property="partnerid"    column="partnerid"    />
+        <result property="sendaddress"    column="sendaddress"    />
+        <result property="acceptor"    column="acceptor"    />
+        <result property="acceptaddress"    column="acceptaddress"    />
+        <result property="createdate"    column="createdate"    />
+        <result property="creator"    column="creator"    />
+        <result property="auditdate"    column="auditdate"    />
+        <result property="auditor"    column="auditor"    />
+        <result property="acceptorTel"    column="acceptor_tel"    />
+        <result property="senderTel"    column="sender_tel"    />
+        <result property="confirmmethod"    column="confirmmethod"    />
+        <result property="partnerAddr"    column="partner_addr"    />
+        <result property="partnerFax"    column="partner_fax"    />
+        <result property="arrivaldesc"    column="arrivaldesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="orderTransactionId"    column="order_transaction_id"    />
+        <result property="transactionType"    column="transaction_type"    />
+        <result property="vendorsitecode"    column="vendorsitecode"    />
+        <result property="vendornumber"    column="vendornumber"    />
+        <result property="poNumber"    column="po_number"    />
+        <result property="djstatus"    column="djstatus"    />
+    </resultMap>
+
+    <sql id="selectArrivalsBillVo">
+        select arrivals_billid, arrivals_billno, orderno, arrivaltype, arrivalstate, arrivaldate, partnerid, sendaddress, acceptor, acceptaddress, createdate, creator, auditdate, auditor, acceptor_tel, sender_tel, confirmmethod, partner_addr, partner_fax, arrivaldesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, order_transaction_id, transaction_type, vendorsitecode, vendornumber, po_number, djstatus from arrivals_bill
+    </sql>
+
+    <select id="selectArrivalsBillList" parameterType="ArrivalsBill" resultMap="ArrivalsBillResult">
+        <include refid="selectArrivalsBillVo"/>
+        <where>  
+            <if test="arrivalsBillno != null  and arrivalsBillno != ''"> and arrivals_billno = #{arrivalsBillno}</if>
+            <if test="orderno != null  and orderno != ''"> and orderno = #{orderno}</if>
+            <if test="arrivaltype != null  and arrivaltype != ''"> and arrivaltype = #{arrivaltype}</if>
+            <if test="arrivalstate != null "> and arrivalstate = #{arrivalstate}</if>
+            <if test="arrivaldate != null "> and arrivaldate = #{arrivaldate}</if>
+            <if test="partnerid != null "> and partnerid = #{partnerid}</if>
+            <if test="sendaddress != null  and sendaddress != ''"> and sendaddress = #{sendaddress}</if>
+            <if test="acceptor != null "> and acceptor = #{acceptor}</if>
+            <if test="acceptaddress != null  and acceptaddress != ''"> and acceptaddress = #{acceptaddress}</if>
+            <if test="createdate != null "> and createdate = #{createdate}</if>
+            <if test="creator != null "> and creator = #{creator}</if>
+            <if test="auditdate != null "> and auditdate = #{auditdate}</if>
+            <if test="auditor != null "> and auditor = #{auditor}</if>
+            <if test="acceptorTel != null  and acceptorTel != ''"> and acceptor_tel = #{acceptorTel}</if>
+            <if test="senderTel != null  and senderTel != ''"> and sender_tel = #{senderTel}</if>
+            <if test="confirmmethod != null "> and confirmmethod = #{confirmmethod}</if>
+            <if test="partnerAddr != null  and partnerAddr != ''"> and partner_addr = #{partnerAddr}</if>
+            <if test="partnerFax != null  and partnerFax != ''"> and partner_fax = #{partnerFax}</if>
+            <if test="arrivaldesc != null  and arrivaldesc != ''"> and arrivaldesc = #{arrivaldesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="orderTransactionId != null  and orderTransactionId != ''"> and order_transaction_id = #{orderTransactionId}</if>
+            <if test="transactionType != null  and transactionType != ''"> and transaction_type = #{transactionType}</if>
+            <if test="vendorsitecode != null  and vendorsitecode != ''"> and vendorsitecode = #{vendorsitecode}</if>
+            <if test="vendornumber != null  and vendornumber != ''"> and vendornumber = #{vendornumber}</if>
+            <if test="poNumber != null  and poNumber != ''"> and po_number = #{poNumber}</if>
+            <if test="djstatus != null  and djstatus != ''"> and djstatus = #{djstatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectArrivalsBillByArrivalsBillid" parameterType="Long" resultMap="ArrivalsBillResult">
+        <include refid="selectArrivalsBillVo"/>
+        where arrivals_billid = #{arrivalsBillid}
+    </select>
+        
+    <insert id="insertArrivalsBill" parameterType="ArrivalsBill" useGeneratedKeys="true" keyProperty="arrivalsBillid">
+        insert into arrivals_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillno != null">arrivals_billno,</if>
+            <if test="orderno != null">orderno,</if>
+            <if test="arrivaltype != null">arrivaltype,</if>
+            <if test="arrivalstate != null">arrivalstate,</if>
+            <if test="arrivaldate != null">arrivaldate,</if>
+            <if test="partnerid != null">partnerid,</if>
+            <if test="sendaddress != null">sendaddress,</if>
+            <if test="acceptor != null">acceptor,</if>
+            <if test="acceptaddress != null">acceptaddress,</if>
+            <if test="createdate != null">createdate,</if>
+            <if test="creator != null">creator,</if>
+            <if test="auditdate != null">auditdate,</if>
+            <if test="auditor != null">auditor,</if>
+            <if test="acceptorTel != null">acceptor_tel,</if>
+            <if test="senderTel != null">sender_tel,</if>
+            <if test="confirmmethod != null">confirmmethod,</if>
+            <if test="partnerAddr != null">partner_addr,</if>
+            <if test="partnerFax != null">partner_fax,</if>
+            <if test="arrivaldesc != null">arrivaldesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="orderTransactionId != null">order_transaction_id,</if>
+            <if test="transactionType != null">transaction_type,</if>
+            <if test="vendorsitecode != null">vendorsitecode,</if>
+            <if test="vendornumber != null">vendornumber,</if>
+            <if test="poNumber != null">po_number,</if>
+            <if test="djstatus != null">djstatus,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillno != null">#{arrivalsBillno},</if>
+            <if test="orderno != null">#{orderno},</if>
+            <if test="arrivaltype != null">#{arrivaltype},</if>
+            <if test="arrivalstate != null">#{arrivalstate},</if>
+            <if test="arrivaldate != null">#{arrivaldate},</if>
+            <if test="partnerid != null">#{partnerid},</if>
+            <if test="sendaddress != null">#{sendaddress},</if>
+            <if test="acceptor != null">#{acceptor},</if>
+            <if test="acceptaddress != null">#{acceptaddress},</if>
+            <if test="createdate != null">#{createdate},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="auditdate != null">#{auditdate},</if>
+            <if test="auditor != null">#{auditor},</if>
+            <if test="acceptorTel != null">#{acceptorTel},</if>
+            <if test="senderTel != null">#{senderTel},</if>
+            <if test="confirmmethod != null">#{confirmmethod},</if>
+            <if test="partnerAddr != null">#{partnerAddr},</if>
+            <if test="partnerFax != null">#{partnerFax},</if>
+            <if test="arrivaldesc != null">#{arrivaldesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="orderTransactionId != null">#{orderTransactionId},</if>
+            <if test="transactionType != null">#{transactionType},</if>
+            <if test="vendorsitecode != null">#{vendorsitecode},</if>
+            <if test="vendornumber != null">#{vendornumber},</if>
+            <if test="poNumber != null">#{poNumber},</if>
+            <if test="djstatus != null">#{djstatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrivalsBill" parameterType="ArrivalsBill">
+        update arrivals_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arrivalsBillno != null">arrivals_billno = #{arrivalsBillno},</if>
+            <if test="orderno != null">orderno = #{orderno},</if>
+            <if test="arrivaltype != null">arrivaltype = #{arrivaltype},</if>
+            <if test="arrivalstate != null">arrivalstate = #{arrivalstate},</if>
+            <if test="arrivaldate != null">arrivaldate = #{arrivaldate},</if>
+            <if test="partnerid != null">partnerid = #{partnerid},</if>
+            <if test="sendaddress != null">sendaddress = #{sendaddress},</if>
+            <if test="acceptor != null">acceptor = #{acceptor},</if>
+            <if test="acceptaddress != null">acceptaddress = #{acceptaddress},</if>
+            <if test="createdate != null">createdate = #{createdate},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="auditdate != null">auditdate = #{auditdate},</if>
+            <if test="auditor != null">auditor = #{auditor},</if>
+            <if test="acceptorTel != null">acceptor_tel = #{acceptorTel},</if>
+            <if test="senderTel != null">sender_tel = #{senderTel},</if>
+            <if test="confirmmethod != null">confirmmethod = #{confirmmethod},</if>
+            <if test="partnerAddr != null">partner_addr = #{partnerAddr},</if>
+            <if test="partnerFax != null">partner_fax = #{partnerFax},</if>
+            <if test="arrivaldesc != null">arrivaldesc = #{arrivaldesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="orderTransactionId != null">order_transaction_id = #{orderTransactionId},</if>
+            <if test="transactionType != null">transaction_type = #{transactionType},</if>
+            <if test="vendorsitecode != null">vendorsitecode = #{vendorsitecode},</if>
+            <if test="vendornumber != null">vendornumber = #{vendornumber},</if>
+            <if test="poNumber != null">po_number = #{poNumber},</if>
+            <if test="djstatus != null">djstatus = #{djstatus},</if>
+        </trim>
+        where arrivals_billid = #{arrivalsBillid}
+    </update>
+
+    <delete id="deleteArrivalsBillByArrivalsBillid" parameterType="Long">
+        delete from arrivals_bill where arrivals_billid = #{arrivalsBillid}
+    </delete>
+
+    <delete id="deleteArrivalsBillByArrivalsBillids" parameterType="String">
+        delete from arrivals_bill where arrivals_billid in 
+        <foreach item="arrivalsBillid" collection="array" open="(" separator="," close=")">
+            #{arrivalsBillid}
+        </foreach>
+    </delete>
+
+    <select id="selectArriveSignList" parameterType="ArrivalsBill" resultMap="ArrivalsBillResult">
+	        select
+                d1.arrivals_billno, d1.orderno, d1.po_number,
+                d1.createdate, d1.vendornumber,p.PARNAME,
+                d1.vendorsitecode, d1.arrivals_billid,'P005' as werks
+            from arrivals_bill d1, PARTNER p
+            where d1.ARRIVALSTATE =1
+                and d1.CREATEDATE> ADD_MONTHS(SYSDATE, -12)
+                and exists (select 1 from arrivals_detail d2 where d2.arrivals_billid = d1.arrivals_billid and nvl(d2.QTY,0)>nvl(d2.GOODQTY,0))
+                and d1.PARTNERID = p.PARTNERiD(+)
+                and ( instr(d1.data5,','|| #{userId}||',') > 0 )
+                and d1.ARRIVALTYPE IN ('10','11')
+        <if test="searchKey != null">
+         and(
+            d1.arrivals_billno like concat(concat('%',#{searchKey}),'%') or
+            d1.orderno like concat(concat('%',#{searchKey}),'%') or
+            d1.po_number like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+        <if test="sortColumn == null "> order by d1.createdate desc,d1.arrivals_billno desc, d1.orderno desc</if>
+
+        <if test="sortColumn != null"> order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+
+    <select id="selectArriveSignUnReceList" parameterType="ArrivalsBill" resultMap="ArrivalsBillResult">
+        select
+        d1.arrivals_billno, d1.orderno, d1.po_number,
+        d1.createdate, d1.vendornumber,p.PARNAME,
+        d1.vendorsitecode, d1.arrivals_billid,'P005' as werks
+        from arrivals_bill d1, PARTNER p
+        where d1.ARRIVALSTATE =1
+        and d1.CREATEDATE> ADD_MONTHS(SYSDATE, -12)
+        and exists (select 1 from arrivals_detail d2 where d2.arrivals_billid = d1.arrivals_billid and nvl(d2.QTY,0)>nvl(d2.GOODQTY,0))
+        and d1.PARTNERID = p.PARTNERiD(+)
+        and (  d1.data5 is null or instr(d1.data5,','|| #{userId}||',') &lt;= 0 )
+        and d1.ARRIVALTYPE IN ('10','11')
+        <if test="searchKey != null">
+            and(
+            d1.arrivals_billno like concat(concat('%',#{searchKey}),'%') or
+            d1.orderno like concat(concat('%',#{searchKey}),'%') or
+            d1.po_number like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+        <if test="sortColumn == null "> order by d1.createdate desc,d1.arrivals_billno desc, d1.orderno desc</if>
+        <if test="sortColumn != null"> order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+    </select>
+</mapper>

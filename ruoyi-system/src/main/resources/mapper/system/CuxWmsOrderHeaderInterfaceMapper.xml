@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CuxWmsOrderHeaderInterfaceMapper">
+
+    <resultMap type="CuxWmsOrderHeaderInterface" id="CuxWmsOrderHeaderInterfaceResult">
+        <result property="orderTransactionId"    column="order_transaction_id"    />
+        <result property="orgId"    column="org_id"    />
+        <result property="transactionType"    column="transaction_type"    />
+        <result property="transactionMode"    column="transaction_mode"    />
+        <result property="erpOrderType"    column="erp_order_type"    />
+        <result property="erpOrderNumber"    column="erp_order_number"    />
+        <result property="actionInout"    column="action_inout"    />
+        <result property="sourceCode"    column="source_code"    />
+        <result property="sourceHeaderId"    column="source_header_id"    />
+        <result property="sourceReference"    column="source_reference"    />
+        <result property="processGroupId"    column="process_group_id"    />
+        <result property="processStatus"    column="process_status"    />
+        <result property="processDate"    column="process_date"    />
+        <result property="processMessage"    column="process_message"    />
+        <result property="organizationId"    column="organization_id"    />
+        <result property="organizationName"    column="organization_name"    />
+        <result property="customerId"    column="customer_id"    />
+        <result property="customerNumber"    column="customer_number"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="vendorId"    column="vendor_id"    />
+        <result property="vendorNumber"    column="vendor_number"    />
+        <result property="vendorName"    column="vendor_name"    />
+        <result property="receiveSiteName"    column="receive_site_name"    />
+        <result property="consignee"    column="consignee"    />
+        <result property="rcvTelephone"    column="rcv_telephone"    />
+        <result property="orderLastDate"    column="order_last_date"    />
+        <result property="creationDate"    column="creation_date"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="lastUpdatedBy"    column="last_updated_by"    />
+        <result property="lastUpdateDate"    column="last_update_date"    />
+        <result property="lastUpdateLogin"    column="last_update_login"    />
+        <result property="programApplicationId"    column="program_application_id"    />
+        <result property="programId"    column="program_id"    />
+        <result property="programUpdateDate"    column="program_update_date"    />
+        <result property="requestId"    column="request_id"    />
+        <result property="attributeCategory"    column="attribute_category"    />
+        <result property="attribute1"    column="attribute1"    />
+        <result property="attribute2"    column="attribute2"    />
+        <result property="attribute3"    column="attribute3"    />
+        <result property="attribute4"    column="attribute4"    />
+        <result property="attribute5"    column="attribute5"    />
+        <result property="attribute6"    column="attribute6"    />
+        <result property="attribute7"    column="attribute7"    />
+        <result property="attribute8"    column="attribute8"    />
+        <result property="attribute9"    column="attribute9"    />
+        <result property="attribute10"    column="attribute10"    />
+        <result property="attribute11"    column="attribute11"    />
+        <result property="attribute12"    column="attribute12"    />
+        <result property="attribute13"    column="attribute13"    />
+        <result property="attribute14"    column="attribute14"    />
+        <result property="attribute15"    column="attribute15"    />
+        <result property="vendorSiteId"    column="vendor_site_id"    />
+        <result property="vendorSiteCode"    column="vendor_site_code"    />
+        <result property="sourceNumber"    column="source_number"    />
+        <result property="sourceNumberId"    column="source_number_id"    />
+        <result property="sourceNumberType"    column="source_number_type"    />
+        <result property="wipSupplementFlag"    column="wip_supplement_flag"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="data9"    column="data9"    />
+        <result property="data10"    column="data10"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="createEmpid"    column="create_empid"    />
+        <result property="executeDate"    column="execute_date"    />
+        <result property="executeEmpid"    column="execute_empid"    />
+        <result property="prostate"    column="prostate"    />
+        <result property="shipstate"    column="shipstate"    />
+        <result property="transferstate"    column="transferstate"    />
+        <result property="receiveName"    column="receive_name"    />
+        <result property="receiveStockSiteCode"    column="receive_stock_site_code"    />
+        <result property="receiveSiteCode"    column="receive_site_code"    />
+        <result property="receiveProjectCode"    column="receive_project_code"    />
+        <result property="receiveAddress"    column="receive_address"    />
+    </resultMap>
+
+    <sql id="selectCuxWmsOrderHeaderInterfaceVo">
+        select order_transaction_id, org_id, transaction_type, transaction_mode, erp_order_type, erp_order_number, action_inout, source_code, source_header_id, source_reference, process_group_id, process_status, process_date, process_message, organization_id, organization_name, customer_id, customer_number, customer_name, vendor_id, vendor_number, vendor_name, receive_site_name, consignee, rcv_telephone, order_last_date, creation_date, created_by, last_updated_by, last_update_date, last_update_login, program_application_id, program_id, program_update_date, request_id, attribute_category, attribute1, attribute2, attribute3, attribute4, attribute5, attribute6, attribute7, attribute8, attribute9, attribute10, attribute11, attribute12, attribute13, attribute14, attribute15, vendor_site_id, vendor_site_code, source_number, source_number_id, source_number_type, wip_supplement_flag, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, create_date, create_empid, execute_date, execute_empid, prostate, shipstate, transferstate, receive_name, receive_stock_site_code, receive_site_code, receive_project_code, receive_address from cux_wms_order_header_interface
+    </sql>
+
+    <select id="selectCuxWmsOrderHeaderInterfaceList" parameterType="CuxWmsOrderHeaderInterface" resultMap="CuxWmsOrderHeaderInterfaceResult">
+        <include refid="selectCuxWmsOrderHeaderInterfaceVo"/>
+        <where>
+            <if test="orgId != null "> and org_id = #{orgId}</if>
+            <if test="transactionType != null  and transactionType != ''"> and transaction_type = #{transactionType}</if>
+            <if test="transactionMode != null  and transactionMode != ''"> and transaction_mode = #{transactionMode}</if>
+            <if test="erpOrderType != null  and erpOrderType != ''"> and erp_order_type = #{erpOrderType}</if>
+            <if test="erpOrderNumber != null  and erpOrderNumber != ''"> and erp_order_number = #{erpOrderNumber}</if>
+            <if test="actionInout != null "> and action_inout = #{actionInout}</if>
+            <if test="sourceCode != null  and sourceCode != ''"> and source_code = #{sourceCode}</if>
+            <if test="sourceHeaderId != null "> and source_header_id = #{sourceHeaderId}</if>
+            <if test="sourceReference != null  and sourceReference != ''"> and source_reference = #{sourceReference}</if>
+            <if test="processGroupId != null "> and process_group_id = #{processGroupId}</if>
+            <if test="processStatus != null  and processStatus != ''"> and process_status = #{processStatus}</if>
+            <if test="processDate != null "> and process_date = #{processDate}</if>
+            <if test="processMessage != null  and processMessage != ''"> and process_message = #{processMessage}</if>
+            <if test="organizationId != null "> and organization_id = #{organizationId}</if>
+            <if test="organizationName != null  and organizationName != ''"> and organization_name like concat('%', #{organizationName}, '%')</if>
+            <if test="customerId != null "> and customer_id = #{customerId}</if>
+            <if test="customerNumber != null  and customerNumber != ''"> and customer_number = #{customerNumber}</if>
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="vendorId != null "> and vendor_id = #{vendorId}</if>
+            <if test="vendorNumber != null  and vendorNumber != ''"> and vendor_number = #{vendorNumber}</if>
+            <if test="vendorName != null  and vendorName != ''"> and vendor_name like concat('%', #{vendorName}, '%')</if>
+            <if test="receiveSiteName != null  and receiveSiteName != ''"> and receive_site_name like concat('%', #{receiveSiteName}, '%')</if>
+            <if test="consignee != null  and consignee != ''"> and consignee = #{consignee}</if>
+            <if test="rcvTelephone != null  and rcvTelephone != ''"> and rcv_telephone = #{rcvTelephone}</if>
+            <if test="orderLastDate != null "> and order_last_date = #{orderLastDate}</if>
+            <if test="creationDate != null "> and creation_date = #{creationDate}</if>
+            <if test="createdBy != null "> and created_by = #{createdBy}</if>
+            <if test="lastUpdatedBy != null "> and last_updated_by = #{lastUpdatedBy}</if>
+            <if test="lastUpdateDate != null "> and last_update_date = #{lastUpdateDate}</if>
+            <if test="lastUpdateLogin != null "> and last_update_login = #{lastUpdateLogin}</if>
+            <if test="programApplicationId != null "> and program_application_id = #{programApplicationId}</if>
+            <if test="programId != null "> and program_id = #{programId}</if>
+            <if test="programUpdateDate != null "> and program_update_date = #{programUpdateDate}</if>
+            <if test="requestId != null "> and request_id = #{requestId}</if>
+            <if test="attributeCategory != null  and attributeCategory != ''"> and attribute_category = #{attributeCategory}</if>
+            <if test="attribute1 != null  and attribute1 != ''"> and attribute1 = #{attribute1}</if>
+            <if test="attribute2 != null  and attribute2 != ''"> and attribute2 = #{attribute2}</if>
+            <if test="attribute3 != null  and attribute3 != ''"> and attribute3 = #{attribute3}</if>
+            <if test="attribute4 != null  and attribute4 != ''"> and attribute4 = #{attribute4}</if>
+            <if test="attribute5 != null  and attribute5 != ''"> and attribute5 = #{attribute5}</if>
+            <if test="attribute6 != null  and attribute6 != ''"> and attribute6 = #{attribute6}</if>
+            <if test="attribute7 != null "> and attribute7 = #{attribute7}</if>
+            <if test="attribute8 != null "> and attribute8 = #{attribute8}</if>
+            <if test="attribute9 != null  and attribute9 != ''"> and attribute9 = #{attribute9}</if>
+            <if test="attribute10 != null "> and attribute10 = #{attribute10}</if>
+            <if test="attribute11 != null  and attribute11 != ''"> and attribute11 = #{attribute11}</if>
+            <if test="attribute12 != null  and attribute12 != ''"> and attribute12 = #{attribute12}</if>
+            <if test="attribute13 != null  and attribute13 != ''"> and attribute13 = #{attribute13}</if>
+            <if test="attribute14 != null "> and attribute14 = #{attribute14}</if>
+            <if test="attribute15 != null "> and attribute15 = #{attribute15}</if>
+            <if test="vendorSiteId != null "> and vendor_site_id = #{vendorSiteId}</if>
+            <if test="vendorSiteCode != null  and vendorSiteCode != ''"> and vendor_site_code = #{vendorSiteCode}</if>
+            <if test="sourceNumber != null  and sourceNumber != ''"> and source_number = #{sourceNumber}</if>
+            <if test="sourceNumberId != null "> and source_number_id = #{sourceNumberId}</if>
+            <if test="sourceNumberType != null  and sourceNumberType != ''"> and source_number_type = #{sourceNumberType}</if>
+            <if test="wipSupplementFlag != null  and wipSupplementFlag != ''"> and wip_supplement_flag = #{wipSupplementFlag}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="data9 != null  and data9 != ''"> and data9 = #{data9}</if>
+            <if test="data10 != null  and data10 != ''"> and data10 = #{data10}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="createEmpid != null "> and create_empid = #{createEmpid}</if>
+            <if test="executeDate != null "> and execute_date = #{executeDate}</if>
+            <if test="executeEmpid != null "> and execute_empid = #{executeEmpid}</if>
+            <if test="prostate != null "> and prostate = #{prostate}</if>
+            <if test="shipstate != null "> and shipstate = #{shipstate}</if>
+            <if test="transferstate != null "> and transferstate = #{transferstate}</if>
+            <if test="receiveName != null  and receiveName != ''"> and receive_name like concat('%', #{receiveName}, '%')</if>
+            <if test="receiveStockSiteCode != null  and receiveStockSiteCode != ''"> and receive_stock_site_code = #{receiveStockSiteCode}</if>
+            <if test="receiveSiteCode != null  and receiveSiteCode != ''"> and receive_site_code = #{receiveSiteCode}</if>
+            <if test="receiveProjectCode != null  and receiveProjectCode != ''"> and receive_project_code = #{receiveProjectCode}</if>
+            <if test="receiveAddress != null  and receiveAddress != ''"> and receive_address = #{receiveAddress}</if>
+        </where>
+    </select>
+
+    <select id="selectCuxWmsOrderHeaderInterfaceByOrderTransactionId" parameterType="Long" resultMap="CuxWmsOrderHeaderInterfaceResult">
+        <include refid="selectCuxWmsOrderHeaderInterfaceVo"/>
+        where order_transaction_id = #{orderTransactionId}
+    </select>
+
+    <insert id="insertCuxWmsOrderHeaderInterface" parameterType="CuxWmsOrderHeaderInterface" useGeneratedKeys="true" keyProperty="orderTransactionId">
+        insert into cux_wms_order_header_interface
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">org_id,</if>
+            <if test="transactionType != null and transactionType != ''">transaction_type,</if>
+            <if test="transactionMode != null and transactionMode != ''">transaction_mode,</if>
+            <if test="erpOrderType != null">erp_order_type,</if>
+            <if test="erpOrderNumber != null">erp_order_number,</if>
+            <if test="actionInout != null">action_inout,</if>
+            <if test="sourceCode != null">source_code,</if>
+            <if test="sourceHeaderId != null">source_header_id,</if>
+            <if test="sourceReference != null">source_reference,</if>
+            <if test="processGroupId != null">process_group_id,</if>
+            <if test="processStatus != null and processStatus != ''">process_status,</if>
+            <if test="processDate != null">process_date,</if>
+            <if test="processMessage != null">process_message,</if>
+            <if test="organizationId != null">organization_id,</if>
+            <if test="organizationName != null">organization_name,</if>
+            <if test="customerId != null">customer_id,</if>
+            <if test="customerNumber != null">customer_number,</if>
+            <if test="customerName != null">customer_name,</if>
+            <if test="vendorId != null">vendor_id,</if>
+            <if test="vendorNumber != null">vendor_number,</if>
+            <if test="vendorName != null">vendor_name,</if>
+            <if test="receiveSiteName != null">receive_site_name,</if>
+            <if test="consignee != null">consignee,</if>
+            <if test="rcvTelephone != null">rcv_telephone,</if>
+            <if test="orderLastDate != null">order_last_date,</if>
+            <if test="creationDate != null">creation_date,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="lastUpdatedBy != null">last_updated_by,</if>
+            <if test="lastUpdateDate != null">last_update_date,</if>
+            <if test="lastUpdateLogin != null">last_update_login,</if>
+            <if test="programApplicationId != null">program_application_id,</if>
+            <if test="programId != null">program_id,</if>
+            <if test="programUpdateDate != null">program_update_date,</if>
+            <if test="requestId != null">request_id,</if>
+            <if test="attributeCategory != null">attribute_category,</if>
+            <if test="attribute1 != null">attribute1,</if>
+            <if test="attribute2 != null">attribute2,</if>
+            <if test="attribute3 != null">attribute3,</if>
+            <if test="attribute4 != null">attribute4,</if>
+            <if test="attribute5 != null">attribute5,</if>
+            <if test="attribute6 != null">attribute6,</if>
+            <if test="attribute7 != null">attribute7,</if>
+            <if test="attribute8 != null">attribute8,</if>
+            <if test="attribute9 != null">attribute9,</if>
+            <if test="attribute10 != null">attribute10,</if>
+            <if test="attribute11 != null">attribute11,</if>
+            <if test="attribute12 != null">attribute12,</if>
+            <if test="attribute13 != null">attribute13,</if>
+            <if test="attribute14 != null">attribute14,</if>
+            <if test="attribute15 != null">attribute15,</if>
+            <if test="vendorSiteId != null">vendor_site_id,</if>
+            <if test="vendorSiteCode != null">vendor_site_code,</if>
+            <if test="sourceNumber != null">source_number,</if>
+            <if test="sourceNumberId != null">source_number_id,</if>
+            <if test="sourceNumberType != null">source_number_type,</if>
+            <if test="wipSupplementFlag != null">wip_supplement_flag,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="data9 != null">data9,</if>
+            <if test="data10 != null">data10,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="createEmpid != null">create_empid,</if>
+            <if test="executeDate != null">execute_date,</if>
+            <if test="executeEmpid != null">execute_empid,</if>
+            <if test="prostate != null">prostate,</if>
+            <if test="shipstate != null">shipstate,</if>
+            <if test="transferstate != null">transferstate,</if>
+            <if test="receiveName != null">receive_name,</if>
+            <if test="receiveStockSiteCode != null">receive_stock_site_code,</if>
+            <if test="receiveSiteCode != null">receive_site_code,</if>
+            <if test="receiveProjectCode != null">receive_project_code,</if>
+            <if test="receiveAddress != null">receive_address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">#{orgId},</if>
+            <if test="transactionType != null and transactionType != ''">#{transactionType},</if>
+            <if test="transactionMode != null and transactionMode != ''">#{transactionMode},</if>
+            <if test="erpOrderType != null">#{erpOrderType},</if>
+            <if test="erpOrderNumber != null">#{erpOrderNumber},</if>
+            <if test="actionInout != null">#{actionInout},</if>
+            <if test="sourceCode != null">#{sourceCode},</if>
+            <if test="sourceHeaderId != null">#{sourceHeaderId},</if>
+            <if test="sourceReference != null">#{sourceReference},</if>
+            <if test="processGroupId != null">#{processGroupId},</if>
+            <if test="processStatus != null and processStatus != ''">#{processStatus},</if>
+            <if test="processDate != null">#{processDate},</if>
+            <if test="processMessage != null">#{processMessage},</if>
+            <if test="organizationId != null">#{organizationId},</if>
+            <if test="organizationName != null">#{organizationName},</if>
+            <if test="customerId != null">#{customerId},</if>
+            <if test="customerNumber != null">#{customerNumber},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="vendorId != null">#{vendorId},</if>
+            <if test="vendorNumber != null">#{vendorNumber},</if>
+            <if test="vendorName != null">#{vendorName},</if>
+            <if test="receiveSiteName != null">#{receiveSiteName},</if>
+            <if test="consignee != null">#{consignee},</if>
+            <if test="rcvTelephone != null">#{rcvTelephone},</if>
+            <if test="orderLastDate != null">#{orderLastDate},</if>
+            <if test="creationDate != null">#{creationDate},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="lastUpdatedBy != null">#{lastUpdatedBy},</if>
+            <if test="lastUpdateDate != null">#{lastUpdateDate},</if>
+            <if test="lastUpdateLogin != null">#{lastUpdateLogin},</if>
+            <if test="programApplicationId != null">#{programApplicationId},</if>
+            <if test="programId != null">#{programId},</if>
+            <if test="programUpdateDate != null">#{programUpdateDate},</if>
+            <if test="requestId != null">#{requestId},</if>
+            <if test="attributeCategory != null">#{attributeCategory},</if>
+            <if test="attribute1 != null">#{attribute1},</if>
+            <if test="attribute2 != null">#{attribute2},</if>
+            <if test="attribute3 != null">#{attribute3},</if>
+            <if test="attribute4 != null">#{attribute4},</if>
+            <if test="attribute5 != null">#{attribute5},</if>
+            <if test="attribute6 != null">#{attribute6},</if>
+            <if test="attribute7 != null">#{attribute7},</if>
+            <if test="attribute8 != null">#{attribute8},</if>
+            <if test="attribute9 != null">#{attribute9},</if>
+            <if test="attribute10 != null">#{attribute10},</if>
+            <if test="attribute11 != null">#{attribute11},</if>
+            <if test="attribute12 != null">#{attribute12},</if>
+            <if test="attribute13 != null">#{attribute13},</if>
+            <if test="attribute14 != null">#{attribute14},</if>
+            <if test="attribute15 != null">#{attribute15},</if>
+            <if test="vendorSiteId != null">#{vendorSiteId},</if>
+            <if test="vendorSiteCode != null">#{vendorSiteCode},</if>
+            <if test="sourceNumber != null">#{sourceNumber},</if>
+            <if test="sourceNumberId != null">#{sourceNumberId},</if>
+            <if test="sourceNumberType != null">#{sourceNumberType},</if>
+            <if test="wipSupplementFlag != null">#{wipSupplementFlag},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="data9 != null">#{data9},</if>
+            <if test="data10 != null">#{data10},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="createEmpid != null">#{createEmpid},</if>
+            <if test="executeDate != null">#{executeDate},</if>
+            <if test="executeEmpid != null">#{executeEmpid},</if>
+            <if test="prostate != null">#{prostate},</if>
+            <if test="shipstate != null">#{shipstate},</if>
+            <if test="transferstate != null">#{transferstate},</if>
+            <if test="receiveName != null">#{receiveName},</if>
+            <if test="receiveStockSiteCode != null">#{receiveStockSiteCode},</if>
+            <if test="receiveSiteCode != null">#{receiveSiteCode},</if>
+            <if test="receiveProjectCode != null">#{receiveProjectCode},</if>
+            <if test="receiveAddress != null">#{receiveAddress},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCuxWmsOrderHeaderInterface" parameterType="CuxWmsOrderHeaderInterface">
+        update cux_wms_order_header_interface
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orgId != null">org_id = #{orgId},</if>
+            <if test="transactionType != null and transactionType != ''">transaction_type = #{transactionType},</if>
+            <if test="transactionMode != null and transactionMode != ''">transaction_mode = #{transactionMode},</if>
+            <if test="erpOrderType != null">erp_order_type = #{erpOrderType},</if>
+            <if test="erpOrderNumber != null">erp_order_number = #{erpOrderNumber},</if>
+            <if test="actionInout != null">action_inout = #{actionInout},</if>
+            <if test="sourceCode != null">source_code = #{sourceCode},</if>
+            <if test="sourceHeaderId != null">source_header_id = #{sourceHeaderId},</if>
+            <if test="sourceReference != null">source_reference = #{sourceReference},</if>
+            <if test="processGroupId != null">process_group_id = #{processGroupId},</if>
+            <if test="processStatus != null and processStatus != ''">process_status = #{processStatus},</if>
+            <if test="processDate != null">process_date = #{processDate},</if>
+            <if test="processMessage != null">process_message = #{processMessage},</if>
+            <if test="organizationId != null">organization_id = #{organizationId},</if>
+            <if test="organizationName != null">organization_name = #{organizationName},</if>
+            <if test="customerId != null">customer_id = #{customerId},</if>
+            <if test="customerNumber != null">customer_number = #{customerNumber},</if>
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="vendorId != null">vendor_id = #{vendorId},</if>
+            <if test="vendorNumber != null">vendor_number = #{vendorNumber},</if>
+            <if test="vendorName != null">vendor_name = #{vendorName},</if>
+            <if test="receiveSiteName != null">receive_site_name = #{receiveSiteName},</if>
+            <if test="consignee != null">consignee = #{consignee},</if>
+            <if test="rcvTelephone != null">rcv_telephone = #{rcvTelephone},</if>
+            <if test="orderLastDate != null">order_last_date = #{orderLastDate},</if>
+            <if test="creationDate != null">creation_date = #{creationDate},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="lastUpdatedBy != null">last_updated_by = #{lastUpdatedBy},</if>
+            <if test="lastUpdateDate != null">last_update_date = #{lastUpdateDate},</if>
+            <if test="lastUpdateLogin != null">last_update_login = #{lastUpdateLogin},</if>
+            <if test="programApplicationId != null">program_application_id = #{programApplicationId},</if>
+            <if test="programId != null">program_id = #{programId},</if>
+            <if test="programUpdateDate != null">program_update_date = #{programUpdateDate},</if>
+            <if test="requestId != null">request_id = #{requestId},</if>
+            <if test="attributeCategory != null">attribute_category = #{attributeCategory},</if>
+            <if test="attribute1 != null">attribute1 = #{attribute1},</if>
+            <if test="attribute2 != null">attribute2 = #{attribute2},</if>
+            <if test="attribute3 != null">attribute3 = #{attribute3},</if>
+            <if test="attribute4 != null">attribute4 = #{attribute4},</if>
+            <if test="attribute5 != null">attribute5 = #{attribute5},</if>
+            <if test="attribute6 != null">attribute6 = #{attribute6},</if>
+            <if test="attribute7 != null">attribute7 = #{attribute7},</if>
+            <if test="attribute8 != null">attribute8 = #{attribute8},</if>
+            <if test="attribute9 != null">attribute9 = #{attribute9},</if>
+            <if test="attribute10 != null">attribute10 = #{attribute10},</if>
+            <if test="attribute11 != null">attribute11 = #{attribute11},</if>
+            <if test="attribute12 != null">attribute12 = #{attribute12},</if>
+            <if test="attribute13 != null">attribute13 = #{attribute13},</if>
+            <if test="attribute14 != null">attribute14 = #{attribute14},</if>
+            <if test="attribute15 != null">attribute15 = #{attribute15},</if>
+            <if test="vendorSiteId != null">vendor_site_id = #{vendorSiteId},</if>
+            <if test="vendorSiteCode != null">vendor_site_code = #{vendorSiteCode},</if>
+            <if test="sourceNumber != null">source_number = #{sourceNumber},</if>
+            <if test="sourceNumberId != null">source_number_id = #{sourceNumberId},</if>
+            <if test="sourceNumberType != null">source_number_type = #{sourceNumberType},</if>
+            <if test="wipSupplementFlag != null">wip_supplement_flag = #{wipSupplementFlag},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="data9 != null">data9 = #{data9},</if>
+            <if test="data10 != null">data10 = #{data10},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="createEmpid != null">create_empid = #{createEmpid},</if>
+            <if test="executeDate != null">execute_date = #{executeDate},</if>
+            <if test="executeEmpid != null">execute_empid = #{executeEmpid},</if>
+            <if test="prostate != null">prostate = #{prostate},</if>
+            <if test="shipstate != null">shipstate = #{shipstate},</if>
+            <if test="transferstate != null">transferstate = #{transferstate},</if>
+            <if test="receiveName != null">receive_name = #{receiveName},</if>
+            <if test="receiveStockSiteCode != null">receive_stock_site_code = #{receiveStockSiteCode},</if>
+            <if test="receiveSiteCode != null">receive_site_code = #{receiveSiteCode},</if>
+            <if test="receiveProjectCode != null">receive_project_code = #{receiveProjectCode},</if>
+            <if test="receiveAddress != null">receive_address = #{receiveAddress},</if>
+        </trim>
+        where order_transaction_id = #{orderTransactionId}
+    </update>
+
+    <delete id="deleteCuxWmsOrderHeaderInterfaceByOrderTransactionId" parameterType="Long">
+        delete from cux_wms_order_header_interface where order_transaction_id = #{orderTransactionId}
+    </delete>
+
+    <delete id="deleteCuxWmsOrderHeaderInterfaceByOrderTransactionIds" parameterType="String">
+        delete from cux_wms_order_header_interface where order_transaction_id in
+        <foreach item="orderTransactionId" collection="array" open="(" separator="," close=")">
+            #{orderTransactionId}
+        </foreach>
+    </delete>
+
+
+
+    <select id="selectCuxWmsOrderHeaderList" parameterType="CuxWmsOrderHeaderInterface" resultMap="CuxWmsOrderHeaderInterfaceResult">
+        <include refid="selectCuxWmsOrderHeaderInterfaceVo"/>
+        where create_date>add_months(sysdate,-2) and transaction_type in('1','2','3') and receive_name is  null
+    </select>
+</mapper>

@@ -1,0 +1,295 @@
+{
+
+        "leftPageData": {
+            "accessFrequency": 1500,
+            "peakFlow": 80,
+            "trafficSitua": {
+                "timeList": [
+                    "9:00",
+                    "10:00",
+                    "11:00",
+                    "13:00",
+                    "14:00",
+                    "15:00",
+                    "16:00",
+                    "17:00",
+                    "18:00"
+                ],
+                "outData": [
+                    502.84,
+                    205.97,
+                    332.79,
+                    281.55,
+                    398.35,
+                    214.02,
+                    214.02,
+                    214.02,
+                    214.02
+                ],
+                "inData": [
+                    281.55,
+                    398.35,
+                    214.02,
+                    179.55,
+                    289.57,
+                    356.14,
+                    214.02,
+                    214.02,
+                    214.02
+                ]
+            },
+            "userSitua": {
+                "header": [
+                    "工单",
+                    "计划日期",
+                    "齐套率"
+                ],
+                "data": [
+                    [
+                        "工单1",
+                        "2020-11-11",
+                        "98%"
+                    ],
+                    [
+                        "工单2",
+                        "2020-11-11",
+                        "97%"
+                    ],
+                    [
+                        "工单3",
+                        "2020-11-11",
+                        "95%"
+                    ],
+                    [
+                        "工单4",
+                        "2020-11-11",
+                        "94%"
+                    ],
+                    [
+                        "工单5",
+                        "2020-11-11",
+                        "94%"
+                    ],
+                    [
+                        "工单6",
+                        "2020-11-11",
+                        "93%"
+                    ],
+                    [
+                        "工单7",
+                        "2020-11-11",
+                        "92%"
+                    ],
+                    [
+                        "工单8",
+                        "2020-11-11",
+                        "88%"
+                    ],
+                    [
+                        "工单9",
+                        "2020-11-11",
+                        "85%"
+                    ],
+                    [
+                        "工单11",
+                        "2020-11-11",
+                        "83%"
+                    ],
+                    [
+                        "工单12",
+                        "2020-11-11",
+                        "82%"
+                    ],
+                    [
+                        "工单13",
+                        "2020-11-11",
+                        "80%"
+                    ]
+                ]
+            }
+        },
+		"centerPageData": {
+            "waterLevelPond1":{
+                "data": [68],
+                "shape": "roundRect"
+            },
+            "waterLevelPond2":{
+                "data": [77],
+                "shape": "roundRect"
+            },
+            "waterLevelPond3":{
+                "data": [90],
+                "shape": "roundRect"
+            },
+            "waterLevelPond4":{
+                "data": [40],
+                "shape": "roundRect"
+            },
+            "waterLevelPond5":{
+                "data": [76],
+                "shape": "roundRect"
+            },
+            "waterLevelPond6":{
+                "data": [95],
+                "shape": "roundRect"
+            },
+            "detailsList": [
+                {
+                    "title": "原材料收货",
+                    "number": 260000,
+                    "unit": "件/累计",
+                    "url": "/ShouHuoDetailPage"
+
+                },
+                {
+                    "title": "原材料发货",
+                    "number": 33000,
+                    "unit": "件/累计",
+                    "url": "/FaHuoDetailPage"
+                },
+                {
+                    "title": "采购退货",
+                    "number": 400,
+                    "unit": "件/累计",
+                    "url": "/TuiHuoDetailPage"
+
+                },
+                {
+                    "title": "成品入库",
+                    "number": 600,
+                    "unit": "台/累计",
+                    "url": "/ChengsHuoDetailPage"
+                },
+                {
+                    "title": "成品发货",
+                    "number": 300,
+                    "unit": " 台/累计",
+                    "url": "/ChengfHuoDetailPage"
+                },
+                {
+                    "title": "生产材料退库",
+                    "number": 300,
+                    "unit": "件/累计",
+                    "url": "/TuiKuDetailPage"
+                }
+            ]
+        },
+		"rightPageData": {
+            "userIdentityCategory": {
+                "data": [
+                    {
+                        "name": "外库原材料",
+                        "value": 93
+                    },
+                    {
+                        "name": "立库原材料",
+                        "value": 167
+                    },
+                    {
+                        "name": "外库成品库",
+                        "value": 123
+                    },
+                    {
+                        "name": "研发物料库",
+                        "value": 55
+                    },
+                    {
+                        "name": "备品备件库",
+                        "value": 198
+                    },
+                    {
+                        "name": "创新研发库",
+                        "value": 198
+                    },
+                    {
+                        "name": "解决方案库",
+                        "value": 198
+                    },
+                    {
+                        "name": "产品中心库",
+                        "value": 198
+                    }
+                ],
+                "showValue": true
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+            "activeRingData": {
+                "radius": "40%",
+                "activeRadius": "45%",
+                "data": [
+                    {
+                        "name": "30天内",
+                        "value": 55
+                    },
+                    {
+                        "name": "31-90天",
+                        "value": 120
+                    },
+                    {
+                        "name": "91天-半年",
+                        "value": 78
+                    },
+                    {
+                        "name": "半年-1年",
+                        "value": 66
+                    },
+                    {
+                        "name": "1年-3年",
+                        "value": 80
+                    },
+                    {
+                        "name": "3年以上",
+                        "value": 80
+                    }
+                ],
+                "digitalFlopStyle": {
+                    "fontSize": 20
+                }
+            },
+            "activeRingData2": {
+                "radius": "40%",
+                "activeRadius": "45%",
+                "data": [
+                    {
+                        "name": "30天内",
+                        "value": 55
+                    },
+                    {
+                        "name": "31-90天",
+                        "value": 120
+                    },
+                    {
+                        "name": "91-半年",
+                        "value": 78
+                    },
+                    {
+                        "name": "半年-1年",
+                        "value": 66
+                    },
+                    {
+                        "name": "1年-3年",
+                        "value": 80
+                    },
+                    {
+                        "name": "3年以上",
+                        "value": 80
+                    }
+                ],
+                "digitalFlopStyle": {
+                    "fontSize": 20
+                }
+            }
+        }
+
+}

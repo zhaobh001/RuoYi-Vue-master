@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OutbillMapper">
+    
+    <resultMap type="Outbill" id="OutbillResult">
+        <result property="outbillid"    column="outbillid"    />
+        <result property="outproofid"    column="outproofid"    />
+        <result property="billno"    column="billno"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="partnerid"    column="partnerid"    />
+        <result property="taskqty"    column="taskqty"    />
+        <result property="finishqty"    column="finishqty"    />
+        <result property="createdate"    column="createdate"    />
+        <result property="creator"    column="creator"    />
+        <result property="billstate"    column="billstate"    />
+        <result property="billdesc"    column="billdesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="workstation"    column="workstation"    />
+        <result property="sourceHeaderId"    column="source_header_id"    />
+        <result property="sourceLineId"    column="source_line_id"    />
+        <result property="erpOrderType"    column="erp_order_type"    />
+        <result property="subinventoryCode"    column="subinventory_code"    />
+        <result property="owningOrganizationId"    column="owning_organization_id"    />
+        <result property="owningOrganizationName"    column="owning_organization_name"    />
+        <result property="drawmaterialRfBillItemid"    column="drawmaterial_rf_bill_itemid"    />
+        <result property="inbillid"    column="inbillid"    />
+        <result property="collectEmpid"    column="collect_empid"    />
+        <result property="collectDate"    column="collect_date"    />
+        <result property="occupyRepqty"    column="occupy_repqty"    />
+        <result property="hintsite"    column="hintsite"    />
+        <result property="hintfinish"    column="hintfinish"    />
+        <result property="hintdesc"    column="hintdesc"    />
+        <result property="orderItemTransactionId"    column="order_item_transaction_id"    />
+        <result property="orderTransactionId"    column="order_transaction_id"    />
+        <result property="wipEntityId"    column="wip_entity_id"    />
+        <result property="wipEntityName"    column="wip_entity_name"    />
+        <result property="primaryItemDesc"    column="primary_item_desc"    />
+        <result property="scheduleGroupName"    column="schedule_group_name"    />
+        <result property="occupyqty"    column="occupyqty"    />
+        <result property="collectState"    column="collect_state"    />
+        <result property="serialNumberStart"    column="serial_number_start"    />
+        <result property="serialNumberEnd"    column="serial_number_end"    />
+        <result property="incollectTransactionId"    column="incollect_transaction_id"    />
+        <result property="productline"    column="productline"    />
+        <result property="operationSeqNum"    column="operation_seq_num"    />
+        <result property="wholesetno"    column="wholesetno"    />
+        <result property="wholesetnum"    column="wholesetnum"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="workorderstate"    column="workorderstate"    />
+        <result property="projectNum"    column="project_num"    />
+        <result property="transferProjectNum"    column="transfer_project_num"    />
+        <result property="occupyOrderno"    column="occupy_orderno"    />
+        <result property="orderno"    column="orderno"    />
+        <result property="hintfinishtor"    column="hintfinishtor"    />
+        <result property="deliveryData"    column="delivery_data"    />
+        <result property="deliveryTime"    column="delivery_time"    />
+    </resultMap>
+
+    <sql id="selectOutbillVo">
+        select outbillid, outproofid, billno, materialid, partnerid, taskqty, finishqty, createdate, creator, billstate, billdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, workstation, source_header_id, source_line_id, erp_order_type, subinventory_code, owning_organization_id, owning_organization_name, drawmaterial_rf_bill_itemid, inbillid, collect_empid, collect_date, occupy_repqty, hintsite, hintfinish, hintdesc, order_item_transaction_id, order_transaction_id, wip_entity_id, wip_entity_name, primary_item_desc, schedule_group_name, occupyqty, collect_state, serial_number_start, serial_number_end, incollect_transaction_id, productline, operation_seq_num, wholesetno, wholesetnum, palletno, workorderstate, project_num, transfer_project_num, occupy_orderno, orderno, hintfinishtor, delivery_data, delivery_time from outbill
+    </sql>
+
+    <select id="selectOutbillList" parameterType="Outbill" resultMap="OutbillResult">
+        <include refid="selectOutbillVo"/>
+        <where>  
+            <if test="outproofid != null "> and outproofid = #{outproofid}</if>
+            <if test="billno != null  and billno != ''"> and billno = #{billno}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="partnerid != null "> and partnerid = #{partnerid}</if>
+            <if test="taskqty != null "> and taskqty = #{taskqty}</if>
+            <if test="finishqty != null "> and finishqty = #{finishqty}</if>
+            <if test="createdate != null "> and createdate = #{createdate}</if>
+            <if test="creator != null "> and creator = #{creator}</if>
+            <if test="billstate != null "> and billstate = #{billstate}</if>
+            <if test="billdesc != null  and billdesc != ''"> and billdesc = #{billdesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="workstation != null  and workstation != ''"> and workstation = #{workstation}</if>
+            <if test="sourceHeaderId != null  and sourceHeaderId != ''"> and source_header_id = #{sourceHeaderId}</if>
+            <if test="sourceLineId != null  and sourceLineId != ''"> and source_line_id = #{sourceLineId}</if>
+            <if test="erpOrderType != null  and erpOrderType != ''"> and erp_order_type = #{erpOrderType}</if>
+            <if test="subinventoryCode != null  and subinventoryCode != ''"> and subinventory_code = #{subinventoryCode}</if>
+            <if test="owningOrganizationId != null  and owningOrganizationId != ''"> and owning_organization_id = #{owningOrganizationId}</if>
+            <if test="owningOrganizationName != null  and owningOrganizationName != ''"> and owning_organization_name like concat('%', #{owningOrganizationName}, '%')</if>
+            <if test="drawmaterialRfBillItemid != null "> and drawmaterial_rf_bill_itemid = #{drawmaterialRfBillItemid}</if>
+            <if test="inbillid != null "> and inbillid = #{inbillid}</if>
+            <if test="collectEmpid != null "> and collect_empid = #{collectEmpid}</if>
+            <if test="collectDate != null "> and collect_date = #{collectDate}</if>
+            <if test="occupyRepqty != null  and occupyRepqty != ''"> and occupy_repqty = #{occupyRepqty}</if>
+            <if test="hintsite != null "> and hintsite = #{hintsite}</if>
+            <if test="hintfinish != null "> and hintfinish = #{hintfinish}</if>
+            <if test="hintdesc != null  and hintdesc != ''"> and hintdesc = #{hintdesc}</if>
+            <if test="orderItemTransactionId != null  and orderItemTransactionId != ''"> and order_item_transaction_id = #{orderItemTransactionId}</if>
+            <if test="orderTransactionId != null  and orderTransactionId != ''"> and order_transaction_id = #{orderTransactionId}</if>
+            <if test="wipEntityId != null "> and wip_entity_id = #{wipEntityId}</if>
+            <if test="wipEntityName != null  and wipEntityName != ''"> and wip_entity_name like concat('%', #{wipEntityName}, '%')</if>
+            <if test="primaryItemDesc != null  and primaryItemDesc != ''"> and primary_item_desc = #{primaryItemDesc}</if>
+            <if test="scheduleGroupName != null  and scheduleGroupName != ''"> and schedule_group_name like concat('%', #{scheduleGroupName}, '%')</if>
+            <if test="occupyqty != null "> and occupyqty = #{occupyqty}</if>
+            <if test="collectState != null "> and collect_state = #{collectState}</if>
+            <if test="serialNumberStart != null  and serialNumberStart != ''"> and serial_number_start = #{serialNumberStart}</if>
+            <if test="serialNumberEnd != null  and serialNumberEnd != ''"> and serial_number_end = #{serialNumberEnd}</if>
+            <if test="incollectTransactionId != null  and incollectTransactionId != ''"> and incollect_transaction_id = #{incollectTransactionId}</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+            <if test="operationSeqNum != null "> and operation_seq_num = #{operationSeqNum}</if>
+            <if test="wholesetno != null  and wholesetno != ''"> and wholesetno = #{wholesetno}</if>
+            <if test="wholesetnum != null "> and wholesetnum = #{wholesetnum}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="workorderstate != null "> and workorderstate = #{workorderstate}</if>
+            <if test="projectNum != null  and projectNum != ''"> and project_num = #{projectNum}</if>
+            <if test="transferProjectNum != null  and transferProjectNum != ''"> and transfer_project_num = #{transferProjectNum}</if>
+            <if test="occupyOrderno != null  and occupyOrderno != ''"> and occupy_orderno = #{occupyOrderno}</if>
+            <if test="orderno != null  and orderno != ''"> and orderno = #{orderno}</if>
+            <if test="hintfinishtor != null  and hintfinishtor != ''"> and hintfinishtor = #{hintfinishtor}</if>
+            <if test="deliveryData != null  and deliveryData != ''"> and delivery_data = #{deliveryData}</if>
+            <if test="deliveryTime != null  and deliveryTime != ''"> and delivery_time = #{deliveryTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOutbillByOutbillid" parameterType="Long" resultMap="OutbillResult">
+        <include refid="selectOutbillVo"/>
+        where outbillid = #{outbillid}
+    </select>
+
+    <select id="selecttransQty" parameterType="Long" resultMap="OutbillResult">
+        <include refid="selectOutbillVo"/>
+        where  outbillid = #{outbillid} and  materialid = #{materialid} and BILLSTATE != 2 and rownum &lt; 2
+    </select>
+
+
+    <insert id="insertOutbill" parameterType="Outbill" useGeneratedKeys="true" keyProperty="outbillid">
+        insert into outbill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outproofid != null">outproofid,</if>
+            <if test="billno != null">billno,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="partnerid != null">partnerid,</if>
+            <if test="taskqty != null">taskqty,</if>
+            <if test="finishqty != null">finishqty,</if>
+            <if test="createdate != null">createdate,</if>
+            <if test="creator != null">creator,</if>
+            <if test="billstate != null">billstate,</if>
+            <if test="billdesc != null">billdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="sourceHeaderId != null">source_header_id,</if>
+            <if test="sourceLineId != null">source_line_id,</if>
+            <if test="erpOrderType != null">erp_order_type,</if>
+            <if test="subinventoryCode != null">subinventory_code,</if>
+            <if test="owningOrganizationId != null">owning_organization_id,</if>
+            <if test="owningOrganizationName != null">owning_organization_name,</if>
+            <if test="drawmaterialRfBillItemid != null">drawmaterial_rf_bill_itemid,</if>
+            <if test="inbillid != null">inbillid,</if>
+            <if test="collectEmpid != null">collect_empid,</if>
+            <if test="collectDate != null">collect_date,</if>
+            <if test="occupyRepqty != null">occupy_repqty,</if>
+            <if test="hintsite != null">hintsite,</if>
+            <if test="hintfinish != null">hintfinish,</if>
+            <if test="hintdesc != null">hintdesc,</if>
+            <if test="orderItemTransactionId != null">order_item_transaction_id,</if>
+            <if test="orderTransactionId != null">order_transaction_id,</if>
+            <if test="wipEntityId != null">wip_entity_id,</if>
+            <if test="wipEntityName != null">wip_entity_name,</if>
+            <if test="primaryItemDesc != null">primary_item_desc,</if>
+            <if test="scheduleGroupName != null">schedule_group_name,</if>
+            <if test="occupyqty != null">occupyqty,</if>
+            <if test="collectState != null">collect_state,</if>
+            <if test="serialNumberStart != null">serial_number_start,</if>
+            <if test="serialNumberEnd != null">serial_number_end,</if>
+            <if test="incollectTransactionId != null">incollect_transaction_id,</if>
+            <if test="productline != null">productline,</if>
+            <if test="operationSeqNum != null">operation_seq_num,</if>
+            <if test="wholesetno != null">wholesetno,</if>
+            <if test="wholesetnum != null">wholesetnum,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="workorderstate != null">workorderstate,</if>
+            <if test="projectNum != null">project_num,</if>
+            <if test="transferProjectNum != null">transfer_project_num,</if>
+            <if test="occupyOrderno != null">occupy_orderno,</if>
+            <if test="orderno != null">orderno,</if>
+            <if test="hintfinishtor != null">hintfinishtor,</if>
+            <if test="deliveryData != null">delivery_data,</if>
+            <if test="deliveryTime != null">delivery_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outproofid != null">#{outproofid},</if>
+            <if test="billno != null">#{billno},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="partnerid != null">#{partnerid},</if>
+            <if test="taskqty != null">#{taskqty},</if>
+            <if test="finishqty != null">#{finishqty},</if>
+            <if test="createdate != null">#{createdate},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="billstate != null">#{billstate},</if>
+            <if test="billdesc != null">#{billdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="sourceHeaderId != null">#{sourceHeaderId},</if>
+            <if test="sourceLineId != null">#{sourceLineId},</if>
+            <if test="erpOrderType != null">#{erpOrderType},</if>
+            <if test="subinventoryCode != null">#{subinventoryCode},</if>
+            <if test="owningOrganizationId != null">#{owningOrganizationId},</if>
+            <if test="owningOrganizationName != null">#{owningOrganizationName},</if>
+            <if test="drawmaterialRfBillItemid != null">#{drawmaterialRfBillItemid},</if>
+            <if test="inbillid != null">#{inbillid},</if>
+            <if test="collectEmpid != null">#{collectEmpid},</if>
+            <if test="collectDate != null">#{collectDate},</if>
+            <if test="occupyRepqty != null">#{occupyRepqty},</if>
+            <if test="hintsite != null">#{hintsite},</if>
+            <if test="hintfinish != null">#{hintfinish},</if>
+            <if test="hintdesc != null">#{hintdesc},</if>
+            <if test="orderItemTransactionId != null">#{orderItemTransactionId},</if>
+            <if test="orderTransactionId != null">#{orderTransactionId},</if>
+            <if test="wipEntityId != null">#{wipEntityId},</if>
+            <if test="wipEntityName != null">#{wipEntityName},</if>
+            <if test="primaryItemDesc != null">#{primaryItemDesc},</if>
+            <if test="scheduleGroupName != null">#{scheduleGroupName},</if>
+            <if test="occupyqty != null">#{occupyqty},</if>
+            <if test="collectState != null">#{collectState},</if>
+            <if test="serialNumberStart != null">#{serialNumberStart},</if>
+            <if test="serialNumberEnd != null">#{serialNumberEnd},</if>
+            <if test="incollectTransactionId != null">#{incollectTransactionId},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="operationSeqNum != null">#{operationSeqNum},</if>
+            <if test="wholesetno != null">#{wholesetno},</if>
+            <if test="wholesetnum != null">#{wholesetnum},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="workorderstate != null">#{workorderstate},</if>
+            <if test="projectNum != null">#{projectNum},</if>
+            <if test="transferProjectNum != null">#{transferProjectNum},</if>
+            <if test="occupyOrderno != null">#{occupyOrderno},</if>
+            <if test="orderno != null">#{orderno},</if>
+            <if test="hintfinishtor != null">#{hintfinishtor},</if>
+            <if test="deliveryData != null">#{deliveryData},</if>
+            <if test="deliveryTime != null">#{deliveryTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutbill" parameterType="Outbill">
+        update outbill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outproofid != null">outproofid = #{outproofid},</if>
+            <if test="billno != null">billno = #{billno},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="partnerid != null">partnerid = #{partnerid},</if>
+            <if test="taskqty != null">taskqty = #{taskqty},</if>
+            <if test="finishqty != null">finishqty = #{finishqty},</if>
+            <if test="createdate != null">createdate = #{createdate},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="billstate != null">billstate = #{billstate},</if>
+            <if test="billdesc != null">billdesc = #{billdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="sourceHeaderId != null">source_header_id = #{sourceHeaderId},</if>
+            <if test="sourceLineId != null">source_line_id = #{sourceLineId},</if>
+            <if test="erpOrderType != null">erp_order_type = #{erpOrderType},</if>
+            <if test="subinventoryCode != null">subinventory_code = #{subinventoryCode},</if>
+            <if test="owningOrganizationId != null">owning_organization_id = #{owningOrganizationId},</if>
+            <if test="owningOrganizationName != null">owning_organization_name = #{owningOrganizationName},</if>
+            <if test="drawmaterialRfBillItemid != null">drawmaterial_rf_bill_itemid = #{drawmaterialRfBillItemid},</if>
+            <if test="inbillid != null">inbillid = #{inbillid},</if>
+            <if test="collectEmpid != null">collect_empid = #{collectEmpid},</if>
+            <if test="collectDate != null">collect_date = #{collectDate},</if>
+            <if test="occupyRepqty != null">occupy_repqty = #{occupyRepqty},</if>
+            <if test="hintsite != null">hintsite = #{hintsite},</if>
+            <if test="hintfinish != null">hintfinish = #{hintfinish},</if>
+            <if test="hintdesc != null">hintdesc = #{hintdesc},</if>
+            <if test="orderItemTransactionId != null">order_item_transaction_id = #{orderItemTransactionId},</if>
+            <if test="orderTransactionId != null">order_transaction_id = #{orderTransactionId},</if>
+            <if test="wipEntityId != null">wip_entity_id = #{wipEntityId},</if>
+            <if test="wipEntityName != null">wip_entity_name = #{wipEntityName},</if>
+            <if test="primaryItemDesc != null">primary_item_desc = #{primaryItemDesc},</if>
+            <if test="scheduleGroupName != null">schedule_group_name = #{scheduleGroupName},</if>
+            <if test="occupyqty != null">occupyqty = #{occupyqty},</if>
+            <if test="collectState != null">collect_state = #{collectState},</if>
+            <if test="serialNumberStart != null">serial_number_start = #{serialNumberStart},</if>
+            <if test="serialNumberEnd != null">serial_number_end = #{serialNumberEnd},</if>
+            <if test="incollectTransactionId != null">incollect_transaction_id = #{incollectTransactionId},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="operationSeqNum != null">operation_seq_num = #{operationSeqNum},</if>
+            <if test="wholesetno != null">wholesetno = #{wholesetno},</if>
+            <if test="wholesetnum != null">wholesetnum = #{wholesetnum},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="workorderstate != null">workorderstate = #{workorderstate},</if>
+            <if test="projectNum != null">project_num = #{projectNum},</if>
+            <if test="transferProjectNum != null">transfer_project_num = #{transferProjectNum},</if>
+            <if test="occupyOrderno != null">occupy_orderno = #{occupyOrderno},</if>
+            <if test="orderno != null">orderno = #{orderno},</if>
+            <if test="hintfinishtor != null">hintfinishtor = #{hintfinishtor},</if>
+            <if test="deliveryData != null">delivery_data = #{deliveryData},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+        </trim>
+        where outbillid = #{outbillid}
+    </update>
+
+    <delete id="deleteOutbillByOutbillid" parameterType="Long">
+        delete from outbill where outbillid = #{outbillid}
+    </delete>
+
+    <delete id="deleteOutbillByOutbillids" parameterType="String">
+        delete from outbill where outbillid in 
+        <foreach item="outbillid" collection="array" open="(" separator="," close=")">
+            #{outbillid}
+        </foreach>
+    </delete>
+</mapper>

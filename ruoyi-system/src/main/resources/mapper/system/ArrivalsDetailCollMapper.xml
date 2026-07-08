@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArrivalsDetailCollMapper">
+    
+    <resultMap type="ArrivalsDetailColl" id="ArrivalsDetailCollResult">
+        <result property="arrivalsDetailid"    column="arrivals_detailid"    />
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="seqctrl"    column="seqctrl"    />
+        <result property="ynorig"    column="ynorig"    />
+        <result property="qty"    column="qty"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="sn"    column="sn"    />
+        <result property="pdate"    column="pdate"    />
+        <result property="vdays"    column="vdays"    />
+        <result property="cjbatchno"    column="cjbatchno"    />
+        <result property="cjsn"    column="cjsn"    />
+        <result property="goodqty"    column="goodqty"    />
+        <result property="ynpipei"    column="ynpipei"    />
+    </resultMap>
+
+    <sql id="selectArrivalsDetailCollVo">
+        select arrivals_detailid, arrivals_billid, materialid, seqctrl, ynorig, qty, batchno, sn, pdate, vdays, cjbatchno, cjsn, goodqty, ynpipei from arrivals_detail_coll
+    </sql>
+
+    <select id="selectArrivalsDetailCollList" parameterType="ArrivalsDetailColl" resultMap="ArrivalsDetailCollResult">
+        <include refid="selectArrivalsDetailCollVo"/>
+        <where>
+            <if test="arrivalsDetailid != null "> and arrivals_detailid = #{arrivalsDetailid}</if>
+            <if test="arrivalsBillid != null "> and arrivals_billid = #{arrivalsBillid}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="cjbatchno != null "> and cjbatchno = #{cjbatchno}</if>
+            <if test="cjsn != null  and cjsn != ''"> and cjsn = #{cjsn}</if>
+        </where>
+    </select>
+    
+    <select id="selectArrivalsDetailCollByArrivalsDetailid" parameterType="Long" resultMap="ArrivalsDetailCollResult">
+    </select>
+        
+    <insert id="insertArrivalsDetailColl" parameterType="ArrivalsDetailColl" useGeneratedKeys="false">
+        insert into arrivals_detail_coll
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="arrivalsDetailid != null">arrivals_detailid,</if>
+            <if test="arrivalsBillid != null">arrivals_billid,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="seqctrl != null and seqctrl != ''">seqctrl,</if>
+            <if test="ynorig != null and ynorig != ''">ynorig,</if>
+            <if test="qty != null">qty,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="pdate != null">pdate,</if>
+            <if test="vdays != null">vdays,</if>
+            <if test="cjbatchno != null">cjbatchno,</if>
+            <if test="cjsn != null">cjsn,</if>
+            <if test="goodqty != null">goodqty,</if>
+            <if test="ynpipei != null and ynpipei != ''">ynpipei,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="arrivalsDetailid != null">#{arrivalsDetailid},</if>
+            <if test="arrivalsBillid != null">#{arrivalsBillid},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="seqctrl != null and seqctrl != ''">#{seqctrl},</if>
+            <if test="ynorig != null and ynorig != ''">#{ynorig},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="pdate != null">#{pdate},</if>
+            <if test="vdays != null">#{vdays},</if>
+            <if test="cjbatchno != null">#{cjbatchno},</if>
+            <if test="cjsn != null">#{cjsn},</if>
+            <if test="goodqty != null">#{goodqty},</if>
+            <if test="ynpipei != null and ynpipei != ''">#{ynpipei},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrivalsDetailColl" parameterType="ArrivalsDetailColl">
+        update arrivals_detail_coll
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid = #{arrivalsBillid},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="seqctrl != null and seqctrl != ''">seqctrl = #{seqctrl},</if>
+            <if test="ynorig != null and ynorig != ''">ynorig = #{ynorig},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="pdate != null">pdate = #{pdate},</if>
+            <if test="vdays != null">vdays = #{vdays},</if>
+            <if test="cjbatchno != null">cjbatchno = #{cjbatchno},</if>
+            <if test="cjsn != null">cjsn = #{cjsn},</if>
+            <if test="goodqty != null">goodqty = #{goodqty},</if>
+            <if test="ynpipei != null and ynpipei != ''">ynpipei = #{ynpipei},</if>
+        </trim>
+        where
+         arrivals_detailid = #{arrivalsDetailid} and
+         arrivals_billid = #{arrivalsBillid} and
+         batchno = #{batchno} and
+         cjbatchno = #{cjbatchno}  and
+         sn = #{sn}  and
+         cjsn = #{cjsn}
+    </update>
+
+    <delete id="deleteArrivalsDetailCollByArrivalsDetailid" parameterType="ArrivalsDetailColl">
+        delete from arrivals_detail_coll where
+        where
+         arrivals_detailid = #{arrivalsDetailid} and
+         arrivals_billid = #{arrivalsBillid} and
+         batchno = #{batchno} and
+         cjbatchno = #{cjbatchno}  and
+         sn = #{sn}  and
+         cjsn = #{cjsn}
+    </delete>
+
+    <delete id="deleteArrivalsDetailCollByArrivalsDetailids" parameterType="String">
+        delete from arrivals_detail_coll where arrivals_detailid in 
+        <foreach item="arrivalsDetailid" collection="array" open="(" separator="," close=")">
+            #{arrivalsDetailid}
+        </foreach>
+    </delete>
+</mapper>

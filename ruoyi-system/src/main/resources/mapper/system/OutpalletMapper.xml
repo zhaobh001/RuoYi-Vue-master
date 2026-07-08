@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OutpalletMapper">
+    
+    <resultMap type="Outpallet" id="OutpalletResult">
+        <result property="pallettaskid"    column="pallettaskid"    />
+        <result property="outproofid"    column="outproofid"    />
+        <result property="palletid"    column="palletid"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="storesiteid"    column="storesiteid"    />
+        <result property="storesitetno"    column="storesitetno"    />
+        <result property="state"    column="state"    />
+        <result property="collecttime"    column="collecttime"    />
+        <result property="collector"    column="collector"    />
+    </resultMap>
+
+    <sql id="selectOutpalletVo">
+        select pallettaskid, outproofid, palletid, palletno, storesiteid, storesitetno, state, collecttime, collector from outpallet
+    </sql>
+
+    <select id="selectOutpalletList" parameterType="Outpallet" resultMap="OutpalletResult">
+        <include refid="selectOutpalletVo"/>
+        <where>  
+            <if test="outproofid != null "> and outproofid = #{outproofid}</if>
+            <if test="palletid != null "> and palletid = #{palletid}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="storesiteid != null "> and storesiteid = #{storesiteid}</if>
+            <if test="storesitetno != null  and storesitetno != ''"> and storesitetno = #{storesitetno}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="collecttime != null "> and collecttime = #{collecttime}</if>
+            <if test="collector != null "> and collector = #{collector}</if>
+        </where>
+    </select>
+    
+    <select id="selectOutpalletByPallettaskid" parameterType="Long" resultMap="OutpalletResult">
+    </select>
+        
+    <insert id="insertOutpallet" parameterType="Outpallet" useGeneratedKeys="true" keyProperty="pallettaskid">
+        insert into outpallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outproofid != null">outproofid,</if>
+            <if test="palletid != null">palletid,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="storesiteid != null">storesiteid,</if>
+            <if test="storesitetno != null">storesitetno,</if>
+            <if test="state != null">state,</if>
+            <if test="collecttime != null">collecttime,</if>
+            <if test="collector != null">collector,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outproofid != null">#{outproofid},</if>
+            <if test="palletid != null">#{palletid},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="storesiteid != null">#{storesiteid},</if>
+            <if test="storesitetno != null">#{storesitetno},</if>
+            <if test="state != null">#{state},</if>
+            <if test="collecttime != null">#{collecttime},</if>
+            <if test="collector != null">#{collector},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutpallet" parameterType="Outpallet">
+        update outpallet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outproofid != null">outproofid = #{outproofid},</if>
+            <if test="palletid != null">palletid = #{palletid},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="storesiteid != null">storesiteid = #{storesiteid},</if>
+            <if test="storesitetno != null">storesitetno = #{storesitetno},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="collecttime != null">collecttime = #{collecttime},</if>
+            <if test="collector != null">collector = #{collector},</if>
+        </trim>
+        where pallettaskid = #{pallettaskid}
+    </update>
+
+    <delete id="deleteOutpalletByPallettaskid" parameterType="Long">
+        delete from outpallet where pallettaskid = #{pallettaskid}
+    </delete>
+
+    <delete id="deleteOutpalletByPallettaskids" parameterType="String">
+        delete from outpallet where pallettaskid in 
+        <foreach item="pallettaskid" collection="array" open="(" separator="," close=")">
+            #{pallettaskid}
+        </foreach>
+    </delete>
+</mapper>

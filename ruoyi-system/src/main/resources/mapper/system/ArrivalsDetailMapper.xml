@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArrivalsDetailMapper">
+    
+    <resultMap type="ArrivalsDetail" id="ArrivalsDetailResult">
+        <result property="arrivalsDetailid"    column="arrivals_detailid"    />
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="partnerid"    column="partnerid"    />
+        <result property="matmodel"    column="matmodel"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="sn"    column="sn"    />
+        <result property="qty"    column="qty"    />
+        <result property="isin"    column="isin"    />
+        <result property="arrvialdesc"    column="arrvialdesc"    />
+        <result property="ischeck"    column="ischeck"    />
+        <result property="erpheaderid"    column="erpheaderid"    />
+        <result property="orderItemTransactionId"    column="order_item_transaction_id"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="goodqty"    column="goodqty"    />
+        <result property="startsn"    column="startsn"    />
+        <result property="endsn"    column="endsn"    />
+        <result property="sourceHeaderId"    column="source_header_id"    />
+        <result property="erpOrderType"    column="erp_order_type"    />
+        <result property="sourceLineId"    column="source_line_id"    />
+        <result property="transactionType"    column="transaction_type"    />
+        <result property="owningOrganizationId"    column="owning_organization_id"    />
+        <result property="owningOrganizationName"    column="owning_organization_name"    />
+        <result property="subinventoryCode"    column="subinventory_code"    />
+        <result property="storeroomid"    column="storeroomid"    />
+        <result property="exceptQty"    column="except_qty"    />
+        <result property="wipEntityId"    column="wip_entity_id"    />
+        <result property="wipEntityName"    column="wip_entity_name"    />
+        <result property="productline"    column="productline"    />
+        <result property="workstation"    column="workstation"    />
+        <result property="projectNum"    column="project_num"    />
+        <result property="poType"    column="po_type"    />
+        <result property="djqty"    column="djqty"    />
+        <result property="matcode"    column="matcode"    />
+        <result property="matcodecontrol"    column="matcodecontrol"    />
+        <result property="matinnercode"    column="matinnercode"    />
+        <result property="matname"    column="matname"    />
+        <result property="storeroomno"    column="storeroomno"    />
+        <result property="storeroomname"    column="storeroomname"    />
+        <result property="arrivaltype"    column="arrivaltype"    />
+        <result property="orderno"    column="orderno"    />
+        <result property="arrivaldate"    column="arrivaldate"    />
+        <result property="transactionType"    column="transaction_type"    />
+        <result property="vendorsitecode"    column="vendorsitecode"    />
+        <result property="poNumber"    column="po_number"    />
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="arrivalsBillno"    column="arrivals_billno"    />
+        <result property="werks"    column="werks"    />
+        <result property="parno"    column="parno"    />
+        <result property="parname"    column="parname"    />
+        <result property="posnr"    column="posnr"    />
+    </resultMap>
+
+    <sql id="selectArrivalsDetailVo">
+        select arrivals_detailid, arrivals_billid, materialid, partnerid, matmodel, batchno, sn, qty, isin, arrvialdesc, ischeck, erpheaderid, order_item_transaction_id, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, goodqty, startsn, endsn, source_header_id, erp_order_type, source_line_id, transaction_type, owning_organization_id, owning_organization_name, subinventory_code, storeroomid, except_qty, wip_entity_id, wip_entity_name, productline, workstation, project_num, po_type, djqty from arrivals_detail
+    </sql>
+
+    <select id="selectArrivalsDetailList" parameterType="ArrivalsDetail" resultMap="ArrivalsDetailResult">
+        <include refid="selectArrivalsDetailVo"/>
+        <where>  
+            <if test="arrivalsBillid != null "> and arrivals_billid = #{arrivalsBillid}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="partnerid != null "> and partnerid = #{partnerid}</if>
+            <if test="matmodel != null  and matmodel != ''"> and matmodel = #{matmodel}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="isin != null  and isin != ''"> and isin = #{isin}</if>
+            <if test="arrvialdesc != null  and arrvialdesc != ''"> and arrvialdesc = #{arrvialdesc}</if>
+            <if test="ischeck != null  and ischeck != ''"> and ischeck = #{ischeck}</if>
+            <if test="erpheaderid != null  and erpheaderid != ''"> and erpheaderid = #{erpheaderid}</if>
+            <if test="orderItemTransactionId != null "> and order_item_transaction_id = #{orderItemTransactionId}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="goodqty != null  and goodqty != ''"> and goodqty = #{goodqty}</if>
+            <if test="startsn != null  and startsn != ''"> and startsn = #{startsn}</if>
+            <if test="endsn != null  and endsn != ''"> and endsn = #{endsn}</if>
+            <if test="sourceHeaderId != null "> and source_header_id = #{sourceHeaderId}</if>
+            <if test="erpOrderType != null  and erpOrderType != ''"> and erp_order_type = #{erpOrderType}</if>
+            <if test="sourceLineId != null "> and source_line_id = #{sourceLineId}</if>
+            <if test="transactionType != null  and transactionType != ''"> and transaction_type = #{transactionType}</if>
+            <if test="owningOrganizationId != null  and owningOrganizationId != ''"> and owning_organization_id = #{owningOrganizationId}</if>
+            <if test="owningOrganizationName != null  and owningOrganizationName != ''"> and owning_organization_name like concat('%', #{owningOrganizationName}, '%')</if>
+            <if test="subinventoryCode != null  and subinventoryCode != ''"> and subinventory_code = #{subinventoryCode}</if>
+            <if test="storeroomid != null "> and storeroomid = #{storeroomid}</if>
+            <if test="exceptQty != null "> and except_qty = #{exceptQty}</if>
+            <if test="wipEntityId != null "> and wip_entity_id = #{wipEntityId}</if>
+            <if test="wipEntityName != null  and wipEntityName != ''"> and wip_entity_name like concat('%', #{wipEntityName}, '%')</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''"> and workstation = #{workstation}</if>
+            <if test="projectNum != null  and projectNum != ''"> and project_num = #{projectNum}</if>
+            <if test="poType != null  and poType != ''"> and po_type = #{poType}</if>
+            <if test="djqty != null "> and djqty = #{djqty}</if>
+        </where>
+    </select>
+    
+    <select id="selectArrivalsDetailByArrivalsDetailid" parameterType="Long" resultMap="ArrivalsDetailResult">
+        <include refid="selectArrivalsDetailVo"/>
+        where arrivals_detailid = #{arrivalsDetailid}
+    </select>
+        
+    <insert id="insertArrivalsDetail" parameterType="ArrivalsDetail" useGeneratedKeys="true" keyProperty="arrivalsDetailid">
+        insert into arrivals_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="partnerid != null">partnerid,</if>
+            <if test="matmodel != null">matmodel,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="qty != null">qty,</if>
+            <if test="isin != null">isin,</if>
+            <if test="arrvialdesc != null">arrvialdesc,</if>
+            <if test="ischeck != null">ischeck,</if>
+            <if test="erpheaderid != null">erpheaderid,</if>
+            <if test="orderItemTransactionId != null">order_item_transaction_id,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="goodqty != null">goodqty,</if>
+            <if test="startsn != null">startsn,</if>
+            <if test="endsn != null">endsn,</if>
+            <if test="sourceHeaderId != null">source_header_id,</if>
+            <if test="erpOrderType != null">erp_order_type,</if>
+            <if test="sourceLineId != null">source_line_id,</if>
+            <if test="transactionType != null">transaction_type,</if>
+            <if test="owningOrganizationId != null">owning_organization_id,</if>
+            <if test="owningOrganizationName != null">owning_organization_name,</if>
+            <if test="subinventoryCode != null">subinventory_code,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="exceptQty != null">except_qty,</if>
+            <if test="wipEntityId != null">wip_entity_id,</if>
+            <if test="wipEntityName != null">wip_entity_name,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="projectNum != null">project_num,</if>
+            <if test="poType != null">po_type,</if>
+            <if test="djqty != null">djqty,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillid != null">#{arrivalsBillid},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="partnerid != null">#{partnerid},</if>
+            <if test="matmodel != null">#{matmodel},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="isin != null">#{isin},</if>
+            <if test="arrvialdesc != null">#{arrvialdesc},</if>
+            <if test="ischeck != null">#{ischeck},</if>
+            <if test="erpheaderid != null">#{erpheaderid},</if>
+            <if test="orderItemTransactionId != null">#{orderItemTransactionId},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="goodqty != null">#{goodqty},</if>
+            <if test="startsn != null">#{startsn},</if>
+            <if test="endsn != null">#{endsn},</if>
+            <if test="sourceHeaderId != null">#{sourceHeaderId},</if>
+            <if test="erpOrderType != null">#{erpOrderType},</if>
+            <if test="sourceLineId != null">#{sourceLineId},</if>
+            <if test="transactionType != null">#{transactionType},</if>
+            <if test="owningOrganizationId != null">#{owningOrganizationId},</if>
+            <if test="owningOrganizationName != null">#{owningOrganizationName},</if>
+            <if test="subinventoryCode != null">#{subinventoryCode},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="exceptQty != null">#{exceptQty},</if>
+            <if test="wipEntityId != null">#{wipEntityId},</if>
+            <if test="wipEntityName != null">#{wipEntityName},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="projectNum != null">#{projectNum},</if>
+            <if test="poType != null">#{poType},</if>
+            <if test="djqty != null">#{djqty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrivalsDetail" parameterType="ArrivalsDetail">
+        update arrivals_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid = #{arrivalsBillid},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="partnerid != null">partnerid = #{partnerid},</if>
+            <if test="matmodel != null">matmodel = #{matmodel},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="isin != null">isin = #{isin},</if>
+            <if test="arrvialdesc != null">arrvialdesc = #{arrvialdesc},</if>
+            <if test="ischeck != null">ischeck = #{ischeck},</if>
+            <if test="erpheaderid != null">erpheaderid = #{erpheaderid},</if>
+            <if test="orderItemTransactionId != null">order_item_transaction_id = #{orderItemTransactionId},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="goodqty != null">goodqty = #{goodqty},</if>
+            <if test="startsn != null">startsn = #{startsn},</if>
+            <if test="endsn != null">endsn = #{endsn},</if>
+            <if test="sourceHeaderId != null">source_header_id = #{sourceHeaderId},</if>
+            <if test="erpOrderType != null">erp_order_type = #{erpOrderType},</if>
+            <if test="sourceLineId != null">source_line_id = #{sourceLineId},</if>
+            <if test="transactionType != null">transaction_type = #{transactionType},</if>
+            <if test="owningOrganizationId != null">owning_organization_id = #{owningOrganizationId},</if>
+            <if test="owningOrganizationName != null">owning_organization_name = #{owningOrganizationName},</if>
+            <if test="subinventoryCode != null">subinventory_code = #{subinventoryCode},</if>
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="exceptQty != null">except_qty = #{exceptQty},</if>
+            <if test="wipEntityId != null">wip_entity_id = #{wipEntityId},</if>
+            <if test="wipEntityName != null">wip_entity_name = #{wipEntityName},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="projectNum != null">project_num = #{projectNum},</if>
+            <if test="poType != null">po_type = #{poType},</if>
+            <if test="djqty != null">djqty = #{djqty},</if>
+        </trim>
+        where arrivals_detailid = #{arrivalsDetailid}
+    </update>
+
+    <delete id="deleteArrivalsDetailByArrivalsDetailid" parameterType="Long">
+        delete from arrivals_detail where arrivals_detailid = #{arrivalsDetailid}
+    </delete>
+
+    <delete id="deleteArrivalsDetailByArrivalsDetailids" parameterType="String">
+        delete from arrivals_detail where arrivals_detailid in 
+        <foreach item="arrivalsDetailid" collection="array" open="(" separator="," close=")">
+            #{arrivalsDetailid}
+        </foreach>
+    </delete>
+
+    <select id="selectArriveDetailList" parameterType="ArrivalsDetail" resultMap="ArrivalsDetailResult">
+        select d.* from(
+        select
+        m.matcode,
+        case when m.matcodecontrol='0' then '序列管控' when  m.matcodecontrol='1' then '批次管控'  when m.matcodecontrol='2' then '无控制' else  null end as matcodecontrol,
+        m.matinnercode,
+        m.matname,
+        s.storeroomno,
+        s.storeroomname,
+        d1.arrivaltype,
+        d1.orderno,
+        d1.arrivaldate,
+        d1.transaction_type,
+        d1.vendorsitecode,
+        d1.po_number,
+        d1.arrivals_billid,
+        d1.arrivals_billno,
+        p.parno,
+        p.parname,
+        d2.qty,
+        nvl(d2.goodqty,0) as goodqty,
+        d2.batchno,
+        d2.sn,
+        d2.subinventory_code,
+        d2.arrivals_detailid,
+        d2.materialid,
+        d2.partnerid,
+        d2.source_header_id,
+        d2.source_line_id,
+        d2.startsn,
+        d2.endsn,
+        d2.isin,
+        d2.arrvialdesc,
+        d2.ischeck,
+        d2.storeroomid,
+        d2.except_qty,
+        d2.wip_entity_id,
+        d2.wip_entity_name,
+        d2.productline,
+        d2.workstation,
+        d2.project_num,
+        d2.data1,
+        d2.data2,
+        'P005' as werks,
+        ( case when op.posnr is not null then op.posnr else op_sn.posnr end) as posnr
+        from arrivals_bill d1, arrivals_detail d2, PARTNER p, storeroom s, PM_MATERIAL M, CUX_WMS_ORDER_LINE_INTERFACE C,TX_SAP_ORDERPACKITEM op,TX_SAP_ORDERPACKITEM_sn op_sn
+        where d1.ARRIVALS_BILLID = d2.ARRIVALS_BILLID(+)
+        and d1.CREATEDATE> ADD_MONTHS(SYSDATE, -12)
+        and d2.partnerid = p.partnerid(+)
+        and d2.storeroomid = s.storeroomid(+)
+        and d1.arrivals_billid = to_number(#{arrivalsBillid})
+        and d2.MATERIALID = M.PM_MATERIALID
+        and d2.SOURCE_HEADER_ID = C.SOURCE_HEADER_ID
+        AND d2.SOURCE_LINE_ID = C.SOURCE_LINE_ID
+        and d2.SOURCE_HEADER_ID = op.SOURCE_HEADER_ID(+)
+        and d2.SOURCE_LINE_ID = op.SOURCE_LINE_ID(+)
+        and d2.SOURCE_HEADER_ID = op_sn.SOURCE_HEADER_ID(+)
+        and d2.SOURCE_LINE_ID = op_sn.SOURCE_LINE_ID(+)
+        and nvl(d2.qty,0)-nvl(d2.goodqty,0)>0
+        and d1.ARRIVALSTATE in ( 1)
+        and d1.ARRIVALTYPE IN ('10','11')
+        <if test="searchKey != null">
+        and (m.matcode =#{searchKey})
+        </if>
+        )d
+        <if test="sortColumn == null"> order by d.posnr asc,d.batchno asc,d.sn asc</if>
+        <if test="sortColumn != null"> order by d.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+    </select>
+</mapper>

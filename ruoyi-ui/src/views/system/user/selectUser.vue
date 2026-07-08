@@ -1,0 +1,132 @@
+<template>
+  <!-- 授权用户 -->
+  <el-dialog title="选择用户" :visible.sync="visible" width="800px" top="5vh" append-to-body>
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
+      <el-form-item label="用户名称" prop="usercode">
+        <el-input
+          v-model="queryParams.usercode"
+          placeholder="请输入用户编码"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="姓名" prop="cname">
+        <el-input
+          v-model="queryParams.cname"
+          placeholder="请输入姓名"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-row>
+      <el-table @row-click="clickRow" ref="table" :data="tuserList" @selection-change="handleSelectionChange" height="260px">
+        <el-table-column type="selection" width="55" ></el-table-column>
+        <el-table-column label="用户编码" prop="usercode" :show-overflow-tooltip="true" sortable="true" />
+        <el-table-column label="姓名" prop="cname" :show-overflow-tooltip="true" sortable="true" />
+        <el-table-column label="手机号" prop="memo" :show-overflow-tooltip="true" />
+        <el-table-column label="是否在线" align="center" prop="isOnline" sortable="true">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.sys_normal_online" :value="scope.row.isOnline"/>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </el-row>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="handleSelectUser">确 定</el-button>
+      <el-button @click="visible = false">取 消</el-button>
+    </div>
+  </el-dialog>
+</template>
+
+<script>
+import { unallocatedUserList, authUserSelectAll } from "@/api/system/user";
+export default {
+  dicts: ['sys_normal_online'],
+  props: {
+    // 角色编号
+    deptId: {
+      type: [Number, String]
+    }
+  },
+  data() {
+    return {
+      // 遮罩层
+      visible: false,
+      // 选中数组值
+      tuserIds: [],
+      // 总条数
+      total: 0,
+      // 未授权用户数据
+      tuserList: [],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        usercode: undefined,
+        cname: undefined,
+        deptId:undefined
+      }
+    };
+  },
+  methods: {
+    // 显示弹框
+    show() {
+      this.queryParams.deptId = this.deptId;
+      this.getList();
+      this.visible = true;
+    },
+    clickRow(row) {
+      this.$refs.table.toggleRowSelection(row);
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.tuserIds = selection.map(item => item.tuserid);
+    },
+    // 查询表数据
+    getList() {
+      unallocatedUserList(this.queryParams).then(res => {
+        this.tuserList = res.rows;
+        this.total = res.total;
+      });
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    /** 选择授权用户操作 */
+    handleSelectUser() {
+      const deptId = this.queryParams.deptId;
+      const tuserIds = this.tuserIds.join(",");
+      if (tuserIds == "") {
+        this.$modal.msgError("请选择要分配的用户");
+        return;
+      }
+      authUserSelectAll({deptId:deptId,tuserIds: tuserIds }).then(res => {
+        this.$modal.msgSuccess(res.msg);
+        if (res.code === 200) {
+          this.visible = false;
+          this.$emit("ok");
+        }
+      });
+    }
+  }
+};
+</script>

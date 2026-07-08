@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StoreroomMapper">
+
+    <resultMap type="Storeroom" id="StoreroomResult">
+        <result property="storeroomid" column="storeroomid"/>
+        <result property="storeroomno" column="storeroomno"/>
+        <result property="storeroomname" column="storeroomname"/>
+        <result property="isfrozen" column="isfrozen"/>
+        <result property="isinitialized" column="isinitialized"/>
+        <result property="roomcharger" column="roomcharger"/>
+        <result property="issystem" column="issystem"/>
+        <result property="roomtag" column="roomtag"/>
+        <result property="belongfactory" column="belongfactory"/>
+        <result property="isgood" column="isgood"/>
+        <result property="areacode" column="areacode"/>
+        <result property="storeroomdesc" column="storeroomdesc"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="data9" column="data9"/>
+        <result property="data10" column="data10"/>
+        <result property="allotflag" column="allotflag"/>
+        <result property="yaaType" column="yaa_type"/>
+        <result property="yaaStbayno" column="yaa_stbayno"/>
+        <result property="yaaEdbayno" column="yaa_edbayno"/>
+        <result property="yaaRows" column="yaa_rows"/>
+        <result property="yaaTiers" column="yaa_tiers"/>
+        <result property="yaaAreax" column="yaa_areax"/>
+        <result property="yaaAreay" column="yaa_areay"/>
+        <result property="yaaHeight" column="yaa_height"/>
+        <result property="yaaBayway" column="yaa_bayway"/>
+        <result property="yaaRowway" column="yaa_rowway"/>
+        <result property="yaaLaneway" column="yaa_laneway"/>
+        <result property="yaaTrucknum" column="yaa_trucknum"/>
+        <result property="yaaYbkBlockid" column="yaa_ybk_blockid"/>
+        <result property="yaaTerCstmid" column="yaa_ter_cstmid"/>
+        <result property="yaaUseage" column="yaa_useage"/>
+        <result property="incheckflag" column="incheckflag"/>
+        <result property="dispatchflag" column="dispatchflag"/>
+        <result property="storeroomarea" column="storeroomarea"/>
+        <result property="roommatcontrol" column="roommatcontrol"/>
+        <result property="highflag" column="highflag"/>
+        <result property="velocityflag" column="velocityflag"/>
+        <result property="projectflag" column="projectflag"/>
+        <result property="storesiteno" column="storesiteno"/>
+        <result property="isfrozen" column="isfrozen"/>
+        <result property="storeroomno" column="storeroomno"/>
+
+    </resultMap>
+
+    <sql id="selectStoreroomVo">
+        select storeroomid, storeroomno, storeroomname, isfrozen, isinitialized, roomcharger, issystem, roomtag, belongfactory, isgood, areacode, storeroomdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, allotflag, yaa_type, yaa_stbayno, yaa_edbayno, yaa_rows, yaa_tiers, yaa_areax, yaa_areay, yaa_height, yaa_bayway, yaa_rowway, yaa_laneway, yaa_trucknum, yaa_ybk_blockid, yaa_ter_cstmid, yaa_useage, incheckflag, dispatchflag, storeroomarea, roommatcontrol, highflag, velocityflag, projectflag from storeroom
+    </sql>
+
+    <select id="selectStoreroomList" parameterType="Storeroom" resultMap="StoreroomResult">
+        <include refid="selectStoreroomVo"/>
+        <where>
+            <if test="storeroomno != null  and storeroomno != ''">and storeroomno = #{storeroomno}</if>
+            <if test="storeroomname != null  and storeroomname != ''">and storeroomname like
+                concat(concat('%',#{storeroomname}),'%')
+            </if>
+            <if test="isfrozen != null  and isfrozen != ''">and isfrozen = #{isfrozen}</if>
+            <if test="isinitialized != null  and isinitialized != ''">and isinitialized = #{isinitialized}</if>
+            <if test="roomcharger != null  and roomcharger != ''">and roomcharger = #{roomcharger}</if>
+            <if test="issystem != null ">and issystem = #{issystem}</if>
+            <if test="roomtag != null  and roomtag != ''">and roomtag = #{roomtag}</if>
+            <if test="belongfactory != null  and belongfactory != ''">and belongfactory = #{belongfactory}</if>
+            <if test="isgood != null  and isgood != ''">and isgood = #{isgood}</if>
+            <if test="areacode != null  and areacode != ''">and areacode = #{areacode}</if>
+            <if test="storeroomdesc != null  and storeroomdesc != ''">and storeroomdesc = #{storeroomdesc}</if>
+            <if test="dataversion != null ">and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''">and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''">and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''">and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''">and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''">and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''">and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''">and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''">and data8 = #{data8}</if>
+            <if test="data9 != null  and data9 != ''">and data9 = #{data9}</if>
+            <if test="data10 != null  and data10 != ''">and data10 = #{data10}</if>
+            <if test="allotflag != null  and allotflag != ''">and allotflag = #{allotflag}</if>
+            <if test="yaaType != null  and yaaType != ''">and yaa_type = #{yaaType}</if>
+            <if test="yaaStbayno != null  and yaaStbayno != ''">and yaa_stbayno = #{yaaStbayno}</if>
+            <if test="yaaEdbayno != null  and yaaEdbayno != ''">and yaa_edbayno = #{yaaEdbayno}</if>
+            <if test="yaaRows != null ">and yaa_rows = #{yaaRows}</if>
+            <if test="yaaTiers != null ">and yaa_tiers = #{yaaTiers}</if>
+            <if test="yaaAreax != null ">and yaa_areax = #{yaaAreax}</if>
+            <if test="yaaAreay != null ">and yaa_areay = #{yaaAreay}</if>
+            <if test="yaaHeight != null ">and yaa_height = #{yaaHeight}</if>
+            <if test="yaaBayway != null  and yaaBayway != ''">and yaa_bayway = #{yaaBayway}</if>
+            <if test="yaaRowway != null  and yaaRowway != ''">and yaa_rowway = #{yaaRowway}</if>
+            <if test="yaaLaneway != null  and yaaLaneway != ''">and yaa_laneway = #{yaaLaneway}</if>
+            <if test="yaaTrucknum != null ">and yaa_trucknum = #{yaaTrucknum}</if>
+            <if test="yaaYbkBlockid != null ">and yaa_ybk_blockid = #{yaaYbkBlockid}</if>
+            <if test="yaaTerCstmid != null ">and yaa_ter_cstmid = #{yaaTerCstmid}</if>
+            <if test="yaaUseage != null  and yaaUseage != ''">and yaa_useage = #{yaaUseage}</if>
+            <if test="incheckflag != null  and incheckflag != ''">and incheckflag = #{incheckflag}</if>
+            <if test="dispatchflag != null  and dispatchflag != ''">and dispatchflag = #{dispatchflag}</if>
+            <if test="storeroomarea != null ">and storeroomarea = #{storeroomarea}</if>
+            <if test="roommatcontrol != null ">and roommatcontrol = #{roommatcontrol}</if>
+            <if test="highflag != null  and highflag != ''">and highflag = #{highflag}</if>
+            <if test="velocityflag != null  and velocityflag != ''">and velocityflag = #{velocityflag}</if>
+            <if test="projectflag != null  and projectflag != ''">and projectflag = #{projectflag}</if>
+        </where>
+    </select>
+
+    <select id="selectStoreroomByStoreroomid" parameterType="Long" resultMap="StoreroomResult">
+        <include refid="selectStoreroomVo"/>
+        where storeroomid = #{storeroomid}
+    </select>
+
+    <select id="selectStoreSiteByRoom" parameterType="Storeroom" resultMap="StoreroomResult">
+        select sts.storesiteno, sts.isfrozen,str.storeroomno
+        from storeroom str,
+        storesite sts
+        where str.storeroomid = sts.storeroomid
+        <if test="storeroomno != null ">  and str.storeroomno = #{storeroomno} </if>
+        <if test="storesiteno != null "> and sts.storesiteno = #{storesiteno} </if>
+        group by storesiteno, sts.isfrozen,str.storeroomno
+        order by storesiteno
+    </select>
+
+    <select id="selectAllocatedList" parameterType="Storeroom" resultMap="StoreroomResult">
+        select distinct u.storeroomid, u.storeroomno, u.storeroomname, u.roomtag, u.data2, u.data1
+        from storeroom u
+        left join sys_role_room ur on u.storeroomid = ur.storeroomid
+        left join sys_role r on r.role_id = ur.role_id
+        where r.role_id = #{roleId}
+        <if test="storeroomno != null and storeroomno != ''">
+            AND u.storeroomno like concat(concat('%',#{storeroomno}),'%')
+        </if>
+        <if test="storeroomname != null and storeroomname != ''">
+            AND u.storeroomname like concat(concat('%',#{storeroomname}),'%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="selectUnallocatedList" parameterType="Storeroom" resultMap="StoreroomResult">
+        select distinct u.storeroomid, u.storeroomno, u.storeroomname, u.roomtag, u.data2, u.data1
+        from storeroom u
+        left join sys_role_room ur on u.storeroomid = ur.storeroomid
+        left join sys_role r on r.role_id = ur.role_id
+        where (r.role_id != #{roleId} or r.role_id IS NULL)
+        and u.storeroomid not in (select u.storeroomid from storeroom u inner join sys_role_room ur on u.storeroomid =
+        ur.storeroomid and ur.role_id = #{roleId})
+        <if test="storeroomno != null and storeroomno != ''">
+            AND u.storeroomno like concat(concat('%',#{storeroomno}),'%')
+        </if>
+        <if test="storeroomname != null and storeroomname != ''">
+            AND u.storeroomname like concat(concat('%',#{storeroomname}),'%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+    <insert id="insertStoreroom" parameterType="Storeroom" useGeneratedKeys="true" keyProperty="storeroomid">
+        insert into storeroom
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeroomno != null">storeroomno,</if>
+            <if test="storeroomname != null">storeroomname,</if>
+            <if test="isfrozen != null">isfrozen,</if>
+            <if test="isinitialized != null">isinitialized,</if>
+            <if test="roomcharger != null">roomcharger,</if>
+            <if test="issystem != null">issystem,</if>
+            <if test="roomtag != null">roomtag,</if>
+            <if test="belongfactory != null">belongfactory,</if>
+            <if test="isgood != null">isgood,</if>
+            <if test="areacode != null">areacode,</if>
+            <if test="storeroomdesc != null">storeroomdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="data9 != null">data9,</if>
+            <if test="data10 != null">data10,</if>
+            <if test="allotflag != null">allotflag,</if>
+            <if test="yaaType != null">yaa_type,</if>
+            <if test="yaaStbayno != null">yaa_stbayno,</if>
+            <if test="yaaEdbayno != null">yaa_edbayno,</if>
+            <if test="yaaRows != null">yaa_rows,</if>
+            <if test="yaaTiers != null">yaa_tiers,</if>
+            <if test="yaaAreax != null">yaa_areax,</if>
+            <if test="yaaAreay != null">yaa_areay,</if>
+            <if test="yaaHeight != null">yaa_height,</if>
+            <if test="yaaBayway != null">yaa_bayway,</if>
+            <if test="yaaRowway != null">yaa_rowway,</if>
+            <if test="yaaLaneway != null">yaa_laneway,</if>
+            <if test="yaaTrucknum != null">yaa_trucknum,</if>
+            <if test="yaaYbkBlockid != null">yaa_ybk_blockid,</if>
+            <if test="yaaTerCstmid != null">yaa_ter_cstmid,</if>
+            <if test="yaaUseage != null">yaa_useage,</if>
+            <if test="incheckflag != null">incheckflag,</if>
+            <if test="dispatchflag != null">dispatchflag,</if>
+            <if test="storeroomarea != null">storeroomarea,</if>
+            <if test="roommatcontrol != null">roommatcontrol,</if>
+            <if test="highflag != null">highflag,</if>
+            <if test="velocityflag != null">velocityflag,</if>
+            <if test="projectflag != null">projectflag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeroomno != null">#{storeroomno},</if>
+            <if test="storeroomname != null">#{storeroomname},</if>
+            <if test="isfrozen != null">#{isfrozen},</if>
+            <if test="isinitialized != null">#{isinitialized},</if>
+            <if test="roomcharger != null">#{roomcharger},</if>
+            <if test="issystem != null">#{issystem},</if>
+            <if test="roomtag != null">#{roomtag},</if>
+            <if test="belongfactory != null">#{belongfactory},</if>
+            <if test="isgood != null">#{isgood},</if>
+            <if test="areacode != null">#{areacode},</if>
+            <if test="storeroomdesc != null">#{storeroomdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="data9 != null">#{data9},</if>
+            <if test="data10 != null">#{data10},</if>
+            <if test="allotflag != null">#{allotflag},</if>
+            <if test="yaaType != null">#{yaaType},</if>
+            <if test="yaaStbayno != null">#{yaaStbayno},</if>
+            <if test="yaaEdbayno != null">#{yaaEdbayno},</if>
+            <if test="yaaRows != null">#{yaaRows},</if>
+            <if test="yaaTiers != null">#{yaaTiers},</if>
+            <if test="yaaAreax != null">#{yaaAreax},</if>
+            <if test="yaaAreay != null">#{yaaAreay},</if>
+            <if test="yaaHeight != null">#{yaaHeight},</if>
+            <if test="yaaBayway != null">#{yaaBayway},</if>
+            <if test="yaaRowway != null">#{yaaRowway},</if>
+            <if test="yaaLaneway != null">#{yaaLaneway},</if>
+            <if test="yaaTrucknum != null">#{yaaTrucknum},</if>
+            <if test="yaaYbkBlockid != null">#{yaaYbkBlockid},</if>
+            <if test="yaaTerCstmid != null">#{yaaTerCstmid},</if>
+            <if test="yaaUseage != null">#{yaaUseage},</if>
+            <if test="incheckflag != null">#{incheckflag},</if>
+            <if test="dispatchflag != null">#{dispatchflag},</if>
+            <if test="storeroomarea != null">#{storeroomarea},</if>
+            <if test="roommatcontrol != null">#{roommatcontrol},</if>
+            <if test="highflag != null">#{highflag},</if>
+            <if test="velocityflag != null">#{velocityflag},</if>
+            <if test="projectflag != null">#{projectflag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateStoreroom" parameterType="Storeroom">
+        update storeroom
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeroomno != null">storeroomno = #{storeroomno},</if>
+            <if test="storeroomname != null">storeroomname = #{storeroomname},</if>
+            <if test="isfrozen != null">isfrozen = #{isfrozen},</if>
+            <if test="isinitialized != null">isinitialized = #{isinitialized},</if>
+            <if test="roomcharger != null">roomcharger = #{roomcharger},</if>
+            <if test="issystem != null">issystem = #{issystem},</if>
+            <if test="roomtag != null">roomtag = #{roomtag},</if>
+            <if test="belongfactory != null">belongfactory = #{belongfactory},</if>
+            <if test="isgood != null">isgood = #{isgood},</if>
+            <if test="areacode != null">areacode = #{areacode},</if>
+            <if test="storeroomdesc != null">storeroomdesc = #{storeroomdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="data9 != null">data9 = #{data9},</if>
+            <if test="data10 != null">data10 = #{data10},</if>
+            <if test="allotflag != null">allotflag = #{allotflag},</if>
+            <if test="yaaType != null">yaa_type = #{yaaType},</if>
+            <if test="yaaStbayno != null">yaa_stbayno = #{yaaStbayno},</if>
+            <if test="yaaEdbayno != null">yaa_edbayno = #{yaaEdbayno},</if>
+            <if test="yaaRows != null">yaa_rows = #{yaaRows},</if>
+            <if test="yaaTiers != null">yaa_tiers = #{yaaTiers},</if>
+            <if test="yaaAreax != null">yaa_areax = #{yaaAreax},</if>
+            <if test="yaaAreay != null">yaa_areay = #{yaaAreay},</if>
+            <if test="yaaHeight != null">yaa_height = #{yaaHeight},</if>
+            <if test="yaaBayway != null">yaa_bayway = #{yaaBayway},</if>
+            <if test="yaaRowway != null">yaa_rowway = #{yaaRowway},</if>
+            <if test="yaaLaneway != null">yaa_laneway = #{yaaLaneway},</if>
+            <if test="yaaTrucknum != null">yaa_trucknum = #{yaaTrucknum},</if>
+            <if test="yaaYbkBlockid != null">yaa_ybk_blockid = #{yaaYbkBlockid},</if>
+            <if test="yaaTerCstmid != null">yaa_ter_cstmid = #{yaaTerCstmid},</if>
+            <if test="yaaUseage != null">yaa_useage = #{yaaUseage},</if>
+            <if test="incheckflag != null">incheckflag = #{incheckflag},</if>
+            <if test="dispatchflag != null">dispatchflag = #{dispatchflag},</if>
+            <if test="storeroomarea != null">storeroomarea = #{storeroomarea},</if>
+            <if test="roommatcontrol != null">roommatcontrol = #{roommatcontrol},</if>
+            <if test="highflag != null">highflag = #{highflag},</if>
+            <if test="velocityflag != null">velocityflag = #{velocityflag},</if>
+            <if test="projectflag != null">projectflag = #{projectflag},</if>
+        </trim>
+        where storeroomid = #{storeroomid}
+    </update>
+
+    <delete id="deleteStoreroomByStoreroomid" parameterType="Long">
+        delete from storeroom where storeroomid = #{storeroomid}
+    </delete>
+
+    <delete id="deleteStoreroomByStoreroomids" parameterType="String">
+        delete from storeroom where storeroomid in
+        <foreach item="storeroomid" collection="array" open="(" separator="," close=")">
+            #{storeroomid}
+        </foreach>
+    </delete>
+</mapper>

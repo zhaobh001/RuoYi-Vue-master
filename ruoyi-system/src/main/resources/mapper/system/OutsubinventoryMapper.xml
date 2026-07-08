@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OutsubinventoryMapper">
+    
+    <resultMap type="Outsubinventory" id="OutsubinventoryResult">
+        <result property="subinventoryCode"    column="subinventory_code"    />
+        <result property="transferSubinventory"    column="transfer_subinventory"    />
+        <result property="subinventoryid"    column="subinventoryid"    />
+        <result property="dataversion"    column="dataversion"    />
+    </resultMap>
+
+    <sql id="selectOutsubinventoryVo">
+        select subinventory_code, transfer_subinventory, subinventoryid, dataversion from outsubinventory
+    </sql>
+
+    <select id="selectOutsubinventoryList" parameterType="Outsubinventory" resultMap="OutsubinventoryResult">
+        <include refid="selectOutsubinventoryVo"/>
+        <where>  
+            <if test="subinventoryCode != null  and subinventoryCode != ''"> and subinventory_code = #{subinventoryCode}</if>
+            <if test="transferSubinventory != null  and transferSubinventory != ''"> and transfer_subinventory = #{transferSubinventory}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+        </where>
+    </select>
+    
+    <select id="selectOutsubinventoryBySubinventoryid" parameterType="Long" resultMap="OutsubinventoryResult">
+    </select>
+        
+    <insert id="insertOutsubinventory" parameterType="Outsubinventory" useGeneratedKeys="true" keyProperty="subinventoryid">
+        insert into outsubinventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subinventoryCode != null and subinventoryCode != ''">subinventory_code,</if>
+            <if test="transferSubinventory != null and transferSubinventory != ''">transfer_subinventory,</if>
+            <if test="dataversion != null">dataversion,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subinventoryCode != null and subinventoryCode != ''">#{subinventoryCode},</if>
+            <if test="transferSubinventory != null and transferSubinventory != ''">#{transferSubinventory},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutsubinventory" parameterType="Outsubinventory">
+        update outsubinventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subinventoryCode != null and subinventoryCode != ''">subinventory_code = #{subinventoryCode},</if>
+            <if test="transferSubinventory != null and transferSubinventory != ''">transfer_subinventory = #{transferSubinventory},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+        </trim>
+        where subinventoryid = #{subinventoryid}
+    </update>
+
+    <delete id="deleteOutsubinventoryBySubinventoryid" parameterType="Long">
+        delete from outsubinventory where subinventoryid = #{subinventoryid}
+    </delete>
+
+    <delete id="deleteOutsubinventoryBySubinventoryids" parameterType="String">
+        delete from outsubinventory where subinventoryid in 
+        <foreach item="subinventoryid" collection="array" open="(" separator="," close=")">
+            #{subinventoryid}
+        </foreach>
+    </delete>
+</mapper>

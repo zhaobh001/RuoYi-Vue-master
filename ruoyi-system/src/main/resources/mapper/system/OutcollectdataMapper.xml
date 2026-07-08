@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OutcollectdataMapper">
+
+    <resultMap type="Outcollectdata" id="OutcollectdataResult">
+        <result property="outcollectdataid" column="outcollectdataid"/>
+        <result property="dcConnectid" column="dc_connectid"/>
+        <result property="outtaskitemid" column="outtaskitemid"/>
+        <result property="collecttime" column="collecttime"/>
+        <result property="outsite" column="outsite"/>
+        <result property="materialid" column="materialid"/>
+        <result property="batchno" column="batchno"/>
+        <result property="qty" column="qty"/>
+        <result property="sn" column="sn"/>
+        <result property="outdesc" column="outdesc"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="cstate" column="cstate"/>
+        <result property="palletno" column="palletno"/>
+        <result property="transactionId" column="transaction_id"/>
+        <result property="transferstate" column="transferstate"/>
+    </resultMap>
+
+    <sql id="selectOutcollectdataVo">
+        select outcollectdataid, dc_connectid, outtaskitemid, collecttime, outsite, materialid, batchno, qty, sn, outdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, cstate, palletno, transaction_id, transferstate from outcollectdata
+    </sql>
+
+    <select id="selectOutcollectdataList" parameterType="Outcollectdata" resultMap="OutcollectdataResult">
+        <include refid="selectOutcollectdataVo"/>
+        <where>
+            <if test="dcConnectid != null "> and dc_connectid = #{dcConnectid}</if>
+            <if test="outtaskitemid != null "> and outtaskitemid = #{outtaskitemid}</if>
+            <if test="collecttime != null "> and collecttime = #{collecttime}</if>
+            <if test="outsite != null "> and outsite = #{outsite}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="outdesc != null  and outdesc != ''"> and outdesc = #{outdesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="cstate != null "> and cstate = #{cstate}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="transactionId != null "> and transaction_id = #{transactionId}</if>
+            <if test="transferstate != null "> and transferstate = #{transferstate}</if>
+        </where>
+    </select>
+
+    <select id="selectOutcollectdataByOutcollectdataid" parameterType="Long" resultMap="OutcollectdataResult">
+    </select>
+
+    <insert id="insertOutcollectdata" parameterType="Outcollectdata" useGeneratedKeys="true"
+            keyProperty="outcollectdataid">
+        <selectKey keyProperty="outcollectdataid" resultType="long" order="BEFORE">
+            SELECT OUTCOLLECTDATAID_SEQ.NEXTVAL as outcollectdataid FROM DUAL
+        </selectKey>
+        insert into outcollectdata
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outcollectdataid != null">outcollectdataid,</if>
+            <if test="dcConnectid != null">dc_connectid,</if>
+            <if test="outtaskitemid != null">outtaskitemid,</if>
+            <if test="collecttime != null">collecttime,</if>
+            <if test="outsite != null">outsite,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="qty != null">qty,</if>
+            <if test="sn != null">sn,</if>
+            <if test="outdesc != null">outdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="cstate != null">cstate,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="transferstate != null">transferstate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outcollectdataid != null">#{outcollectdataid},</if>
+            <if test="dcConnectid != null">#{dcConnectid},</if>
+            <if test="outtaskitemid != null">#{outtaskitemid},</if>
+            <if test="collecttime != null">#{collecttime},</if>
+            <if test="outsite != null">#{outsite},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="outdesc != null">#{outdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="cstate != null">#{cstate},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="transferstate != null">#{transferstate},</if>
+         </trim>
+    </insert>
+
+    <insert id="insertOutcollectdataBatch" parameterType="list" useGeneratedKeys="false" >
+        <!--<selectKey keyProperty="outcollectdataid" resultType="long" order="BEFORE">
+            SELECT OUTCOLLECTDATAID_SEQ.NEXTVAL as outcollectdataid FROM DUAL
+        </selectKey>-->
+        INSERT INTO outcollectdata(outcollectdataid,dc_connectid,outtaskitemid,collecttime,outsite,materialid,batchno,qty,sn,outdesc,dataversion,data1,data2,data3,data4,data5,data6,data7,data8,cstate,palletno,transaction_id,transferstate)
+        /*VALUES*/
+        <!--<foreach collection="list" item="item" index="index" separator=",">
+            (
+                OUTCOLLECTDATAID_SEQ.NEXTVAL,
+                #{item.dcConnectid,jdbcType=INTEGER},
+                #{item.outtaskitemid,jdbcType=INTEGER},
+                #{item.collecttime,jdbcType=DATE},
+                #{item.outsite,jdbcType=INTEGER},
+                #{item.materialid,jdbcType=INTEGER},
+                #{item.batchno,jdbcType=VARCHAR},
+                #{item.qty,jdbcType=INTEGER},
+                #{item.sn,jdbcType=VARCHAR},
+                #{item.outdesc,jdbcType=VARCHAR},
+                #{item.dataversion,jdbcType=INTEGER},
+                #{item.data1,jdbcType=VARCHAR},
+                #{item.data2,jdbcType=VARCHAR},
+                #{item.data3,jdbcType=VARCHAR},
+                #{item.data4,jdbcType=VARCHAR},
+                #{item.data5,jdbcType=VARCHAR},
+                #{item.data6,jdbcType=VARCHAR},
+                #{item.data7,jdbcType=VARCHAR},
+                #{item.data8,jdbcType=VARCHAR},
+                #{item.cstate,jdbcType=INTEGER},
+                #{item.palletno,jdbcType=VARCHAR},
+                #{item.transactionId,jdbcType=INTEGER},
+                #{item.transferstate,jdbcType=INTEGER}
+            )
+        </foreach>-->
+        SELECT OUTCOLLECTDATAID_SEQ.NEXTVAL,a.* FROM (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            select
+                #{item.dcConnectid,jdbcType=INTEGER},
+                #{item.outtaskitemid,jdbcType=INTEGER},
+                #{item.collecttime,jdbcType=DATE},
+                #{item.outsite,jdbcType=INTEGER},
+                #{item.materialid,jdbcType=INTEGER},
+                #{item.batchno,jdbcType=VARCHAR},
+                #{item.qty,jdbcType=INTEGER},
+                #{item.sn,jdbcType=VARCHAR},
+                #{item.outdesc,jdbcType=VARCHAR},
+                #{item.dataversion,jdbcType=INTEGER},
+                #{item.data1,jdbcType=VARCHAR},
+                #{item.data2,jdbcType=VARCHAR},
+                #{item.data3,jdbcType=VARCHAR},
+                #{item.data4,jdbcType=VARCHAR},
+                #{item.data5,jdbcType=VARCHAR},
+                #{item.data6,jdbcType=VARCHAR},
+                #{item.data7,jdbcType=VARCHAR},
+                #{item.data8,jdbcType=VARCHAR},
+                #{item.cstate,jdbcType=INTEGER},
+                #{item.palletno,jdbcType=VARCHAR},
+                #{item.transactionId,jdbcType=INTEGER},
+                #{item.transferstate,jdbcType=INTEGER}
+          from dual
+    </foreach>
+  ) a
+</insert>
+
+    <update id="updateOutcollectdata" parameterType="Outcollectdata">
+        update outcollectdata
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dcConnectid != null">dc_connectid = #{dcConnectid},</if>
+            <if test="outtaskitemid != null">outtaskitemid = #{outtaskitemid},</if>
+            <if test="collecttime != null">collecttime = #{collecttime},</if>
+            <if test="outsite != null">outsite = #{outsite},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="outdesc != null">outdesc = #{outdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="cstate != null">cstate = #{cstate},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="transferstate != null">transferstate = #{transferstate},</if>
+        </trim>
+        where outcollectdataid = #{outcollectdataid}
+    </update>
+
+    <delete id="deleteOutcollectdataByOutcollectdataid" parameterType="Long">
+        delete from outcollectdata where outcollectdataid = #{outcollectdataid}
+    </delete>
+
+    <delete id="deleteOutcollectdataByOutcollectdataids" parameterType="String">
+        delete from outcollectdata where outcollectdataid in
+        <foreach item="outcollectdataid" collection="array" open="(" separator="," close=")">
+            #{outcollectdataid}
+        </foreach>
+    </delete>
+</mapper>

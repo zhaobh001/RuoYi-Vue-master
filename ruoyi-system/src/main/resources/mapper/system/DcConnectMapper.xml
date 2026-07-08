@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DcConnectMapper">
+    
+    <resultMap type="DcConnect" id="DcConnectResult">
+        <result property="dcConnectid"    column="dc_connectid"    />
+        <result property="dcConnectno"    column="dc_connectno"    />
+        <result property="contime"    column="contime"    />
+        <result property="collectortype"    column="collectortype"    />
+        <result property="businesskind"    column="businesskind"    />
+        <result property="constate"    column="constate"    />
+        <result property="conemp"    column="conemp"    />
+        <result property="condemo"    column="condemo"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="taskid"    column="taskid"    />
+        <result property="taskno"    column="taskno"    />
+        <result property="billid"    column="billid"    />
+        <result property="billno"    column="billno"    />
+        <result property="proofid"    column="proofid"    />
+        <result property="proofno"    column="proofno"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="cname"    column="cname"    />
+         <result property="constateName"    column="constateName"    />
+
+        <result property="ERP_ORDER_NUMBER"    column="ERP_ORDER_NUMBER"    />
+        <result property="SOURCE_NUMBER"    column="SOURCE_NUMBER"    />
+        <result property="ORDER_TYPE"    column="ORDER_TYPE"    />
+        <result property="BATCH_ID"    column="BATCH_ID"    />
+        <result property="PROCESS_DATE"    column="PROCESS_DATE"    />
+        <result property="source_header_id"    column="source_header_id"    />
+        <result property="PROCESS_STATUS"    column="PROCESS_STATUS"    />
+        <result property="PROCESS_MESSAGE"    column="PROCESS_MESSAGE"    />
+        <result property="RESERVE_F1"    column="RESERVE_F1"    />
+        <result property="JKNAME"    column="JKNAME"    />
+        <result property="TXJOBID"    column="TXJOBID"    />
+        <result property="ORDER_TYPE_NAME"    column="ORDER_TYPE_NAME"    />
+
+    </resultMap>
+
+    <sql id="selectDcConnectVo">
+        select dc_connectid, dc_connectno, contime, collectortype, businesskind, constate, conemp, condemo, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, taskid, taskno, billid, billno, proofid, proofno, palletno from dc_connect
+    </sql>
+    <select id="selectPdaCollExceptList" parameterType="DcConnect" resultMap="DcConnectResult">
+
+        SELECT
+            I.DC_CONNECTID,
+            I.DC_CONNECTNO,
+            TO_CHAR(I.CONTIME,'yyyy-MM-dd HH24:MI:SS') AS CONTIME,
+            I.PROOFNO,
+            I.Taskno,
+            I.COLLECTORTYPE,
+            E.CNAME,
+            decode(I.BUSINESSKIND,'IN','入库','OUT','出库','INSOLID','组盘入库','OUTSOLID','在线拣选或整盘出库','CHECK','盘库','EXP','异常')AS BUSINESSKIND,
+            decode(I.CONSTATE,0,'处理成功','-1','处理失败','未处理') AS constateName,
+            I.DATA5,
+            I.PALLETNO
+        FROM DC_CONNECT I,
+            TUSER E
+        WHERE
+          I.CONEMP=E.TUSERID(+)  AND
+        	TO_CHAR(I.CONTIME,'yyyy-MM-dd HH24:MI:SS') >=#{start_contime} AND
+        	TO_CHAR(I.CONTIME,'yyyy-MM-dd HH24:MI:SS') &lt;#{finish_contime} AND
+          I.CONSTATE = -1 AND
+           I.CONEMP=#{conemp}
+
+        ORDER BY I.CONTIME DESC
+    </select>
+
+        <select id="selectSapInteExceptList" parameterType="DcConnect" resultMap="DcConnectResult">
+                      select a2.order_number as ERP_ORDER_NUMBER,
+                             a2.source_number as SOURCE_NUMBER,
+                             a2.transaction_type as ORDER_TYPE,
+                             a2.batch_id as BATCH_ID,
+                             to_char(a2.logdate,'yyyy-mm-dd hh24:mi:ss') as PROCESS_DATE,
+                             a2.source_header_id,
+                             a2.type as PROCESS_STATUS,
+                             a2.message as PROCESS_MESSAGE,
+                             a2.RESERVE_F1 as RESERVE_F1,
+                             a2.JKNAME as JKNAME,
+                             a2.TXJOBID as TXJOBID,
+                             DECODE(a2.transaction_type,10,'采购装箱单',5,'领料单',16,'工单退料',6,'杂项出库',17,'组织内调拨',1,'组织间调拨-天诚出货',15,'组织间调拨-金风出货',13,'完工入库-WMS发起',4,'拉式发料',18,'组织内调拨-WMS发起',8,'采购退货',14,'杂项入库',12,'销售退库',2,'销售出库') as ORDER_TYPE_NAME
+                      from tx_sap_common_ack a2
+                      where a2.txjobid in
+                      (
+                            select a3.txid as txid4 from
+                            (
+                              select a1.transaction_type, a1.order_number,a1.source_header_id,a1.batch_id,max(a1.txjobid) as txid
+                              from  tx_sap_common_ack a1
+							  where 1=1  and
+							      to_char(a1.LOGDATE,'yyyy-mm-dd') >= #{start_contime} AND
+							      to_char(a1.LOGDATE,'yyyy-mm-dd') &lt;= #{finish_contime}
+							   group by a1.transaction_type,
+							      a1.order_number,
+							      a1.source_header_id,
+							      a1.batch_id,a1.JKNAME
+                            ) a3
+                      ) and a2.type!='S' order by a2.logdate desc
+    </select>
+
+    <select id="selectDcConnectList" parameterType="DcConnect" resultMap="DcConnectResult">
+        <include refid="selectDcConnectVo"/>
+        <where>  
+            <if test="dcConnectno != null  and dcConnectno != ''"> and dc_connectno = #{dcConnectno}</if>
+            <if test="contime != null "> and contime = #{contime}</if>
+            <if test="collectortype != null  and collectortype != ''"> and collectortype = #{collectortype}</if>
+            <if test="businesskind != null  and businesskind != ''"> and businesskind = #{businesskind}</if>
+            <if test="constate != null "> and constate = #{constate}</if>
+            <if test="conemp != null "> and conemp = #{conemp}</if>
+            <if test="condemo != null  and condemo != ''"> and condemo = #{condemo}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="taskid != null "> and taskid = #{taskid}</if>
+            <if test="taskno != null  and taskno != ''"> and taskno = #{taskno}</if>
+            <if test="billid != null "> and billid = #{billid}</if>
+            <if test="billno != null  and billno != ''"> and billno = #{billno}</if>
+            <if test="proofid != null "> and proofid = #{proofid}</if>
+            <if test="proofno != null  and proofno != ''"> and proofno = #{proofno}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+        </where>
+    </select>
+    
+    <select id="selectDcConnectByDcConnectid" parameterType="Long" resultMap="DcConnectResult">
+     <include refid="selectDcConnectVo"/>
+        where dc_connectid = #{dcConnectid}
+
+    </select>
+        
+    <insert id="insertDcConnect" parameterType="DcConnect" useGeneratedKeys="true" keyProperty="dcConnectid">
+        <selectKey keyProperty="dcConnectid" resultType="long" order="BEFORE">
+            SELECT DC_CONNECTID_SEQ.NEXTVAL as dcConnectid FROM DUAL
+        </selectKey>
+        insert into dc_connect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dcConnectid != null and dcConnectid != 0 ">dc_connectid,</if>
+            <if test="dcConnectno != null">dc_connectno,</if>
+            <if test="contime != null">contime,</if>
+            <if test="collectortype != null">collectortype,</if>
+            <if test="businesskind != null">businesskind,</if>
+            <if test="constate != null">constate,</if>
+            <if test="conemp != null">conemp,</if>
+            <if test="condemo != null">condemo,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="taskid != null">taskid,</if>
+            <if test="taskno != null">taskno,</if>
+            <if test="billid != null">billid,</if>
+            <if test="billno != null">billno,</if>
+            <if test="proofid != null">proofid,</if>
+            <if test="proofno != null">proofno,</if>
+            <if test="palletno != null">palletno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dcConnectid != null and dcConnectid != 0 ">#{dcConnectid},</if>
+            <if test="dcConnectno != null">#{dcConnectno},</if>
+            <if test="contime != null">#{contime},</if>
+            <if test="collectortype != null">#{collectortype},</if>
+            <if test="businesskind != null">#{businesskind},</if>
+            <if test="constate != null">#{constate},</if>
+            <if test="conemp != null">#{conemp},</if>
+            <if test="condemo != null">#{condemo},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="taskid != null">#{taskid},</if>
+            <if test="taskno != null">#{taskno},</if>
+            <if test="billid != null">#{billid},</if>
+            <if test="billno != null">#{billno},</if>
+            <if test="proofid != null">#{proofid},</if>
+            <if test="proofno != null">#{proofno},</if>
+            <if test="palletno != null">#{palletno},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDcConnect" parameterType="DcConnect">
+        update dc_connect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dcConnectno != null">dc_connectno = #{dcConnectno},</if>
+            <if test="contime != null">contime = #{contime},</if>
+            <if test="collectortype != null">collectortype = #{collectortype},</if>
+            <if test="businesskind != null">businesskind = #{businesskind},</if>
+            <if test="constate != null">constate = #{constate},</if>
+            <if test="conemp != null">conemp = #{conemp},</if>
+            <if test="condemo != null">condemo = #{condemo},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="taskid != null">taskid = #{taskid},</if>
+            <if test="taskno != null">taskno = #{taskno},</if>
+            <if test="billid != null">billid = #{billid},</if>
+            <if test="billno != null">billno = #{billno},</if>
+            <if test="proofid != null">proofid = #{proofid},</if>
+            <if test="proofno != null">proofno = #{proofno},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+        </trim>
+        where dc_connectid = #{dcConnectid}
+    </update>
+
+    <delete id="deleteDcConnectByDcConnectid" parameterType="Long">
+        delete from dc_connect where dc_connectid = #{dcConnectid}
+    </delete>
+
+    <delete id="deleteDcConnectByDcConnectids" parameterType="String">
+        delete from dc_connect where dc_connectid in 
+        <foreach item="dcConnectid" collection="array" open="(" separator="," close=")">
+            #{dcConnectid}
+        </foreach>
+    </delete>
+</mapper>

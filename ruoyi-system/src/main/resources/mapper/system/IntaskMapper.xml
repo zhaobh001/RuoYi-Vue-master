@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.IntaskMapper">
+
+    <resultMap type="Intask" id="IntaskResult">
+        <result property="intaskid" column="intaskid"/>
+        <result property="intaskno" column="intaskno"/>
+        <result property="tasksource" column="tasksource"/>
+        <result property="taskcomment" column="taskcomment"/>
+        <result property="storeroomid" column="storeroomid"/>
+        <result property="collecter" column="collecter"/>
+        <result property="instate" column="instate"/>
+        <result property="collectkind" column="collectkind"/>
+        <result property="indate" column="indate"/>
+        <result property="indesc" column="indesc"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="forcesite" column="forcesite"/>
+        <result property="forcebatch" column="forcebatch"/>
+        <result property="batchflag" column="batchflag"/>
+        <result property="storeroomno" column="storeroomno"/>
+        <result property="workstation" column="workstation"/>
+        <result property="storeroomname" column="storeroomname"/>
+        <result property="operation" column="operation"/>
+        <result property="userid" column="userId"/>
+        <result property="i_collecter" column="i_collecter"/>
+        <result property="t_collecter" column="t_collecter"/>
+        <result property="roomtag" column="roomTag"/>
+        <result property="transferType" column="transferType"/>
+        <result property="parname" column="parname"/>
+    </resultMap>
+
+    <sql id="selectIntaskVo">
+        select intaskid, intaskno, tasksource, taskcomment, storeroomid, collecter, instate, collectkind, indate, indesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, forcesite, forcebatch, batchflag from intask
+    </sql>
+
+    <select id="selectIntaskList" parameterType="Intask" resultMap="IntaskResult">
+        select distinct
+        taskcomment,
+        storeroomno,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskno,
+        indesc,
+        workstation,
+        intaskid,
+        indate,
+        PARNAME
+        from
+
+        (
+        SELECT
+        taskcomment,
+        storeroomno,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskno,
+        indesc,
+        workstation,
+        storeroomname,
+        operation,
+        userid,
+        instate,
+        data1,
+        collecter,
+        i_collecter,
+        t_collecter,
+        roomtag,
+        intaskid,
+        transfertype,
+        indate,
+        PARNAME
+
+        FROM (
+        SELECT
+        pm.matcode,
+        pm.matname,
+        sts.Storesiteno,
+        ii.qty,
+        NVL(ii.collectedqty,0) as collectedqty,
+        ii.batchno,
+        NVL(i.indesc,' ') AS indesc,
+        ii.sn,
+        str.storeroomno AS storeroomno,
+        ibl.subinventory_code,
+        i.forcesite,
+        i.forcebatch,
+        NVL(i.data2,' ') as data2,
+        NVL(i.data3,' ') as data3,
+        i.intaskno,
+        i.taskcomment,
+        NVL(ibl.workstation,'N') AS workstation,
+        ibl.palletno,
+        i.data1,
+        ii.intaskitemid,
+        ii.intaskitemid AS ID,
+        ii.intaskid,
+        ii.materialid,
+        ii.inbillid,
+        str.storeroomname,
+        str.roomtag,
+        e.operation,
+        e.userid,
+        NVL(ii.instate,0) AS instate,
+        NVL(i.collecter,0) AS collecter,
+        NVL(ii.collecter,0) AS i_collecter,
+        NVL(i.collecter,0) AS t_collecter,
+        i.indate,
+        p.parno,
+        NVL(inf.transfertype,'0') transfertype,
+        inf.proofno,
+        inf.protype,
+        p.PARNAME
+
+        FROM
+        intask i,
+        intaskitem ii,
+        pm_material pm,
+        storeroom str,
+        storesite sts,
+        inproof inf,
+        inbill ibl,
+        (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where
+        r.ROLE_ID=m.ROLE_ID) e,
+        partner p
+        WHERE
+        i.intaskid=ii.intaskid
+        AND ii.materialid = pm.pm_materialid
+        AND i.storeroomid = str.storeroomid
+        AND ii.hintedsite = sts.storesiteid(+)
+        AND inf.inproofid = i.tasksource
+        AND ibl.inproofid = inf.inproofid
+        AND inf.partnerid = p.partnerid(+)
+        AND ibl.materialid = pm.pm_materialid
+        AND ibl.inbillid = ii.inbillid
+        AND str.storeroomid = e.operation
+        AND (NVL(ii.qty,0)-NVL(ii.collectedqty,0)) > 0
+        <if test="i_collecter != null ">and nvl(ii.collecter,0) = #{i_collecter}</if>
+        <if test="instate != null ">and nvl(ii.instate,0) = #{instate}</if>
+        <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
+        <if test="roomTag != null ">and nvl(str.roomtag,0) = #{roomTag}</if>
+        <if test="transferType != null ">and nvl(inf.transfertype,0) = #{transferType}</if>
+        )
+        GROUP BY
+        taskcomment,
+        storeroomno,
+        storeroomname,
+        data1,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskid,
+        intaskno,
+        workstation,
+        transfertype,
+        indesc,
+        operation,
+        userid,
+        instate,
+        collecter,
+        i_collecter,
+        t_collecter,
+        roomtag,
+        indate,
+        PARNAME)d1 where 1=1
+        <if test="searchKey != null">
+        and(
+            d1.taskcomment like concat(concat('%',#{searchKey}),'%') or
+            d1.intaskno like concat(concat('%',#{searchKey}),'%') or
+            d1.data2 like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+
+        <if test="sortColumn == null ">order by d1.indate desc,d1.taskcomment desc, d1.intaskno desc</if>
+        <if test="sortColumn != null">order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+
+    </select>
+
+    <select id="selectIntaskByIntaskid" parameterType="Long" resultMap="IntaskResult">
+        <include refid="selectIntaskVo"/>
+        where intaskid = #{intaskid}
+    </select>
+
+    <select id="selectIntaskByIntaskNo" parameterType="String" resultMap="IntaskResult">
+        <include refid="selectIntaskVo"/>
+        where intaskno = #{intaskno}
+    </select>
+
+    <insert id="insertIntask" parameterType="Intask" useGeneratedKeys="true" keyProperty="intaskid">
+        insert into intask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intaskno != null">intaskno,</if>
+            <if test="tasksource != null">tasksource,</if>
+            <if test="taskcomment != null">taskcomment,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="instate != null">instate,</if>
+            <if test="collectkind != null">collectkind,</if>
+            <if test="indate != null">indate,</if>
+            <if test="indesc != null">indesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="forcesite != null">forcesite,</if>
+            <if test="forcebatch != null">forcebatch,</if>
+            <if test="batchflag != null">batchflag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intaskno != null">#{intaskno},</if>
+            <if test="tasksource != null">#{tasksource},</if>
+            <if test="taskcomment != null">#{taskcomment},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="instate != null">#{instate},</if>
+            <if test="collectkind != null">#{collectkind},</if>
+            <if test="indate != null">#{indate},</if>
+            <if test="indesc != null">#{indesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="forcesite != null">#{forcesite},</if>
+            <if test="forcebatch != null">#{forcebatch},</if>
+            <if test="batchflag != null">#{batchflag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIntask" parameterType="Intask">
+        update intask
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="intaskno != null">intaskno = #{intaskno},</if>
+            <if test="tasksource != null">tasksource = #{tasksource},</if>
+            <if test="taskcomment != null">taskcomment = #{taskcomment},</if>
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="instate != null">instate = #{instate},</if>
+            <if test="collectkind != null">collectkind = #{collectkind},</if>
+            <if test="indate != null">indate = #{indate},</if>
+            <if test="indesc != null">indesc = #{indesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="forcesite != null">forcesite = #{forcesite},</if>
+            <if test="forcebatch != null">forcebatch = #{forcebatch},</if>
+            <if test="batchflag != null">batchflag = #{batchflag},</if>
+        </trim>
+        where intaskid = #{intaskid}
+    </update>
+
+    <delete id="deleteIntaskByIntaskid" parameterType="Long">
+        delete from intask where intaskid = #{intaskid}
+    </delete>
+
+    <delete id="deleteIntaskByIntaskids" parameterType="String">
+        delete from intask where intaskid in
+        <foreach item="intaskid" collection="array" open="(" separator="," close=")">
+            #{intaskid}
+        </foreach>
+    </delete>
+</mapper>

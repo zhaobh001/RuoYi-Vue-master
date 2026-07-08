@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysNoticeMapper">
+
+    <resultMap type="SysNotice" id="SysNoticeResult">
+        <result property="noticeId"       column="notice_id"       />
+        <result property="noticeTitle"    column="notice_title"    />
+        <result property="noticeType"     column="notice_type"     />
+        <result property="noticeContent"  column="notice_content"  />
+        <result property="status"         column="status"          />
+        <result property="createBy"       column="create_by"       />
+        <result property="createTime"     column="create_time"     />
+        <result property="updateBy"       column="update_by"       />
+        <result property="updateTime"     column="update_time"     />
+        <result property="remark"         column="remark"          />
+        <result property="nickName"     column="nick_name"    />
+
+    </resultMap>
+
+    <sql id="selectNoticeVo">
+        select notice_id, notice_title, notice_type, notice_content, status, create_by, create_time, update_by, update_time, remark
+		from sys_notice
+    </sql>
+
+    <select id="selectNoticeById" parameterType="Long" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        where notice_id = #{noticeId}
+    </select>
+
+    <select id="selectNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+        <include refid="selectNoticeVo"/>
+        <where>
+            <if test="noticeTitle != null and noticeTitle != ''">
+                AND notice_title like concat(concat('%',#{noticeTitle}),'%')
+            </if>
+            <if test="noticeType != null and noticeType != ''">
+                AND notice_type = #{noticeType}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                AND create_by like concat(concat('%',#{createBy}),'%')
+            </if>
+        </where>
+        order by CREATE_TIME desc
+    </select>
+
+        <select id="selectLatestNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+        select notice_id, notice_title, notice_type, notice_content, status, create_by, create_time, update_by, update_time, remark
+		from sys_notice
+		where  notice_type = 2 and STATUS=0 and rownum &lt; 2
+		order by CREATE_TIME desc
+    </select>
+
+      <select id="selectMorNoticeList" parameterType="SysNotice" resultMap="SysNoticeResult">
+       select
+notice.notice_id,
+notice.notice_title,
+notice.notice_type,
+notice.notice_content,
+notice.status,
+user1.NICK_NAME as create_by,
+notice.create_time,
+notice.update_by,
+notice.update_time,
+notice.remark
+		from sys_notice notice
+    left join sys_user user1 on user1.USER_NAME =notice.create_by
+		where  notice.notice_type = 2 and notice.STATUS=0
+		order by notice.CREATE_TIME desc
+    </select>
+
+    <select id="selectNoticeDetail" parameterType="Long" resultMap="SysNoticeResult">
+        select n.*,u.NICK_NAME from sys_notice n
+          left join sys_user u on u.USER_NAME=n.create_by
+		where  n.notice_id = #{noticeId}
+		order by n.CREATE_TIME desc
+
+    </select>
+
+
+    <insert id="insertNotice" parameterType="SysNotice">
+        <selectKey keyProperty="noticeId" order="BEFORE" resultType="long">
+            select seq_sys_notice.nextval as noticeId from DUAL
+        </selectKey>
+        insert into sys_notice (
+            <if test="noticeId != null and noticeId != '' ">notice_id, </if>
+			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>
+			<if test="noticeType != null and noticeType != '' ">notice_type, </if>
+			<if test="noticeContent != null and noticeContent != '' ">notice_content, </if>
+			<if test="status != null and status != '' ">status, </if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+            <if test="noticeId != null and noticeId != '' ">#{noticeId}, </if>
+			<if test="noticeTitle != null and noticeTitle != ''">#{noticeTitle}, </if>
+			<if test="noticeType != null and noticeType != ''">#{noticeType}, </if>
+			<if test="noticeContent != null and noticeContent != ''">#{noticeContent}, </if>
+			<if test="status != null and status != ''">#{status}, </if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate
+		)
+    </insert>
+
+    <update id="updateNotice" parameterType="SysNotice">
+        update sys_notice
+        <set>
+            <if test="noticeTitle != null and noticeTitle != ''">notice_title = #{noticeTitle}, </if>
+            <if test="noticeType != null and noticeType != ''">notice_type = #{noticeType}, </if>
+            <if test="noticeContent != null">notice_content = #{noticeContent}, </if>
+            <if test="status != null and status != ''">status = #{status}, </if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			update_time = sysdate
+        </set>
+        where notice_id = #{noticeId}
+    </update>
+
+    <delete id="deleteNoticeById" parameterType="Long">
+        delete from sys_notice where notice_id = #{noticeId}
+    </delete>
+
+    <delete id="deleteNoticeByIds" parameterType="Long">
+        delete from sys_notice where notice_id in
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+</mapper>

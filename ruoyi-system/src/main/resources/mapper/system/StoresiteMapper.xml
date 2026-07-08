@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StoresiteMapper">
+    
+    <resultMap type="Storesite" id="StoresiteResult">
+        <result property="storesiteid"    column="storesiteid"    />
+        <result property="storeroomid"    column="storeroomid"    />
+        <result property="storesiteno"    column="storesiteno"    />
+        <result property="storesitename"    column="storesitename"    />
+        <result property="isfrozen"    column="isfrozen"    />
+        <result property="length"    column="length"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="limitedweight"    column="limitedweight"    />
+        <result property="currentweight"    column="currentweight"    />
+        <result property="plotratio"    column="plotratio"    />
+        <result property="currentplot"    column="currentplot"    />
+        <result property="stackingno"    column="stackingno"    />
+        <result property="velocity"    column="velocity"    />
+        <result property="highness"    column="highness"    />
+        <result property="floors"    column="floors"    />
+        <result property="issystem"    column="issystem"    />
+        <result property="storesitedesc"    column="storesitedesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="data9"    column="data9"    />
+        <result property="data10"    column="data10"    />
+        <result property="ispallettempsite"    column="ispallettempsite"    />
+        <result property="weightGrade"    column="weight_grade"    />
+        <result property="highGrade"    column="high_grade"    />
+        <result property="mattypecontrol"    column="mattypecontrol"    />
+        <result property="storesitetype"    column="storesitetype"    />
+        <result property="storesiteorder"    column="storesiteorder"    />
+        <result property="ystRfstatus"    column="yst_rfstatus"    />
+        <result property="ystIycCntrid"    column="yst_iyc_cntrid"    />
+        <result property="ystYbyBayid"    column="yst_yby_bayid"    />
+        <result property="ystCstmid"    column="yst_cstmid"    />
+        <result property="ystRowno"    column="yst_rowno"    />
+        <result property="ystTierno"    column="yst_tierno"    />
+        <result property="ystOccurfg"    column="yst_occurfg"    />
+        <result property="limitedplot"    column="limitedplot"    />
+        <result property="remainplot"    column="remainplot"    />
+        <result property="issiteuse"    column="issiteuse"    />
+    </resultMap>
+
+    <sql id="selectStoresiteVo">
+        select storesiteid, storeroomid, storesiteno, storesitename, isfrozen, length, width, height, limitedweight, currentweight, plotratio, currentplot, stackingno, velocity, highness, floors, issystem, storesitedesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, ispallettempsite, weight_grade, high_grade, mattypecontrol, storesitetype, storesiteorder, yst_rfstatus, yst_iyc_cntrid, yst_yby_bayid, yst_cstmid, yst_rowno, yst_tierno, yst_occurfg, limitedplot, remainplot, issiteuse from storesite
+    </sql>
+
+    <select id="selectStoresiteList" parameterType="Storesite" resultMap="StoresiteResult">
+        <include refid="selectStoresiteVo"/>
+        <where>  
+            <if test="storeroomid != null "> and storeroomid = #{storeroomid}</if>
+            <if test="storesiteno != null  and storesiteno != ''"> and storesiteno = #{storesiteno}</if>
+            <if test="storesitename != null  and storesitename != ''"> and storesitename like concat('%', #{storesitename}, '%')</if>
+            <if test="isfrozen != null  and isfrozen != ''"> and isfrozen = #{isfrozen}</if>
+            <if test="length != null "> and length = #{length}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="limitedweight != null "> and limitedweight = #{limitedweight}</if>
+            <if test="currentweight != null "> and currentweight = #{currentweight}</if>
+            <if test="plotratio != null "> and plotratio = #{plotratio}</if>
+            <if test="currentplot != null "> and currentplot = #{currentplot}</if>
+            <if test="stackingno != null  and stackingno != ''"> and stackingno = #{stackingno}</if>
+            <if test="velocity != null  and velocity != ''"> and velocity = #{velocity}</if>
+            <if test="highness != null  and highness != ''"> and highness = #{highness}</if>
+            <if test="floors != null  and floors != ''"> and floors = #{floors}</if>
+            <if test="issystem != null "> and issystem = #{issystem}</if>
+            <if test="storesitedesc != null  and storesitedesc != ''"> and storesitedesc = #{storesitedesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="data9 != null  and data9 != ''"> and data9 = #{data9}</if>
+            <if test="data10 != null  and data10 != ''"> and data10 = #{data10}</if>
+            <if test="ispallettempsite != null  and ispallettempsite != ''"> and ispallettempsite = #{ispallettempsite}</if>
+            <if test="weightGrade != null  and weightGrade != ''"> and weight_grade = #{weightGrade}</if>
+            <if test="highGrade != null  and highGrade != ''"> and high_grade = #{highGrade}</if>
+            <if test="mattypecontrol != null "> and mattypecontrol = #{mattypecontrol}</if>
+            <if test="storesitetype != null "> and storesitetype = #{storesitetype}</if>
+            <if test="storesiteorder != null "> and storesiteorder = #{storesiteorder}</if>
+            <if test="ystRfstatus != null  and ystRfstatus != ''"> and yst_rfstatus = #{ystRfstatus}</if>
+            <if test="ystIycCntrid != null "> and yst_iyc_cntrid = #{ystIycCntrid}</if>
+            <if test="ystYbyBayid != null "> and yst_yby_bayid = #{ystYbyBayid}</if>
+            <if test="ystCstmid != null "> and yst_cstmid = #{ystCstmid}</if>
+            <if test="ystRowno != null  and ystRowno != ''"> and yst_rowno = #{ystRowno}</if>
+            <if test="ystTierno != null  and ystTierno != ''"> and yst_tierno = #{ystTierno}</if>
+            <if test="ystOccurfg != null  and ystOccurfg != ''"> and yst_occurfg = #{ystOccurfg}</if>
+            <if test="limitedplot != null "> and limitedplot = #{limitedplot}</if>
+            <if test="remainplot != null "> and remainplot = #{remainplot}</if>
+            <if test="issiteuse != null "> and issiteuse = #{issiteuse}</if>
+        </where>
+    </select>
+    
+    <select id="selectStoresiteByStoresiteid" parameterType="Long" resultMap="StoresiteResult">
+        <include refid="selectStoresiteVo"/>
+        where storesiteid = #{storesiteid}
+    </select>
+
+    <select id="selectStoresiteByStoresiteno" parameterType="String" resultMap="StoresiteResult">
+        <include refid="selectStoresiteVo"/>
+        where storesiteno = #{storesiteno}
+    </select>
+        
+    <insert id="insertStoresite" parameterType="Storesite" useGeneratedKeys="true" keyProperty="storesiteid">
+        insert into storesite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="storesiteno != null and storesiteno != ''">storesiteno,</if>
+            <if test="storesitename != null">storesitename,</if>
+            <if test="isfrozen != null">isfrozen,</if>
+            <if test="length != null">length,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="limitedweight != null">limitedweight,</if>
+            <if test="currentweight != null">currentweight,</if>
+            <if test="plotratio != null">plotratio,</if>
+            <if test="currentplot != null">currentplot,</if>
+            <if test="stackingno != null">stackingno,</if>
+            <if test="velocity != null">velocity,</if>
+            <if test="highness != null">highness,</if>
+            <if test="floors != null">floors,</if>
+            <if test="issystem != null">issystem,</if>
+            <if test="storesitedesc != null">storesitedesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="data9 != null">data9,</if>
+            <if test="data10 != null">data10,</if>
+            <if test="ispallettempsite != null">ispallettempsite,</if>
+            <if test="weightGrade != null">weight_grade,</if>
+            <if test="highGrade != null">high_grade,</if>
+            <if test="mattypecontrol != null">mattypecontrol,</if>
+            <if test="storesitetype != null">storesitetype,</if>
+            <if test="storesiteorder != null">storesiteorder,</if>
+            <if test="ystRfstatus != null">yst_rfstatus,</if>
+            <if test="ystIycCntrid != null">yst_iyc_cntrid,</if>
+            <if test="ystYbyBayid != null">yst_yby_bayid,</if>
+            <if test="ystCstmid != null">yst_cstmid,</if>
+            <if test="ystRowno != null">yst_rowno,</if>
+            <if test="ystTierno != null">yst_tierno,</if>
+            <if test="ystOccurfg != null">yst_occurfg,</if>
+            <if test="limitedplot != null">limitedplot,</if>
+            <if test="remainplot != null">remainplot,</if>
+            <if test="issiteuse != null">issiteuse,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="storesiteno != null and storesiteno != ''">#{storesiteno},</if>
+            <if test="storesitename != null">#{storesitename},</if>
+            <if test="isfrozen != null">#{isfrozen},</if>
+            <if test="length != null">#{length},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="limitedweight != null">#{limitedweight},</if>
+            <if test="currentweight != null">#{currentweight},</if>
+            <if test="plotratio != null">#{plotratio},</if>
+            <if test="currentplot != null">#{currentplot},</if>
+            <if test="stackingno != null">#{stackingno},</if>
+            <if test="velocity != null">#{velocity},</if>
+            <if test="highness != null">#{highness},</if>
+            <if test="floors != null">#{floors},</if>
+            <if test="issystem != null">#{issystem},</if>
+            <if test="storesitedesc != null">#{storesitedesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="data9 != null">#{data9},</if>
+            <if test="data10 != null">#{data10},</if>
+            <if test="ispallettempsite != null">#{ispallettempsite},</if>
+            <if test="weightGrade != null">#{weightGrade},</if>
+            <if test="highGrade != null">#{highGrade},</if>
+            <if test="mattypecontrol != null">#{mattypecontrol},</if>
+            <if test="storesitetype != null">#{storesitetype},</if>
+            <if test="storesiteorder != null">#{storesiteorder},</if>
+            <if test="ystRfstatus != null">#{ystRfstatus},</if>
+            <if test="ystIycCntrid != null">#{ystIycCntrid},</if>
+            <if test="ystYbyBayid != null">#{ystYbyBayid},</if>
+            <if test="ystCstmid != null">#{ystCstmid},</if>
+            <if test="ystRowno != null">#{ystRowno},</if>
+            <if test="ystTierno != null">#{ystTierno},</if>
+            <if test="ystOccurfg != null">#{ystOccurfg},</if>
+            <if test="limitedplot != null">#{limitedplot},</if>
+            <if test="remainplot != null">#{remainplot},</if>
+            <if test="issiteuse != null">#{issiteuse},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStoresite" parameterType="Storesite">
+        update storesite
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="storesiteno != null and storesiteno != ''">storesiteno = #{storesiteno},</if>
+            <if test="storesitename != null">storesitename = #{storesitename},</if>
+            <if test="isfrozen != null">isfrozen = #{isfrozen},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="limitedweight != null">limitedweight = #{limitedweight},</if>
+            <if test="currentweight != null">currentweight = #{currentweight},</if>
+            <if test="plotratio != null">plotratio = #{plotratio},</if>
+            <if test="currentplot != null">currentplot = #{currentplot},</if>
+            <if test="stackingno != null">stackingno = #{stackingno},</if>
+            <if test="velocity != null">velocity = #{velocity},</if>
+            <if test="highness != null">highness = #{highness},</if>
+            <if test="floors != null">floors = #{floors},</if>
+            <if test="issystem != null">issystem = #{issystem},</if>
+            <if test="storesitedesc != null">storesitedesc = #{storesitedesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="data9 != null">data9 = #{data9},</if>
+            <if test="data10 != null">data10 = #{data10},</if>
+            <if test="ispallettempsite != null">ispallettempsite = #{ispallettempsite},</if>
+            <if test="weightGrade != null">weight_grade = #{weightGrade},</if>
+            <if test="highGrade != null">high_grade = #{highGrade},</if>
+            <if test="mattypecontrol != null">mattypecontrol = #{mattypecontrol},</if>
+            <if test="storesitetype != null">storesitetype = #{storesitetype},</if>
+            <if test="storesiteorder != null">storesiteorder = #{storesiteorder},</if>
+            <if test="ystRfstatus != null">yst_rfstatus = #{ystRfstatus},</if>
+            <if test="ystIycCntrid != null">yst_iyc_cntrid = #{ystIycCntrid},</if>
+            <if test="ystYbyBayid != null">yst_yby_bayid = #{ystYbyBayid},</if>
+            <if test="ystCstmid != null">yst_cstmid = #{ystCstmid},</if>
+            <if test="ystRowno != null">yst_rowno = #{ystRowno},</if>
+            <if test="ystTierno != null">yst_tierno = #{ystTierno},</if>
+            <if test="ystOccurfg != null">yst_occurfg = #{ystOccurfg},</if>
+            <if test="limitedplot != null">limitedplot = #{limitedplot},</if>
+            <if test="remainplot != null">remainplot = #{remainplot},</if>
+            <if test="issiteuse != null">issiteuse = #{issiteuse},</if>
+        </trim>
+        where storesiteid = #{storesiteid}
+    </update>
+
+    <delete id="deleteStoresiteByStoresiteid" parameterType="Long">
+        delete from storesite where storesiteid = #{storesiteid}
+    </delete>
+
+    <delete id="deleteStoresiteByStoresiteids" parameterType="String">
+        delete from storesite where storesiteid in 
+        <foreach item="storesiteid" collection="array" open="(" separator="," close=")">
+            #{storesiteid}
+        </foreach>
+    </delete>
+</mapper>

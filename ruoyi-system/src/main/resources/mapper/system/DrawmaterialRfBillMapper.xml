@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DrawmaterialRfBillMapper">
+    
+    <resultMap type="DrawmaterialRfBill" id="DrawmaterialRfBillResult">
+        <result property="drawmaterialRfBillid"    column="drawmaterial_rf_billid"    />
+        <result property="drawmaterialRfBillno"    column="drawmaterial_rf_billno"    />
+        <result property="drawmaterialRfBillstate"    column="drawmaterial_rf_billstate"    />
+        <result property="drawmaterialRfBillSender"    column="drawmaterial_rf_bill_sender"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="drawmaterialRfDesc"    column="drawmaterial_rf_desc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+    </resultMap>
+
+    <sql id="selectDrawmaterialRfBillVo">
+        select drawmaterial_rf_billid, drawmaterial_rf_billno, drawmaterial_rf_billstate, drawmaterial_rf_bill_sender, createtime, drawmaterial_rf_desc, dataversion, data1, data2, data3, data4 from drawmaterial_rf_bill
+    </sql>
+
+    <select id="selectDrawmaterialRfBillList" parameterType="DrawmaterialRfBill" resultMap="DrawmaterialRfBillResult">
+        <include refid="selectDrawmaterialRfBillVo"/>
+        <where>  
+            <if test="drawmaterialRfBillno != null  and drawmaterialRfBillno != ''"> and drawmaterial_rf_billno = #{drawmaterialRfBillno}</if>
+            <if test="drawmaterialRfBillstate != null  and drawmaterialRfBillstate != ''"> and drawmaterial_rf_billstate = #{drawmaterialRfBillstate}</if>
+            <if test="drawmaterialRfBillSender != null "> and drawmaterial_rf_bill_sender = #{drawmaterialRfBillSender}</if>
+            <if test="createtime != null "> and createtime = #{createtime}</if>
+            <if test="drawmaterialRfDesc != null  and drawmaterialRfDesc != ''"> and drawmaterial_rf_desc = #{drawmaterialRfDesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawmaterialRfBillByDrawmaterialRfBillid" parameterType="Long" resultMap="DrawmaterialRfBillResult">
+    </select>
+        
+    <insert id="insertDrawmaterialRfBill" parameterType="DrawmaterialRfBill" useGeneratedKeys="true" keyProperty="drawmaterialRfBillid">
+        <selectKey keyProperty="drawmaterialRfBillid" resultType="long" order="BEFORE">
+            SELECT DRAWMATERIAL_RF_BILLID_SEQ.NEXTVAL as drawmaterialRfBillid FROM DUAL
+        </selectKey>
+        insert into drawmaterial_rf_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="drawmaterialRfBillid != null">drawmaterial_rf_billid,</if>
+            <if test="drawmaterialRfBillno != null">drawmaterial_rf_billno,</if>
+            <if test="drawmaterialRfBillstate != null">drawmaterial_rf_billstate,</if>
+            <if test="drawmaterialRfBillSender != null">drawmaterial_rf_bill_sender,</if>
+            <if test="createtime != null">createtime,</if>
+            <if test="drawmaterialRfDesc != null">drawmaterial_rf_desc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="drawmaterialRfBillid != null">#{drawmaterialRfBillid},</if>
+            <if test="drawmaterialRfBillno != null">#{drawmaterialRfBillno},</if>
+            <if test="drawmaterialRfBillstate != null">#{drawmaterialRfBillstate},</if>
+            <if test="drawmaterialRfBillSender != null">#{drawmaterialRfBillSender},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="drawmaterialRfDesc != null">#{drawmaterialRfDesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawmaterialRfBill" parameterType="DrawmaterialRfBill">
+        update drawmaterial_rf_bill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drawmaterialRfBillno != null">drawmaterial_rf_billno = #{drawmaterialRfBillno},</if>
+            <if test="drawmaterialRfBillstate != null">drawmaterial_rf_billstate = #{drawmaterialRfBillstate},</if>
+            <if test="drawmaterialRfBillSender != null">drawmaterial_rf_bill_sender = #{drawmaterialRfBillSender},</if>
+            <if test="createtime != null">createtime = #{createtime},</if>
+            <if test="drawmaterialRfDesc != null">drawmaterial_rf_desc = #{drawmaterialRfDesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+        </trim>
+        where drawmaterial_rf_billid = #{drawmaterialRfBillid}
+    </update>
+
+    <delete id="deleteDrawmaterialRfBillByDrawmaterialRfBillid" parameterType="Long">
+        delete from drawmaterial_rf_bill where drawmaterial_rf_billid = #{drawmaterialRfBillid}
+    </delete>
+
+    <delete id="deleteDrawmaterialRfBillByDrawmaterialRfBillids" parameterType="String">
+        delete from drawmaterial_rf_bill where drawmaterial_rf_billid in 
+        <foreach item="drawmaterialRfBillid" collection="array" open="(" separator="," close=")">
+            #{drawmaterialRfBillid}
+        </foreach>
+    </delete>
+</mapper>

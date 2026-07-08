@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PmMaterialMapper">
+    
+    <resultMap type="PmMaterial" id="PmMaterialResult">
+        <result property="pmMaterialid"    column="pm_materialid"    />
+        <result property="pmMattypeid"    column="pm_mattypeid"    />
+        <result property="matcode"    column="matcode"    />
+        <result property="matname"    column="matname"    />
+        <result property="matmodel"    column="matmodel"    />
+        <result property="matdrawingno"    column="matdrawingno"    />
+        <result property="matunit"    column="matunit"    />
+        <result property="matinnercode"    column="matinnercode"    />
+        <result property="matcustomcode"    column="matcustomcode"    />
+        <result property="matupc"    column="matupc"    />
+        <result property="matdatastate"    column="matdatastate"    />
+        <result property="matweimeter"    column="matweimeter"    />
+        <result property="matdetail"    column="matdetail"    />
+        <result property="matsort"    column="matsort"    />
+        <result property="matstate"    column="matstate"    />
+        <result property="mattype"    column="mattype"    />
+        <result property="matcodecontrol"    column="matcodecontrol"    />
+        <result property="matqtypacket"    column="matqtypacket"    />
+        <result property="matqtybox"    column="matqtybox"    />
+        <result property="matlotqty"    column="matlotqty"    />
+        <result property="matupdated"    column="matupdated"    />
+        <result property="matuuser"    column="matuuser"    />
+        <result property="matminiroasttime"    column="matminiroasttime"    />
+        <result property="matmaxroast"    column="matmaxroast"    />
+        <result property="matmaxrepar"    column="matmaxrepar"    />
+        <result property="matdescription"    column="matdescription"    />
+        <result property="matpackreq"    column="matpackreq"    />
+        <result property="matreq1"    column="matreq1"    />
+        <result property="matreq2"    column="matreq2"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="data9"    column="data9"    />
+        <result property="data10"    column="data10"    />
+        <result property="oqcstandard"    column="oqcstandard"    />
+        <result property="storagecheck"    column="storagecheck"    />
+        <result property="printreceivelabel"    column="printreceivelabel"    />
+        <result property="worktype"    column="worktype"    />
+        <result property="minrep"    column="minrep"    />
+        <result property="maxrep"    column="maxrep"    />
+        <result property="deadline"    column="deadline"    />
+        <result property="outtype"    column="outtype"    />
+        <result property="isfrozen"    column="isfrozen"    />
+        <result property="defaultroom"    column="defaultroom"    />
+        <result property="defaultsite"    column="defaultsite"    />
+        <result property="isbatch"    column="isbatch"    />
+        <result property="issingle"    column="issingle"    />
+        <result property="secondunit"    column="secondunit"    />
+        <result property="mainunitrep"    column="mainunitrep"    />
+        <result property="unitrate"    column="unitrate"    />
+        <result property="secunitrep"    column="secunitrep"    />
+        <result property="issystem"    column="issystem"    />
+        <result property="innerpackages"    column="innerpackages"    />
+        <result property="boxpackages"    column="boxpackages"    />
+        <result property="palletpackages"    column="palletpackages"    />
+        <result property="length"    column="length"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="velocity"    column="velocity"    />
+        <result property="highness"    column="highness"    />
+        <result property="matweisingle"    column="matweisingle"    />
+        <result property="isplate"    column="isplate"    />
+        <result property="assortment1"    column="assortment_1"    />
+        <result property="assortment2"    column="assortment_2"    />
+        <result property="assortment3"    column="assortment_3"    />
+        <result property="assortment4"    column="assortment_4"    />
+        <result property="assortmentAbc"    column="assortment_abc"    />
+        <result property="mattypecontrol"    column="mattypecontrol"    />
+        <result property="storageType"    column="storage_type"    />
+        <result property="qualityType"    column="quality_type"    />
+        <result property="matsendcontrol"    column="matsendcontrol"    />
+        <result property="storetype"    column="storetype"    />
+    </resultMap>
+
+    <sql id="selectPmMaterialVo">
+        select pm_materialid, pm_mattypeid, matcode, matname, matmodel, matdrawingno, matunit, matinnercode, matcustomcode, matupc, matdatastate, matweimeter, matdetail, matsort, matstate, mattype, matcodecontrol, matqtypacket, matqtybox, matlotqty, matupdated, matuuser, matminiroasttime, matmaxroast, matmaxrepar, matdescription, matpackreq, matreq1, matreq2, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, oqcstandard, storagecheck, printreceivelabel, worktype, minrep, maxrep, deadline, outtype, isfrozen, defaultroom, defaultsite, isbatch, issingle, secondunit, mainunitrep, unitrate, secunitrep, issystem, innerpackages, boxpackages, palletpackages, length, width, height, velocity, highness, matweisingle, isplate, assortment_1, assortment_2, assortment_3, assortment_4, assortment_abc, mattypecontrol, storage_type, quality_type, matsendcontrol, storetype from pm_material
+    </sql>
+
+    <select id="selectPmMaterialList" parameterType="PmMaterial" resultMap="PmMaterialResult">
+        <include refid="selectPmMaterialVo"/>
+        <where>  
+            <if test="pmMattypeid != null "> and pm_mattypeid = #{pmMattypeid}</if>
+            <if test="matcode != null  and matcode != ''"> and matcode = #{matcode}</if>
+            <if test="matname != null  and matname != ''"> and matname like concat('%', #{matname}, '%')</if>
+            <if test="matmodel != null  and matmodel != ''"> and matmodel = #{matmodel}</if>
+            <if test="matdrawingno != null  and matdrawingno != ''"> and matdrawingno = #{matdrawingno}</if>
+            <if test="matunit != null "> and matunit = #{matunit}</if>
+            <if test="matinnercode != null  and matinnercode != ''"> and matinnercode = #{matinnercode}</if>
+            <if test="matcustomcode != null  and matcustomcode != ''"> and matcustomcode = #{matcustomcode}</if>
+            <if test="matupc != null  and matupc != ''"> and matupc = #{matupc}</if>
+            <if test="matdatastate != null "> and matdatastate = #{matdatastate}</if>
+            <if test="matweimeter != null "> and matweimeter = #{matweimeter}</if>
+            <if test="matdetail != null  and matdetail != ''"> and matdetail = #{matdetail}</if>
+            <if test="matsort != null "> and matsort = #{matsort}</if>
+            <if test="matstate != null "> and matstate = #{matstate}</if>
+            <if test="mattype != null  and mattype != ''"> and mattype = #{mattype}</if>
+            <if test="matcodecontrol != null "> and matcodecontrol = #{matcodecontrol}</if>
+            <if test="matqtypacket != null "> and matqtypacket = #{matqtypacket}</if>
+            <if test="matqtybox != null "> and matqtybox = #{matqtybox}</if>
+            <if test="matlotqty != null "> and matlotqty = #{matlotqty}</if>
+            <if test="matupdated != null "> and matupdated = #{matupdated}</if>
+            <if test="matuuser != null "> and matuuser = #{matuuser}</if>
+            <if test="matminiroasttime != null "> and matminiroasttime = #{matminiroasttime}</if>
+            <if test="matmaxroast != null "> and matmaxroast = #{matmaxroast}</if>
+            <if test="matmaxrepar != null "> and matmaxrepar = #{matmaxrepar}</if>
+            <if test="matdescription != null  and matdescription != ''"> and matdescription = #{matdescription}</if>
+            <if test="matpackreq != null  and matpackreq != ''"> and matpackreq = #{matpackreq}</if>
+            <if test="matreq1 != null  and matreq1 != ''"> and matreq1 = #{matreq1}</if>
+            <if test="matreq2 != null  and matreq2 != ''"> and matreq2 = #{matreq2}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="data9 != null  and data9 != ''"> and data9 = #{data9}</if>
+            <if test="data10 != null  and data10 != ''"> and data10 = #{data10}</if>
+            <if test="oqcstandard != null  and oqcstandard != ''"> and oqcstandard = #{oqcstandard}</if>
+            <if test="storagecheck != null "> and storagecheck = #{storagecheck}</if>
+            <if test="printreceivelabel != null "> and printreceivelabel = #{printreceivelabel}</if>
+            <if test="worktype != null "> and worktype = #{worktype}</if>
+            <if test="minrep != null "> and minrep = #{minrep}</if>
+            <if test="maxrep != null "> and maxrep = #{maxrep}</if>
+            <if test="deadline != null  and deadline != ''"> and deadline = #{deadline}</if>
+            <if test="outtype != null  and outtype != ''"> and outtype = #{outtype}</if>
+            <if test="isfrozen != null  and isfrozen != ''"> and isfrozen = #{isfrozen}</if>
+            <if test="defaultroom != null "> and defaultroom = #{defaultroom}</if>
+            <if test="defaultsite != null "> and defaultsite = #{defaultsite}</if>
+            <if test="isbatch != null  and isbatch != ''"> and isbatch = #{isbatch}</if>
+            <if test="issingle != null  and issingle != ''"> and issingle = #{issingle}</if>
+            <if test="secondunit != null  and secondunit != ''"> and secondunit = #{secondunit}</if>
+            <if test="mainunitrep != null "> and mainunitrep = #{mainunitrep}</if>
+            <if test="unitrate != null "> and unitrate = #{unitrate}</if>
+            <if test="secunitrep != null "> and secunitrep = #{secunitrep}</if>
+            <if test="issystem != null  and issystem != ''"> and issystem = #{issystem}</if>
+            <if test="innerpackages != null "> and innerpackages = #{innerpackages}</if>
+            <if test="boxpackages != null "> and boxpackages = #{boxpackages}</if>
+            <if test="palletpackages != null "> and palletpackages = #{palletpackages}</if>
+            <if test="length != null "> and length = #{length}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="velocity != null  and velocity != ''"> and velocity = #{velocity}</if>
+            <if test="highness != null  and highness != ''"> and highness = #{highness}</if>
+            <if test="matweisingle != null "> and matweisingle = #{matweisingle}</if>
+            <if test="isplate != null  and isplate != ''"> and isplate = #{isplate}</if>
+            <if test="assortment1 != null  and assortment1 != ''"> and assortment_1 = #{assortment1}</if>
+            <if test="assortment2 != null  and assortment2 != ''"> and assortment_2 = #{assortment2}</if>
+            <if test="assortment3 != null  and assortment3 != ''"> and assortment_3 = #{assortment3}</if>
+            <if test="assortment4 != null  and assortment4 != ''"> and assortment_4 = #{assortment4}</if>
+            <if test="assortmentAbc != null  and assortmentAbc != ''"> and assortment_abc = #{assortmentAbc}</if>
+            <if test="mattypecontrol != null "> and mattypecontrol = #{mattypecontrol}</if>
+            <if test="storageType != null  and storageType != ''"> and storage_type = #{storageType}</if>
+            <if test="qualityType != null  and qualityType != ''"> and quality_type = #{qualityType}</if>
+            <if test="matsendcontrol != null "> and matsendcontrol = #{matsendcontrol}</if>
+            <if test="storetype != null  and storetype != ''"> and storetype = #{storetype}</if>
+        </where>
+    </select>
+    
+    <select id="selectPmMaterialByPmMaterialid" parameterType="Long" resultMap="PmMaterialResult">
+        <include refid="selectPmMaterialVo"/>
+        where pm_materialid = #{pmMaterialid}
+    </select>
+
+    <select id="selectPmMaterialByMatcode" parameterType="String" resultMap="PmMaterialResult">
+        <include refid="selectPmMaterialVo"/>
+        where matcode = #{matcode}
+    </select>
+        
+    <insert id="insertPmMaterial" parameterType="PmMaterial" useGeneratedKeys="true" keyProperty="pmMaterialid">
+        insert into pm_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pmMattypeid != null">pm_mattypeid,</if>
+            <if test="matcode != null">matcode,</if>
+            <if test="matname != null">matname,</if>
+            <if test="matmodel != null">matmodel,</if>
+            <if test="matdrawingno != null">matdrawingno,</if>
+            <if test="matunit != null">matunit,</if>
+            <if test="matinnercode != null">matinnercode,</if>
+            <if test="matcustomcode != null">matcustomcode,</if>
+            <if test="matupc != null">matupc,</if>
+            <if test="matdatastate != null">matdatastate,</if>
+            <if test="matweimeter != null">matweimeter,</if>
+            <if test="matdetail != null">matdetail,</if>
+            <if test="matsort != null">matsort,</if>
+            <if test="matstate != null">matstate,</if>
+            <if test="mattype != null">mattype,</if>
+            <if test="matcodecontrol != null">matcodecontrol,</if>
+            <if test="matqtypacket != null">matqtypacket,</if>
+            <if test="matqtybox != null">matqtybox,</if>
+            <if test="matlotqty != null">matlotqty,</if>
+            <if test="matupdated != null">matupdated,</if>
+            <if test="matuuser != null">matuuser,</if>
+            <if test="matminiroasttime != null">matminiroasttime,</if>
+            <if test="matmaxroast != null">matmaxroast,</if>
+            <if test="matmaxrepar != null">matmaxrepar,</if>
+            <if test="matdescription != null">matdescription,</if>
+            <if test="matpackreq != null">matpackreq,</if>
+            <if test="matreq1 != null">matreq1,</if>
+            <if test="matreq2 != null">matreq2,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="data9 != null">data9,</if>
+            <if test="data10 != null">data10,</if>
+            <if test="oqcstandard != null">oqcstandard,</if>
+            <if test="storagecheck != null">storagecheck,</if>
+            <if test="printreceivelabel != null">printreceivelabel,</if>
+            <if test="worktype != null">worktype,</if>
+            <if test="minrep != null">minrep,</if>
+            <if test="maxrep != null">maxrep,</if>
+            <if test="deadline != null">deadline,</if>
+            <if test="outtype != null">outtype,</if>
+            <if test="isfrozen != null">isfrozen,</if>
+            <if test="defaultroom != null">defaultroom,</if>
+            <if test="defaultsite != null">defaultsite,</if>
+            <if test="isbatch != null">isbatch,</if>
+            <if test="issingle != null">issingle,</if>
+            <if test="secondunit != null">secondunit,</if>
+            <if test="mainunitrep != null">mainunitrep,</if>
+            <if test="unitrate != null">unitrate,</if>
+            <if test="secunitrep != null">secunitrep,</if>
+            <if test="issystem != null">issystem,</if>
+            <if test="innerpackages != null">innerpackages,</if>
+            <if test="boxpackages != null">boxpackages,</if>
+            <if test="palletpackages != null">palletpackages,</if>
+            <if test="length != null">length,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="velocity != null">velocity,</if>
+            <if test="highness != null">highness,</if>
+            <if test="matweisingle != null">matweisingle,</if>
+            <if test="isplate != null">isplate,</if>
+            <if test="assortment1 != null">assortment_1,</if>
+            <if test="assortment2 != null">assortment_2,</if>
+            <if test="assortment3 != null">assortment_3,</if>
+            <if test="assortment4 != null">assortment_4,</if>
+            <if test="assortmentAbc != null">assortment_abc,</if>
+            <if test="mattypecontrol != null">mattypecontrol,</if>
+            <if test="storageType != null">storage_type,</if>
+            <if test="qualityType != null">quality_type,</if>
+            <if test="matsendcontrol != null">matsendcontrol,</if>
+            <if test="storetype != null">storetype,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pmMattypeid != null">#{pmMattypeid},</if>
+            <if test="matcode != null">#{matcode},</if>
+            <if test="matname != null">#{matname},</if>
+            <if test="matmodel != null">#{matmodel},</if>
+            <if test="matdrawingno != null">#{matdrawingno},</if>
+            <if test="matunit != null">#{matunit},</if>
+            <if test="matinnercode != null">#{matinnercode},</if>
+            <if test="matcustomcode != null">#{matcustomcode},</if>
+            <if test="matupc != null">#{matupc},</if>
+            <if test="matdatastate != null">#{matdatastate},</if>
+            <if test="matweimeter != null">#{matweimeter},</if>
+            <if test="matdetail != null">#{matdetail},</if>
+            <if test="matsort != null">#{matsort},</if>
+            <if test="matstate != null">#{matstate},</if>
+            <if test="mattype != null">#{mattype},</if>
+            <if test="matcodecontrol != null">#{matcodecontrol},</if>
+            <if test="matqtypacket != null">#{matqtypacket},</if>
+            <if test="matqtybox != null">#{matqtybox},</if>
+            <if test="matlotqty != null">#{matlotqty},</if>
+            <if test="matupdated != null">#{matupdated},</if>
+            <if test="matuuser != null">#{matuuser},</if>
+            <if test="matminiroasttime != null">#{matminiroasttime},</if>
+            <if test="matmaxroast != null">#{matmaxroast},</if>
+            <if test="matmaxrepar != null">#{matmaxrepar},</if>
+            <if test="matdescription != null">#{matdescription},</if>
+            <if test="matpackreq != null">#{matpackreq},</if>
+            <if test="matreq1 != null">#{matreq1},</if>
+            <if test="matreq2 != null">#{matreq2},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="data9 != null">#{data9},</if>
+            <if test="data10 != null">#{data10},</if>
+            <if test="oqcstandard != null">#{oqcstandard},</if>
+            <if test="storagecheck != null">#{storagecheck},</if>
+            <if test="printreceivelabel != null">#{printreceivelabel},</if>
+            <if test="worktype != null">#{worktype},</if>
+            <if test="minrep != null">#{minrep},</if>
+            <if test="maxrep != null">#{maxrep},</if>
+            <if test="deadline != null">#{deadline},</if>
+            <if test="outtype != null">#{outtype},</if>
+            <if test="isfrozen != null">#{isfrozen},</if>
+            <if test="defaultroom != null">#{defaultroom},</if>
+            <if test="defaultsite != null">#{defaultsite},</if>
+            <if test="isbatch != null">#{isbatch},</if>
+            <if test="issingle != null">#{issingle},</if>
+            <if test="secondunit != null">#{secondunit},</if>
+            <if test="mainunitrep != null">#{mainunitrep},</if>
+            <if test="unitrate != null">#{unitrate},</if>
+            <if test="secunitrep != null">#{secunitrep},</if>
+            <if test="issystem != null">#{issystem},</if>
+            <if test="innerpackages != null">#{innerpackages},</if>
+            <if test="boxpackages != null">#{boxpackages},</if>
+            <if test="palletpackages != null">#{palletpackages},</if>
+            <if test="length != null">#{length},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="velocity != null">#{velocity},</if>
+            <if test="highness != null">#{highness},</if>
+            <if test="matweisingle != null">#{matweisingle},</if>
+            <if test="isplate != null">#{isplate},</if>
+            <if test="assortment1 != null">#{assortment1},</if>
+            <if test="assortment2 != null">#{assortment2},</if>
+            <if test="assortment3 != null">#{assortment3},</if>
+            <if test="assortment4 != null">#{assortment4},</if>
+            <if test="assortmentAbc != null">#{assortmentAbc},</if>
+            <if test="mattypecontrol != null">#{mattypecontrol},</if>
+            <if test="storageType != null">#{storageType},</if>
+            <if test="qualityType != null">#{qualityType},</if>
+            <if test="matsendcontrol != null">#{matsendcontrol},</if>
+            <if test="storetype != null">#{storetype},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePmMaterial" parameterType="PmMaterial">
+        update pm_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pmMattypeid != null">pm_mattypeid = #{pmMattypeid},</if>
+            <if test="matcode != null">matcode = #{matcode},</if>
+            <if test="matname != null">matname = #{matname},</if>
+            <if test="matmodel != null">matmodel = #{matmodel},</if>
+            <if test="matdrawingno != null">matdrawingno = #{matdrawingno},</if>
+            <if test="matunit != null">matunit = #{matunit},</if>
+            <if test="matinnercode != null">matinnercode = #{matinnercode},</if>
+            <if test="matcustomcode != null">matcustomcode = #{matcustomcode},</if>
+            <if test="matupc != null">matupc = #{matupc},</if>
+            <if test="matdatastate != null">matdatastate = #{matdatastate},</if>
+            <if test="matweimeter != null">matweimeter = #{matweimeter},</if>
+            <if test="matdetail != null">matdetail = #{matdetail},</if>
+            <if test="matsort != null">matsort = #{matsort},</if>
+            <if test="matstate != null">matstate = #{matstate},</if>
+            <if test="mattype != null">mattype = #{mattype},</if>
+            <if test="matcodecontrol != null">matcodecontrol = #{matcodecontrol},</if>
+            <if test="matqtypacket != null">matqtypacket = #{matqtypacket},</if>
+            <if test="matqtybox != null">matqtybox = #{matqtybox},</if>
+            <if test="matlotqty != null">matlotqty = #{matlotqty},</if>
+            <if test="matupdated != null">matupdated = #{matupdated},</if>
+            <if test="matuuser != null">matuuser = #{matuuser},</if>
+            <if test="matminiroasttime != null">matminiroasttime = #{matminiroasttime},</if>
+            <if test="matmaxroast != null">matmaxroast = #{matmaxroast},</if>
+            <if test="matmaxrepar != null">matmaxrepar = #{matmaxrepar},</if>
+            <if test="matdescription != null">matdescription = #{matdescription},</if>
+            <if test="matpackreq != null">matpackreq = #{matpackreq},</if>
+            <if test="matreq1 != null">matreq1 = #{matreq1},</if>
+            <if test="matreq2 != null">matreq2 = #{matreq2},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="data9 != null">data9 = #{data9},</if>
+            <if test="data10 != null">data10 = #{data10},</if>
+            <if test="oqcstandard != null">oqcstandard = #{oqcstandard},</if>
+            <if test="storagecheck != null">storagecheck = #{storagecheck},</if>
+            <if test="printreceivelabel != null">printreceivelabel = #{printreceivelabel},</if>
+            <if test="worktype != null">worktype = #{worktype},</if>
+            <if test="minrep != null">minrep = #{minrep},</if>
+            <if test="maxrep != null">maxrep = #{maxrep},</if>
+            <if test="deadline != null">deadline = #{deadline},</if>
+            <if test="outtype != null">outtype = #{outtype},</if>
+            <if test="isfrozen != null">isfrozen = #{isfrozen},</if>
+            <if test="defaultroom != null">defaultroom = #{defaultroom},</if>
+            <if test="defaultsite != null">defaultsite = #{defaultsite},</if>
+            <if test="isbatch != null">isbatch = #{isbatch},</if>
+            <if test="issingle != null">issingle = #{issingle},</if>
+            <if test="secondunit != null">secondunit = #{secondunit},</if>
+            <if test="mainunitrep != null">mainunitrep = #{mainunitrep},</if>
+            <if test="unitrate != null">unitrate = #{unitrate},</if>
+            <if test="secunitrep != null">secunitrep = #{secunitrep},</if>
+            <if test="issystem != null">issystem = #{issystem},</if>
+            <if test="innerpackages != null">innerpackages = #{innerpackages},</if>
+            <if test="boxpackages != null">boxpackages = #{boxpackages},</if>
+            <if test="palletpackages != null">palletpackages = #{palletpackages},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="velocity != null">velocity = #{velocity},</if>
+            <if test="highness != null">highness = #{highness},</if>
+            <if test="matweisingle != null">matweisingle = #{matweisingle},</if>
+            <if test="isplate != null">isplate = #{isplate},</if>
+            <if test="assortment1 != null">assortment_1 = #{assortment1},</if>
+            <if test="assortment2 != null">assortment_2 = #{assortment2},</if>
+            <if test="assortment3 != null">assortment_3 = #{assortment3},</if>
+            <if test="assortment4 != null">assortment_4 = #{assortment4},</if>
+            <if test="assortmentAbc != null">assortment_abc = #{assortmentAbc},</if>
+            <if test="mattypecontrol != null">mattypecontrol = #{mattypecontrol},</if>
+            <if test="storageType != null">storage_type = #{storageType},</if>
+            <if test="qualityType != null">quality_type = #{qualityType},</if>
+            <if test="matsendcontrol != null">matsendcontrol = #{matsendcontrol},</if>
+            <if test="storetype != null">storetype = #{storetype},</if>
+        </trim>
+        where pm_materialid = #{pmMaterialid}
+    </update>
+
+    <delete id="deletePmMaterialByPmMaterialid" parameterType="Long">
+        delete from pm_material where pm_materialid = #{pmMaterialid}
+    </delete>
+
+    <delete id="deletePmMaterialByPmMaterialids" parameterType="String">
+        delete from pm_material where pm_materialid in 
+        <foreach item="pmMaterialid" collection="array" open="(" separator="," close=")">
+            #{pmMaterialid}
+        </foreach>
+    </delete>
+</mapper>

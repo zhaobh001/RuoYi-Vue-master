@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysMessageMapper">
+
+    <resultMap type="SysMessage" id="SysMessageResult">
+        <result property="messageId"    column="message_id"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="taskitemid"    column="taskitemid"    />
+        <result property="messageTitle"    column="message_title"    />
+        <result property="messageConcent"    column="message_concent"    />
+        <result property="messageStatus"    column="message_status"    />
+        <result property="messageSender"    column="message_sender"    />
+        <result property="messageReceiver"    column="message_receiver"    />
+        <result property="cldNo"    column="cld_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="receiveTime"    column="receive_time"    />
+    </resultMap>
+
+    <sql id="selectSysMessageVo">
+        select message_id, message_type, taskitemid, message_title, message_concent, message_status, message_sender, message_receiver, cld_no, create_time, receive_time from sys_message
+    </sql>
+
+    <select id="selectSysMessageList" parameterType="SysMessage" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        <where>
+            <if test="messageId != null "> and message_id = #{messageId}</if>
+            <if test="messageType != null  and messageType != ''"> and message_type = #{messageType}</if>
+            <if test="taskitemid != null "> and taskitemid = #{taskitemid}</if>
+            <if test="messageTitle != null  and messageTitle != ''"> and message_title = #{messageTitle}</if>
+            <if test="messageConcent != null  and messageConcent != ''"> and message_concent = #{messageConcent}</if>
+            <if test="messageStatus != null  and messageStatus != ''"> and message_status = #{messageStatus}</if>
+            <if test="messageSender != null  and messageSender != ''"> and message_sender = #{messageSender}</if>
+            <if test="messageReceiver != null  and messageReceiver != ''"> and message_receiver = #{messageReceiver}</if>
+            <if test="cldNo != null  and cldNo != ''"> and cld_no = #{cldNo}</if>
+            <if test="receiveTime != null "> and receive_time = #{receiveTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSysMessageList2" parameterType="SysMessage" resultMap="SysMessageResult">
+select
+MESSAGE_ID,
+case when ms.MESSAGE_TYPE='1' then '出库单据下达' when ms.MESSAGE_TYPE='2' then '入库单据下达' else null end as MESSAGE_TYPE,
+ms.MESSAGE_TITLE,
+ms.MESSAGE_CONCENT,
+case when ms.MESSAGE_STATUS='1' then '未处理' when ms.MESSAGE_STATUS='2' then '已处理' else null end MESSAGE_STATUS,
+ms.CREATE_TIME,
+ms.RECEIVE_TIME
+from sys_message ms
+where (ms.MESSAGE_STATUS='1') and ms.message_receiver = #{messageReceiver}
+order by ms.CREATE_TIME desc
+    </select>
+
+       <select id="selectSysMessageCount" parameterType="SysMessage" resultType="int">
+select
+count(*) as MESSAGE_ID
+from sys_message ms
+where (ms.MESSAGE_STATUS='1') and ms.message_receiver = #{messageReceiver}
+order by ms.CREATE_TIME desc
+    </select>
+
+    <select id="selectSysMessageByMessageId" parameterType="Long" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        where message_id = #{messageId}
+    </select>
+
+    <insert id="insertSysMessage" parameterType="SysMessage">
+        <selectKey keyProperty="messageId" order="BEFORE" resultType="long">
+            select seq_sys_message.nextval as messageId from DUAL
+        </selectKey>
+        insert into sys_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="messageId != null and messageId != '' ">messageId, </if>
+            <if test="messageType != null and messageType != ''">message_type,</if>
+            <if test="taskitemid != null">taskitemid,</if>
+            <if test="messageTitle != null and messageTitle != ''">message_title,</if>
+            <if test="messageConcent != null and messageConcent != ''">message_concent,</if>
+            <if test="messageStatus != null and messageStatus != ''">message_status,</if>
+            <if test="messageSender != null and messageSender != ''">message_sender,</if>
+            <if test="messageReceiver != null and messageReceiver != ''">message_receiver,</if>
+            <if test="cldNo != null and cldNo != ''">cld_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="receiveTime != null">receive_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="messageId != null">#{messageId},</if>
+            <if test="messageType != null and messageType != ''">#{messageType},</if>
+            <if test="taskitemid != null">#{taskitemid},</if>
+            <if test="messageTitle != null and messageTitle != ''">#{messageTitle},</if>
+            <if test="messageConcent != null and messageConcent != ''">#{messageConcent},</if>
+            <if test="messageStatus != null and messageStatus != ''">#{messageStatus},</if>
+            <if test="messageSender != null and messageSender != ''">#{messageSender},</if>
+            <if test="messageReceiver != null and messageReceiver != ''">#{messageReceiver},</if>
+            <if test="cldNo != null and cldNo != ''">#{cldNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="receiveTime != null">#{receiveTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysMessage" parameterType="SysMessage">
+        update sys_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="messageType != null and messageType != ''">message_type = #{messageType},</if>
+            <if test="taskitemid != null">taskitemid = #{taskitemid},</if>
+            <if test="messageTitle != null and messageTitle != ''">message_title = #{messageTitle},</if>
+            <if test="messageConcent != null and messageConcent != ''">message_concent = #{messageConcent},</if>
+            <if test="messageStatus != null and messageStatus != ''">message_status = #{messageStatus},</if>
+            <if test="messageSender != null and messageSender != ''">message_sender = #{messageSender},</if>
+            <if test="messageReceiver != null and messageReceiver != ''">message_receiver = #{messageReceiver},</if>
+            <if test="cldNo != null and cldNo != ''">cld_no = #{cldNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="receiveTime != null">receive_time = #{receiveTime},</if>
+        </trim>
+        where message_id = #{messageId}
+    </update>
+
+    <delete id="deleteSysMessageByMessageId" parameterType="Long">
+        delete from sys_message where message_id = #{messageId}
+    </delete>
+
+    <delete id="deleteSysMessageByMessageIds" parameterType="String">
+        delete from sys_message where message_id in
+        <foreach item="messageId" collection="array" open="(" separator="," close=")">
+            #{messageId}
+        </foreach>
+    </delete>
+</mapper>

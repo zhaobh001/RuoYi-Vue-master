@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.InterfaceWmsToWcsMapper">
+
+    <resultMap type="InterfaceWmsToWcs" id="InterfaceWmsToWcsResult">
+        <result property="interfaceWmsToWcsId" column="interface_wms_to_wcs_id"/>
+        <result property="sid" column="sid"/>
+        <result property="typ" column="typ"/>
+        <result property="palno" column="palno"/>
+        <result property="saddr" column="saddr"/>
+        <result property="daddr" column="daddr"/>
+        <result property="dvno" column="dvno"/>
+        <result property="sendtime" column="sendtime"/>
+        <result property="weight" column="weight"/>
+        <result property="errno" column="errno"/>
+        <result property="ledId" column="led_id"/>
+        <result property="ledLine1" column="led_line1"/>
+        <result property="ledLine2" column="led_line2"/>
+        <result property="ledLine3" column="led_line3"/>
+        <result property="ledLine4" column="led_line4"/>
+        <result property="state" column="state"/>
+        <result property="seq" column="seq"/>
+        <result property="weightGrade" column="weight_grade"/>
+        <result property="highGrade" column="high_grade"/>
+        <result property="wmsLastDate" column="wms_last_date"/>
+        <result property="wmsErrMessage" column="wms_err_message"/>
+        <result property="wcsLastDate" column="wcs_last_date"/>
+        <result property="wcsErrMessage" column="wcs_err_message"/>
+        <result property="fromsiteid" column="fromsiteid"/>
+        <result property="tositeid" column="tositeid"/>
+        <result property="taskId" column="taskid"/>
+        <result property="taskNo" column="taskno"/>
+        <result property="billid" column="billid"/>
+        <result property="billno" column="billno"/>
+        <result property="proofid" column="proofid"/>
+        <result property="proofno" column="proofno"/>
+        <result property="palnotype" column="palnotype"/>
+        <result property="tasktype" column="tasktype"/>
+        <result property="changetype" column="changetype"/>
+
+        <result property="sendtime2" column="SENDTIME2"/>
+        <result property="state2" column="STATE2"/>
+        <result property="weightGrade2" column="WEIGHT_GRADE2"/>
+        <result property="highGrade2" column="HIGH_GRADE2"/>
+        <result property="tasktype2" column="TASKTYPE2"/>
+        <result property="changetype2" column="CHANGETYPE2"/>
+        <result property="typ2" column="TYP2"/>
+        <result property="errno2" column="ERRNO2"/>
+        <result property="wmsLastDate2" column="WMS_LAST_DATE2"/>
+    </resultMap>
+
+    <select id="commitUpWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+            resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitUpWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+
+    <select id="commitDownWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+            resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitDownWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+
+    <select id="commitInvDownWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+            resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitInvDownWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+
+    <select id="commitEmptyTrayWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+            resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitEmptyTrayWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+
+    <sql id="selectInterfaceWmsToWcsVo">
+        select interface_wms_to_wcs_id, sid, typ, palno, saddr, daddr, dvno, sendtime, weight, errno, led_id, led_line1, led_line2, led_line3, led_line4, state, seq, weight_grade, high_grade, wms_last_date, wms_err_message, wcs_last_date, wcs_err_message, fromsiteid, tositeid, taskid, taskno, billid, billno, proofid, proofno, palnotype, tasktype, changetype from interface_wms_to_wcs
+    </sql>
+
+    <select id="selectInterfaceWmsToWcsList" parameterType="InterfaceWmsToWcs" resultMap="InterfaceWmsToWcsResult">
+        <include refid="selectInterfaceWmsToWcsVo"/>
+        <where>
+            <if test="sid != null ">and sid = #{sid}</if>
+            <if test="typ != null  and typ != ''">and typ = #{typ}</if>
+            <if test="palno != null  and palno != ''">and palno = #{palno}</if>
+            <if test="saddr != null  and saddr != ''">and saddr = #{saddr}</if>
+            <if test="daddr != null  and daddr != ''">and daddr = #{daddr}</if>
+            <if test="dvno != null  and dvno != ''">and dvno = #{dvno}</if>
+            <if test="sendtime != null ">and sendtime = #{sendtime}</if>
+            <if test="weight != null ">and weight = #{weight}</if>
+            <if test="errno != null  and errno != ''">and errno = #{errno}</if>
+            <if test="ledId != null  and ledId != ''">and led_id = #{ledId}</if>
+            <if test="ledLine1 != null  and ledLine1 != ''">and led_line1 = #{ledLine1}</if>
+            <if test="ledLine2 != null  and ledLine2 != ''">and led_line2 = #{ledLine2}</if>
+            <if test="ledLine3 != null  and ledLine3 != ''">and led_line3 = #{ledLine3}</if>
+            <if test="ledLine4 != null  and ledLine4 != ''">and led_line4 = #{ledLine4}</if>
+            <if test="state != null  and state != ''">and state = #{state}</if>
+            <if test="seq != null ">and seq = #{seq}</if>
+            <if test="weightGrade != null  and weightGrade != ''">and weight_grade = #{weightGrade}</if>
+            <if test="highGrade != null  and highGrade != ''">and high_grade = #{highGrade}</if>
+            <if test="wmsLastDate != null ">and wms_last_date = #{wmsLastDate}</if>
+            <if test="wmsErrMessage != null  and wmsErrMessage != ''">and wms_err_message = #{wmsErrMessage}</if>
+            <if test="wcsLastDate != null ">and wcs_last_date = #{wcsLastDate}</if>
+            <if test="wcsErrMessage != null  and wcsErrMessage != ''">and wcs_err_message = #{wcsErrMessage}</if>
+            <if test="fromsiteid != null ">and fromsiteid = #{fromsiteid}</if>
+            <if test="tositeid != null ">and tositeid = #{tositeid}</if>
+            <if test="taskid != null ">and taskid = #{taskid}</if>
+            <if test="taskno != null  and taskno != ''">and taskno = #{taskno}</if>
+            <if test="billid != null ">and billid = #{billid}</if>
+            <if test="billno != null  and billno != ''">and billno = #{billno}</if>
+            <if test="proofid != null ">and proofid = #{proofid}</if>
+            <if test="proofno != null  and proofno != ''">and proofno = #{proofno}</if>
+            <if test="palnotype != null  and palnotype != ''">and palnotype = #{palnotype}</if>
+            <if test="tasktype != null  and tasktype != ''">and tasktype = #{tasktype}</if>
+            <if test="changetype != null ">and changetype = #{changetype}</if>
+        </where>
+    </select>
+
+    <select id="selectInterfaceWmsToWcsByInterfaceWmsToWcsId" parameterType="Long" resultMap="InterfaceWmsToWcsResult">
+    </select>
+
+    <insert id="insertInterfaceWmsToWcs" parameterType="InterfaceWmsToWcs" useGeneratedKeys="true"
+            keyProperty="interfaceWmsToWcsId">
+        insert into interface_wms_to_wcs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="typ != null">typ,</if>
+            <if test="palno != null">palno,</if>
+            <if test="saddr != null">saddr,</if>
+            <if test="daddr != null">daddr,</if>
+            <if test="dvno != null">dvno,</if>
+            <if test="sendtime != null">sendtime,</if>
+            <if test="weight != null">weight,</if>
+            <if test="errno != null">errno,</if>
+            <if test="ledId != null">led_id,</if>
+            <if test="ledLine1 != null">led_line1,</if>
+            <if test="ledLine2 != null">led_line2,</if>
+            <if test="ledLine3 != null">led_line3,</if>
+            <if test="ledLine4 != null">led_line4,</if>
+            <if test="state != null">state,</if>
+            <if test="seq != null">seq,</if>
+            <if test="weightGrade != null">weight_grade,</if>
+            <if test="highGrade != null">high_grade,</if>
+            <if test="wmsLastDate != null">wms_last_date,</if>
+            <if test="wmsErrMessage != null">wms_err_message,</if>
+            <if test="wcsLastDate != null">wcs_last_date,</if>
+            <if test="wcsErrMessage != null">wcs_err_message,</if>
+            <if test="fromsiteid != null">fromsiteid,</if>
+            <if test="tositeid != null">tositeid,</if>
+            <if test="taskid != null">taskid,</if>
+            <if test="taskno != null">taskno,</if>
+            <if test="billid != null">billid,</if>
+            <if test="billno != null">billno,</if>
+            <if test="proofid != null">proofid,</if>
+            <if test="proofno != null">proofno,</if>
+            <if test="palnotype != null">palnotype,</if>
+            <if test="tasktype != null">tasktype,</if>
+            <if test="changetype != null">changetype,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="typ != null">#{typ},</if>
+            <if test="palno != null">#{palno},</if>
+            <if test="saddr != null">#{saddr},</if>
+            <if test="daddr != null">#{daddr},</if>
+            <if test="dvno != null">#{dvno},</if>
+            <if test="sendtime != null">#{sendtime},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="errno != null">#{errno},</if>
+            <if test="ledId != null">#{ledId},</if>
+            <if test="ledLine1 != null">#{ledLine1},</if>
+            <if test="ledLine2 != null">#{ledLine2},</if>
+            <if test="ledLine3 != null">#{ledLine3},</if>
+            <if test="ledLine4 != null">#{ledLine4},</if>
+            <if test="state != null">#{state},</if>
+            <if test="seq != null">#{seq},</if>
+            <if test="weightGrade != null">#{weightGrade},</if>
+            <if test="highGrade != null">#{highGrade},</if>
+            <if test="wmsLastDate != null">#{wmsLastDate},</if>
+            <if test="wmsErrMessage != null">#{wmsErrMessage},</if>
+            <if test="wcsLastDate != null">#{wcsLastDate},</if>
+            <if test="wcsErrMessage != null">#{wcsErrMessage},</if>
+            <if test="fromsiteid != null">#{fromsiteid},</if>
+            <if test="tositeid != null">#{tositeid},</if>
+            <if test="taskid != null">#{taskid},</if>
+            <if test="taskno != null">#{taskno},</if>
+            <if test="billid != null">#{billid},</if>
+            <if test="billno != null">#{billno},</if>
+            <if test="proofid != null">#{proofid},</if>
+            <if test="proofno != null">#{proofno},</if>
+            <if test="palnotype != null">#{palnotype},</if>
+            <if test="tasktype != null">#{tasktype},</if>
+            <if test="changetype != null">#{changetype},</if>
+        </trim>
+    </insert>
+
+    <update id="updateInterfaceWmsToWcs" parameterType="InterfaceWmsToWcs">
+        update interface_wms_to_wcs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sid != null">sid = #{sid},</if>
+            <if test="typ != null">typ = #{typ},</if>
+            <if test="palno != null">palno = #{palno},</if>
+            <if test="saddr != null">saddr = #{saddr},</if>
+            <if test="daddr != null">daddr = #{daddr},</if>
+            <if test="dvno != null">dvno = #{dvno},</if>
+            <if test="sendtime != null">sendtime = #{sendtime},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="errno != null">errno = #{errno},</if>
+            <if test="ledId != null">led_id = #{ledId},</if>
+            <if test="ledLine1 != null">led_line1 = #{ledLine1},</if>
+            <if test="ledLine2 != null">led_line2 = #{ledLine2},</if>
+            <if test="ledLine3 != null">led_line3 = #{ledLine3},</if>
+            <if test="ledLine4 != null">led_line4 = #{ledLine4},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="seq != null">seq = #{seq},</if>
+            <if test="weightGrade != null">weight_grade = #{weightGrade},</if>
+            <if test="highGrade != null">high_grade = #{highGrade},</if>
+            <if test="wmsLastDate != null">wms_last_date = #{wmsLastDate},</if>
+            <if test="wmsErrMessage != null">wms_err_message = #{wmsErrMessage},</if>
+            <if test="wcsLastDate != null">wcs_last_date = #{wcsLastDate},</if>
+            <if test="wcsErrMessage != null">wcs_err_message = #{wcsErrMessage},</if>
+            <if test="fromsiteid != null">fromsiteid = #{fromsiteid},</if>
+            <if test="tositeid != null">tositeid = #{tositeid},</if>
+            <if test="taskid != null">taskid = #{taskid},</if>
+            <if test="taskno != null">taskno = #{taskno},</if>
+            <if test="billid != null">billid = #{billid},</if>
+            <if test="billno != null">billno = #{billno},</if>
+            <if test="proofid != null">proofid = #{proofid},</if>
+            <if test="proofno != null">proofno = #{proofno},</if>
+            <if test="palnotype != null">palnotype = #{palnotype},</if>
+            <if test="tasktype != null">tasktype = #{tasktype},</if>
+            <if test="changetype != null">changetype = #{changetype},</if>
+        </trim>
+        where interface_wms_to_wcs_id = #{interfaceWmsToWcsId}
+    </update>
+
+    <delete id="deleteInterfaceWmsToWcsByInterfaceWmsToWcsId" parameterType="Long">
+        delete from interface_wms_to_wcs where interface_wms_to_wcs_id = #{interfaceWmsToWcsId}
+    </delete>
+
+    <delete id="deleteInterfaceWmsToWcsByInterfaceWmsToWcsIds" parameterType="String">
+        delete from interface_wms_to_wcs where interface_wms_to_wcs_id in
+        <foreach item="interfaceWmsToWcsId" collection="array" open="(" separator="," close=")">
+            #{interfaceWmsToWcsId}
+        </foreach>
+    </delete>
+
+    <select id="selectWmsToWcsByTaskID" parameterType="InterfaceWmsToWcs" resultMap="InterfaceWmsToWcsResult">
+        SELECT
+        a.PALNO,
+        a.SENDTIME,
+        TO_CHAR(a.SENDTIME,'YYYY-MM-DD hh24:mi') AS SENDTIME2,
+        a.STATE,
+        DECODE(a.STATE,'-1','未排队','0','未读取','1','已读取','2','WCS已完成','3','WMS处理成功','4','WMS处理失败','5','WMS撤销指令','6','WCS执行失败')
+        AS STATE2,
+        a.WEIGHT_GRADE,
+        DECODE(a.WEIGHT_GRADE,'1','&lt;=400kg','2','&lt;=500kg','3','&lt;=1000kg') AS WEIGHT_GRADE2,
+        a.HIGH_GRADE,
+        DECODE(a.HIGH_GRADE,'1','&lt;=560mm','2','&lt;=1160mm') AS HIGH_GRADE2,
+        a.TASKTYPE,
+        DECODE(a.DADDR,'1111',DECODE(a.TASKTYPE,'04','空托盘出库'), DECODE(a.TASKTYPE,'00','组盘入库', '01','配盘入库', '02','合盘入库',
+        '03','在线拣选原料盘回库', '04','空托盘入库', '05','配/合盘原料盘回库', '06','配/合盘空托盘入库', '07','盘点回库', '08','盘点配料盘回库',
+        '10','在线拣选原料盘出库', '11','整盘出库', '12','配/合盘原料盘出库', '13','空托盘垛/空笼子', '14','空托盘出库', '15','盘点出库', '16','盘点配料盘出库',
+        '17','配/合盘补料盘出库')) AS TASKTYPE2,
+        a.CHANGETYPE,
+        DECODE(a.CHANGETYPE,0,'新建',1,'更改目标地址',2,'更改起始地址') AS CHANGETYPE2,
+        a.TYP,
+        DECODE(a.TYP,'0','入库','1','出库') AS TYP2,
+        a.ERRNO,
+        DECODE(a.ERRNO,'2','重入','1','空取') AS ERRNO2,
+        a.WCS_ERR_MESSAGE AS WCS_ERR_MESSAGE,
+        a.WMS_LAST_DATE,
+        TO_CHAR(a.WMS_LAST_DATE,'YYYY-MM-DD hh24:mi') AS WMS_LAST_DATE2,
+        a.SID,
+        a.TASKNO,
+        a.TASKid,
+        a.PROOFNO,
+        a.PROOFID,
+        a.SADDR,
+        a.DADDR,
+        a.DVNO,
+        a.SEQ,
+        a.INTERFACE_WMS_TO_WCS_ID
+        FROM interface_wms_to_wcs a
+        where a.TASKTYPE = '00'
+        and a.TYP = '0'
+        and a.SENDTIME > sysdate -2
+        and a.PALNO in (select b.PALLETNO
+        from dc_connect b
+        where b.proofno = #{proofno} and b.taskid = #{taskId}
+        <if test="palno != null">
+            and b.PALNO like concat(concat('%',#{palno}),'%')
+        </if>
+        )
+        order by a.interface_wms_to_wcs_id desc
+    </select>
+
+    <select id="selectWmsToWcsByTaskID2" parameterType="InterfaceWmsToWcs" resultMap="InterfaceWmsToWcsResult">
+        SELECT
+        a.PALNO,
+        a.SENDTIME,
+        TO_CHAR(a.SENDTIME,'YYYY-MM-DD hh24:mi') AS SENDTIME2,
+        a.STATE,
+        DECODE(a.STATE,'-1','未排队','0','未读取','1','已读取','2','WCS已完成','3','WMS处理成功','4','WMS处理失败','5','WMS撤销指令','6','WCS执行失败')
+        AS STATE2,
+        a.WEIGHT_GRADE,
+        DECODE(a.WEIGHT_GRADE,'1','&lt;=400kg','2','&lt;=500kg','3','&lt;=1000kg') AS WEIGHT_GRADE2,
+        a.HIGH_GRADE,
+        DECODE(a.HIGH_GRADE,'1','&lt;=560mm','2','&lt;=1160mm') AS HIGH_GRADE2,
+        a.TASKTYPE,
+        DECODE(a.DADDR,'1111',DECODE(a.TASKTYPE,'04','空托盘出库'), DECODE(a.TASKTYPE,'00','组盘入库', '01','配盘入库', '02','合盘入库',
+        '03','在线拣选原料盘回库', '04','空托盘入库', '05','配/合盘原料盘回库', '06','配/合盘空托盘入库', '07','盘点回库', '08','盘点配料盘回库',
+        '10','在线拣选原料盘出库', '11','整盘出库', '12','配/合盘原料盘出库', '13','空托盘垛/空笼子', '14','空托盘出库', '15','盘点出库', '16','盘点配料盘出库',
+        '17','配/合盘补料盘出库')) AS TASKTYPE2,
+        a.CHANGETYPE,
+        a.PROOFNO,
+        DECODE(a.CHANGETYPE,0,'新建',1,'更改目标地址',2,'更改起始地址') AS CHANGETYPE2,
+        a.TYP,
+        DECODE(a.TYP,'0','入库','1','出库') AS TYP2,
+        a.ERRNO,
+        DECODE(a.ERRNO,'2','重入','1','空取') AS ERRNO2,
+        a.WCS_ERR_MESSAGE AS WCS_ERR_MESSAGE,
+        a.WMS_LAST_DATE,
+        TO_CHAR(a.WMS_LAST_DATE,'YYYY-MM-DD hh24:mi') AS WMS_LAST_DATE2,
+        a.SID,
+        a.TASKNO,
+        a.PROOFNO,
+        a.PROOFID,
+        a.SADDR,
+        a.DADDR,
+        a.DVNO,
+        a.SEQ,
+        a.INTERFACE_WMS_TO_WCS_ID
+        FROM interface_wms_to_wcs a
+        where a.PROOFNO = #{proofno} and a.SID = #{sid}
+        <if test="palno != null">
+            and b.PALNO like concat(concat('%',#{palno}),'%')
+        </if>
+        order by a.interface_wms_to_wcs_id desc
+    </select>
+
+    <select id="commitResetWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+            resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitResetWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+
+       <select id="commitInvResetWmsToWcs" statementType="CALLABLE" parameterType="InterfaceWmsToWcs"
+               resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CommitInvResetWmsToWcs(
+                     #{i_palletTaskId,mode=IN,jdbcType=INTEGER},
+                     #{i_pallettaskNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_startADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_endADDR,mode=IN,jdbcType=VARCHAR},
+                     #{i_operatorId,mode=IN,jdbcType=INTEGER},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+</mapper>

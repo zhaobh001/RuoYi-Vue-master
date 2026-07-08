@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OuttaskMapper">
+
+    <resultMap type="Outtask" id="OuttaskResult">
+        <result property="outtaskid" column="outtaskid"/>
+        <result property="outtaskno" column="outtaskno"/>
+        <result property="tasksource" column="tasksource"/>
+        <result property="taskcomment" column="taskcomment"/>
+        <result property="storeroomid" column="storeroomid"/>
+        <result property="collecter" column="collecter"/>
+        <result property="outstate" column="outstate"/>
+        <result property="collectkind" column="collectkind"/>
+        <result property="outdate" column="outdate"/>
+        <result property="outdesc" column="outdesc"/>
+        <result property="forcesite" column="forcesite"/>
+        <result property="forcebatch" column="forcebatch"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="batchflag" column="batchflag"/>
+        <result property="productline" column="productline"/>
+        <result property="workstation" column="workstation"/>
+        <result property="beatflag" column="beatflag"/>
+
+        <result property="taskcomment" column="taskcomment"/>
+        <result property="storeroomno" column="storeroomno"/>
+        <result property="orderno" column="orderno"/>
+        <result property="po_number" column="po_number"/>
+        <result property="delivery_data" column="delivery_data"/>
+        <result property="delivery_time" column="delivery_time"/>
+        <result property="wip_supplement_flag" column="wip_supplement_flag"/>
+        <result property="schedule_group_name" column="schedule_group_name"/>
+        <result property="i_collecter" column="i_collecter"/>
+        <result property="userId" column="userId"/>
+        <result property="roomTag" column="roomTag"/>
+    </resultMap>
+
+    <sql id="selectOuttaskVo">
+        select outtaskid, outtaskno, tasksource, taskcomment, storeroomid, collecter, outstate, collectkind, outdate, outdesc, forcesite, forcebatch, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, batchflag, productline, workstation, beatflag from outtask
+    </sql>
+
+    <select id="selectOuttaskList" parameterType="Outtask" resultMap="OuttaskResult">
+        <include refid="selectOuttaskVo"/>
+        <where>
+            <if test="outtaskno != null  and outtaskno != ''">and outtaskno = #{outtaskno}</if>
+            <if test="tasksource != null ">and tasksource = #{tasksource}</if>
+            <if test="taskcomment != null  and taskcomment != ''">and taskcomment = #{taskcomment}</if>
+            <if test="storeroomid != null ">and storeroomid = #{storeroomid}</if>
+            <if test="collecter != null ">and collecter = #{collecter}</if>
+            <if test="outstate != null ">and outstate = #{outstate}</if>
+            <if test="collectkind != null  and collectkind != ''">and collectkind = #{collectkind}</if>
+            <if test="outdate != null ">and outdate = #{outdate}</if>
+            <if test="outdesc != null  and outdesc != ''">and outdesc = #{outdesc}</if>
+            <if test="forcesite != null  and forcesite != ''">and forcesite = #{forcesite}</if>
+            <if test="forcebatch != null  and forcebatch != ''">and forcebatch = #{forcebatch}</if>
+            <if test="dataversion != null ">and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''">and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''">and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''">and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''">and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''">and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''">and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''">and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''">and data8 = #{data8}</if>
+            <if test="batchflag != null ">and batchflag = #{batchflag}</if>
+            <if test="productline != null  and productline != ''">and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''">and workstation = #{workstation}</if>
+            <if test="beatflag != null  and beatflag != ''">and beatflag = #{beatflag}</if>
+        </where>
+    </select>
+
+    <select id="selectOuttaskByOuttaskid" parameterType="Long" resultMap="OuttaskResult">
+        <include refid="selectOuttaskVo"/>
+        where outtaskid = #{outtaskid}
+    </select>
+
+    <select id="selectOuttaskByOuttaskno" parameterType="String" resultMap="OuttaskResult">
+        <include refid="selectOuttaskVo"/>
+        where outtaskno = #{outtaskno}
+    </select>
+
+    <insert id="insertOuttask" parameterType="Outtask" useGeneratedKeys="true" keyProperty="outtaskid">
+        insert into outtask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outtaskno != null">outtaskno,</if>
+            <if test="tasksource != null">tasksource,</if>
+            <if test="taskcomment != null">taskcomment,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="outstate != null">outstate,</if>
+            <if test="collectkind != null">collectkind,</if>
+            <if test="outdate != null">outdate,</if>
+            <if test="outdesc != null">outdesc,</if>
+            <if test="forcesite != null">forcesite,</if>
+            <if test="forcebatch != null">forcebatch,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="batchflag != null">batchflag,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="beatflag != null">beatflag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outtaskno != null">#{outtaskno},</if>
+            <if test="tasksource != null">#{tasksource},</if>
+            <if test="taskcomment != null">#{taskcomment},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="outstate != null">#{outstate},</if>
+            <if test="collectkind != null">#{collectkind},</if>
+            <if test="outdate != null">#{outdate},</if>
+            <if test="outdesc != null">#{outdesc},</if>
+            <if test="forcesite != null">#{forcesite},</if>
+            <if test="forcebatch != null">#{forcebatch},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="batchflag != null">#{batchflag},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="beatflag != null">#{beatflag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOuttask" parameterType="Outtask">
+        update outtask
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outtaskno != null">outtaskno = #{outtaskno},</if>
+            <if test="tasksource != null">tasksource = #{tasksource},</if>
+            <if test="taskcomment != null">taskcomment = #{taskcomment},</if>
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="outstate != null">outstate = #{outstate},</if>
+            <if test="collectkind != null">collectkind = #{collectkind},</if>
+            <if test="outdate != null">outdate = #{outdate},</if>
+            <if test="outdesc != null">outdesc = #{outdesc},</if>
+            <if test="forcesite != null">forcesite = #{forcesite},</if>
+            <if test="forcebatch != null">forcebatch = #{forcebatch},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="batchflag != null">batchflag = #{batchflag},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="beatflag != null">beatflag = #{beatflag},</if>
+        </trim>
+        where outtaskid = #{outtaskid}
+    </update>
+
+    <delete id="deleteOuttaskByOuttaskid" parameterType="Long">
+        delete from outtask where outtaskid = #{outtaskid}
+    </delete>
+
+    <delete id="deleteOuttaskByOuttaskids" parameterType="String">
+        delete from outtask where outtaskid in
+        <foreach item="outtaskid" collection="array" open="(" separator="," close=")">
+            #{outtaskid}
+        </foreach>
+    </delete>
+
+    <select id="selectOuttaskList2" parameterType="Outtask" resultMap="OuttaskResult">
+
+        select ab.* from(
+        select
+        distinct
+        taskcomment,
+        storeroomno,
+        orderno,
+        po_number,
+        forcesite,
+        forcebatch,
+        outtaskno,
+        outdesc,
+        workstation,
+        outtaskid,
+        batchflag,
+        beatflag,
+        delivery_data,
+        delivery_time,
+        wip_supplement_flag,
+        schedule_group_name,
+        outdate
+
+        from (
+        select
+        b.taskcomment,
+        nvl(c.storeroomno,' ') as storeroomno,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        b.forcesite,
+        b.forcebatch,
+        b.outtaskno,
+        d.storesiteno,
+        f.matcode,
+        f.matname,
+        a.palletno,
+        nvl(b.outdesc,' ') as outdesc,
+        b.outtaskid,
+        e.operation,
+        e.userid,
+        nvl(a.outstate,0) as outstate,
+        nvl(b.collecter,0) as collecter,
+        nvl(a.collecter,0) as i_collecter,
+        nvl(b.collecter,0) as t_collecter,
+        b.outdate,
+        c.roomtag,
+        a.hintqty,
+        a.collectedqty,
+        a.outtaskitemid,
+        nvl(op.wip_supplement_flag,'N') as  wip_supplement_flag,
+        nvl(g.schedule_group_name,'') as  schedule_group_name,
+        nvl(g.workstation,'N')  as workstation,
+        nvl(op.transfertype,'0') as  transfertype,
+        nvl(b.batchflag,0)  as batchflag,
+        g.delivery_data,
+        g.delivery_time,
+        b.beatflag
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where r.ROLE_ID=m.ROLE_ID) e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomid = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+        and nvl(a.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and nvl(a.hintqty,0) - nvl(a.collectedqty,0) > 0
+
+        <if test="beatflag != null ">and nvl(b.beatflag,'N')=#{beatflag}</if>
+        <if test="batchflag != null ">and NVL(b.batchflag,0) = #{batchflag}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outstate != null ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null "> and c.roomtag = #{roomTag}</if>
+        <if test="transferType != null "> and nvl(op.transfertype,'0') = #{transferType}</if>
+        )aa
+        )ab where 1=1
+        <if test="searchKey != null">
+            and(
+            ab.taskcomment like concat(concat('%',#{searchKey}),'%') or
+            ab.orderno like concat(concat('%',#{searchKey}),'%') or
+            ab.outtaskno like concat(concat('%',#{searchKey}),'%') or
+            ab.po_number like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+        <if test="sortColumn == null "> order by ab.outdate desc,ab.taskcomment desc, ab.orderno desc,ab.outtaskno desc</if>
+        <if test="sortColumn != null"> order by ab.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+
+
+
+        <select id="selectOuttaskList3" parameterType="Outtask" resultMap="OuttaskResult">
+
+        select ab.* from(
+        select
+        distinct
+        taskcomment,
+        storeroomno,
+        orderno,
+        po_number,
+        forcesite,
+        forcebatch,
+        outtaskno,
+        outdesc,
+        workstation,
+        outtaskid,
+        batchflag,
+        beatflag,
+        delivery_data,
+        delivery_time,
+        wip_supplement_flag,
+        schedule_group_name,
+        outdate
+
+        from (
+        select
+        b.taskcomment,
+        nvl(c.storeroomno,' ') as storeroomno,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        b.forcesite,
+        b.forcebatch,
+        b.outtaskno,
+        d.storesiteno,
+        f.matcode,
+        f.matname,
+        a.palletno,
+        nvl(b.outdesc,' ') as outdesc,
+        b.outtaskid,
+        e.operation,
+        e.userid,
+        nvl(a.outstate,0) as outstate,
+        nvl(b.collecter,0) as collecter,
+        nvl(a.collecter,0) as i_collecter,
+        nvl(b.collecter,0) as t_collecter,
+        b.outdate,
+        c.roomtag,
+        a.hintqty,
+        a.collectedqty,
+        a.outtaskitemid,
+        nvl(op.wip_supplement_flag,'N') as  wip_supplement_flag,
+        nvl(g.schedule_group_name,'') as  schedule_group_name,
+        nvl(g.workstation,'N')  as workstation,
+        nvl(op.transfertype,'0') as  transfertype,
+        nvl(b.batchflag,0)  as batchflag,
+        g.delivery_data,
+        g.delivery_time,
+        b.beatflag
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where r.ROLE_ID=m.ROLE_ID) e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomid = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+
+
+        <if test="finshFlg != 1 ">
+            and nvl(a.hintfinish,0) = 0
+            and nvl(g.hintfinish,0) = 0
+        </if>
+        <if test="finshFlg != 0 ">
+            and nvl(a.outstate,0) != 0
+        </if>
+        <if test="beatflag != null ">and nvl(b.beatflag,'N')=#{beatflag}</if>
+        <if test="batchflag != null ">and NVL(b.batchflag,0) = #{batchflag}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outstate != null and finshFlg != 1 ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null "> and c.roomtag = #{roomTag}</if>
+        <if test="transferType != null "> and nvl(op.transfertype,'0') = #{transferType}</if>
+        )aa
+        )ab where 1=1
+        <if test="searchKey != null">
+            and(
+            ab.taskcomment like concat(concat('%',#{searchKey}),'%') or
+            ab.orderno like concat(concat('%',#{searchKey}),'%') or
+            ab.outtaskno like concat(concat('%',#{searchKey}),'%') or
+            ab.po_number like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+        <if test="sortColumn == null "> order by ab.outdate desc,ab.taskcomment desc, ab.orderno desc,ab.outtaskno desc</if>
+        <if test="sortColumn != null"> order by ab.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+
+       <select id="getOutTaskPalletNoByUserID" parameterType="Outtask" resultMap="OuttaskResult">
+
+        select ab.* from(
+        select
+        distinct
+        taskcomment,
+        orderno,
+        po_number,
+        palletno,
+        storeroomno,
+        outtaskno,
+        outtaskid
+
+        from (
+        select
+        b.taskcomment,
+        nvl(c.storeroomno,' ') as storeroomno,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        b.forcesite,
+        b.forcebatch,
+        b.outtaskno,
+        d.storesiteno,
+        f.matcode,
+        f.matname,
+        a.palletno,
+        nvl(b.outdesc,' ') as outdesc,
+        b.outtaskid,
+        e.operation,
+        e.userid,
+        nvl(a.outstate,0) as outstate,
+        nvl(b.collecter,0) as collecter,
+        nvl(a.collecter,0) as i_collecter,
+        nvl(b.collecter,0) as t_collecter,
+        b.outdate,
+        c.roomtag,
+        a.hintqty,
+        a.collectedqty,
+        a.outtaskitemid,
+        nvl(op.wip_supplement_flag,'N') as  wip_supplement_flag,
+        nvl(g.schedule_group_name,'') as  schedule_group_name,
+        nvl(g.workstation,'N')  as workstation,
+        nvl(op.transfertype,'0') as  transfertype,
+        nvl(b.batchflag,0)  as batchflag,
+        g.delivery_data,
+        g.delivery_time,
+        b.beatflag
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where r.ROLE_ID=m.ROLE_ID) e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomid = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+        and nvl(a.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and nvl(a.hintqty,0) - nvl(a.collectedqty,0) > 0
+
+        <if test="beatflag != null ">and nvl(b.beatflag,'N')=#{beatflag}</if>
+        <if test="batchflag != null ">and NVL(b.batchflag,0) = #{batchflag}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outstate != null ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null "> and c.roomtag = #{roomTag}</if>
+        <if test="transferType != null "> and nvl(op.transfertype,'0') = #{transferType}</if>
+
+
+
+        )aa
+        )ab where 1=1
+        <if test="searchKey != null">
+            and(
+            ab.taskcomment like concat(concat('%',#{searchKey}),'%') or
+            ab.orderno like concat(concat('%',#{searchKey}),'%') or
+            ab.outtaskno like concat(concat('%',#{searchKey}),'%') or
+            ab.po_number like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+        <if test="sortColumn == null "> order by ab.outdate desc,ab.taskcomment desc, ab.orderno desc,ab.outtaskno desc</if>
+        <if test="sortColumn != null"> order by ab.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OutproofMapper">
+    
+    <resultMap type="Outproof" id="OutproofResult">
+        <result property="outproofid"    column="outproofid"    />
+        <result property="outproofno"    column="outproofno"    />
+        <result property="prosource"    column="prosource"    />
+        <result property="orderno"    column="orderno"    />
+        <result property="depotno"    column="depotno"    />
+        <result property="protype"    column="protype"    />
+        <result property="outstate"    column="outstate"    />
+        <result property="partnerid"    column="partnerid"    />
+        <result property="prodate"    column="prodate"    />
+        <result property="proempid"    column="proempid"    />
+        <result property="prodesc"    column="prodesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="isgerneratepallettask"    column="isgerneratepallettask"    />
+        <result property="sourceHeaderId"    column="source_header_id"    />
+        <result property="transactionType"    column="transaction_type"    />
+        <result property="sourceNumber"    column="source_number"    />
+        <result property="poNumber"    column="po_number"    />
+        <result property="inStoreroomid"    column="in_storeroomid"    />
+        <result property="sendstate"    column="sendstate"    />
+        <result property="wipSupplementFlag"    column="wip_supplement_flag"    />
+        <result property="executeempid"    column="executeempid"    />
+        <result property="productline"    column="productline"    />
+        <result property="workstation"    column="workstation"    />
+        <result property="operationSeqNum"    column="operation_seq_num"    />
+        <result property="wholesetno"    column="wholesetno"    />
+        <result property="wholesetnum"    column="wholesetnum"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="transfertype"    column="transfertype"    />
+        <result property="isPitchmotor"    column="is_pitchmotor"    />
+        <result property="beatflag"    column="beatflag"    />
+    </resultMap>
+
+    <sql id="selectOutproofVo">
+        select outproofid, outproofno, prosource, orderno, depotno, protype, outstate, partnerid, prodate, proempid, prodesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, isgerneratepallettask, source_header_id, transaction_type, source_number, po_number, in_storeroomid, sendstate, wip_supplement_flag, executeempid, productline, workstation, operation_seq_num, wholesetno, wholesetnum, palletno, transfertype, is_pitchmotor, beatflag from outproof
+    </sql>
+
+    <select id="selectOutproofList" parameterType="Outproof" resultMap="OutproofResult">
+        <include refid="selectOutproofVo"/>
+        <where>  
+            <if test="outproofno != null  and outproofno != ''"> and outproofno = #{outproofno}</if>
+            <if test="prosource != null  and prosource != ''"> and prosource = #{prosource}</if>
+            <if test="orderno != null  and orderno != ''"> and orderno = #{orderno}</if>
+            <if test="depotno != null "> and depotno = #{depotno}</if>
+            <if test="protype != null  and protype != ''"> and protype = #{protype}</if>
+            <if test="outstate != null "> and outstate = #{outstate}</if>
+            <if test="partnerid != null "> and partnerid = #{partnerid}</if>
+            <if test="prodate != null "> and prodate = #{prodate}</if>
+            <if test="proempid != null "> and proempid = #{proempid}</if>
+            <if test="prodesc != null  and prodesc != ''"> and prodesc = #{prodesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="isgerneratepallettask != null  and isgerneratepallettask != ''"> and isgerneratepallettask = #{isgerneratepallettask}</if>
+            <if test="sourceHeaderId != null  and sourceHeaderId != ''"> and source_header_id = #{sourceHeaderId}</if>
+            <if test="transactionType != null  and transactionType != ''"> and transaction_type = #{transactionType}</if>
+            <if test="sourceNumber != null  and sourceNumber != ''"> and source_number = #{sourceNumber}</if>
+            <if test="poNumber != null  and poNumber != ''"> and po_number = #{poNumber}</if>
+            <if test="inStoreroomid != null "> and in_storeroomid = #{inStoreroomid}</if>
+            <if test="sendstate != null "> and sendstate = #{sendstate}</if>
+            <if test="wipSupplementFlag != null  and wipSupplementFlag != ''"> and wip_supplement_flag = #{wipSupplementFlag}</if>
+            <if test="executeempid != null "> and executeempid = #{executeempid}</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''"> and workstation = #{workstation}</if>
+            <if test="operationSeqNum != null "> and operation_seq_num = #{operationSeqNum}</if>
+            <if test="wholesetno != null  and wholesetno != ''"> and wholesetno = #{wholesetno}</if>
+            <if test="wholesetnum != null "> and wholesetnum = #{wholesetnum}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="transfertype != null  and transfertype != ''"> and transfertype = #{transfertype}</if>
+            <if test="isPitchmotor != null  and isPitchmotor != ''"> and is_pitchmotor = #{isPitchmotor}</if>
+            <if test="beatflag != null  and beatflag != ''"> and beatflag = #{beatflag}</if>
+        </where>
+    </select>
+    
+    <select id="selectOutproofByOutproofid" parameterType="Long" resultMap="OutproofResult">
+    </select>
+        
+    <insert id="insertOutproof" parameterType="Outproof" useGeneratedKeys="true" keyProperty="outproofid">
+        insert into outproof
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outproofno != null">outproofno,</if>
+            <if test="prosource != null">prosource,</if>
+            <if test="orderno != null">orderno,</if>
+            <if test="depotno != null">depotno,</if>
+            <if test="protype != null and protype != ''">protype,</if>
+            <if test="outstate != null">outstate,</if>
+            <if test="partnerid != null">partnerid,</if>
+            <if test="prodate != null">prodate,</if>
+            <if test="proempid != null">proempid,</if>
+            <if test="prodesc != null">prodesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="isgerneratepallettask != null">isgerneratepallettask,</if>
+            <if test="sourceHeaderId != null">source_header_id,</if>
+            <if test="transactionType != null">transaction_type,</if>
+            <if test="sourceNumber != null">source_number,</if>
+            <if test="poNumber != null">po_number,</if>
+            <if test="inStoreroomid != null">in_storeroomid,</if>
+            <if test="sendstate != null">sendstate,</if>
+            <if test="wipSupplementFlag != null">wip_supplement_flag,</if>
+            <if test="executeempid != null">executeempid,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="operationSeqNum != null">operation_seq_num,</if>
+            <if test="wholesetno != null">wholesetno,</if>
+            <if test="wholesetnum != null">wholesetnum,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="transfertype != null">transfertype,</if>
+            <if test="isPitchmotor != null">is_pitchmotor,</if>
+            <if test="beatflag != null">beatflag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outproofno != null">#{outproofno},</if>
+            <if test="prosource != null">#{prosource},</if>
+            <if test="orderno != null">#{orderno},</if>
+            <if test="depotno != null">#{depotno},</if>
+            <if test="protype != null and protype != ''">#{protype},</if>
+            <if test="outstate != null">#{outstate},</if>
+            <if test="partnerid != null">#{partnerid},</if>
+            <if test="prodate != null">#{prodate},</if>
+            <if test="proempid != null">#{proempid},</if>
+            <if test="prodesc != null">#{prodesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="isgerneratepallettask != null">#{isgerneratepallettask},</if>
+            <if test="sourceHeaderId != null">#{sourceHeaderId},</if>
+            <if test="transactionType != null">#{transactionType},</if>
+            <if test="sourceNumber != null">#{sourceNumber},</if>
+            <if test="poNumber != null">#{poNumber},</if>
+            <if test="inStoreroomid != null">#{inStoreroomid},</if>
+            <if test="sendstate != null">#{sendstate},</if>
+            <if test="wipSupplementFlag != null">#{wipSupplementFlag},</if>
+            <if test="executeempid != null">#{executeempid},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="operationSeqNum != null">#{operationSeqNum},</if>
+            <if test="wholesetno != null">#{wholesetno},</if>
+            <if test="wholesetnum != null">#{wholesetnum},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="transfertype != null">#{transfertype},</if>
+            <if test="isPitchmotor != null">#{isPitchmotor},</if>
+            <if test="beatflag != null">#{beatflag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOutproof" parameterType="Outproof">
+        update outproof
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outproofno != null">outproofno = #{outproofno},</if>
+            <if test="prosource != null">prosource = #{prosource},</if>
+            <if test="orderno != null">orderno = #{orderno},</if>
+            <if test="depotno != null">depotno = #{depotno},</if>
+            <if test="protype != null and protype != ''">protype = #{protype},</if>
+            <if test="outstate != null">outstate = #{outstate},</if>
+            <if test="partnerid != null">partnerid = #{partnerid},</if>
+            <if test="prodate != null">prodate = #{prodate},</if>
+            <if test="proempid != null">proempid = #{proempid},</if>
+            <if test="prodesc != null">prodesc = #{prodesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="isgerneratepallettask != null">isgerneratepallettask = #{isgerneratepallettask},</if>
+            <if test="sourceHeaderId != null">source_header_id = #{sourceHeaderId},</if>
+            <if test="transactionType != null">transaction_type = #{transactionType},</if>
+            <if test="sourceNumber != null">source_number = #{sourceNumber},</if>
+            <if test="poNumber != null">po_number = #{poNumber},</if>
+            <if test="inStoreroomid != null">in_storeroomid = #{inStoreroomid},</if>
+            <if test="sendstate != null">sendstate = #{sendstate},</if>
+            <if test="wipSupplementFlag != null">wip_supplement_flag = #{wipSupplementFlag},</if>
+            <if test="executeempid != null">executeempid = #{executeempid},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="operationSeqNum != null">operation_seq_num = #{operationSeqNum},</if>
+            <if test="wholesetno != null">wholesetno = #{wholesetno},</if>
+            <if test="wholesetnum != null">wholesetnum = #{wholesetnum},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="transfertype != null">transfertype = #{transfertype},</if>
+            <if test="isPitchmotor != null">is_pitchmotor = #{isPitchmotor},</if>
+            <if test="beatflag != null">beatflag = #{beatflag},</if>
+        </trim>
+        where outproofid = #{outproofid}
+    </update>
+
+    <delete id="deleteOutproofByOutproofid" parameterType="Long">
+        delete from outproof where outproofid = #{outproofid}
+    </delete>
+
+    <delete id="deleteOutproofByOutproofids" parameterType="String">
+        delete from outproof where outproofid in 
+        <foreach item="outproofid" collection="array" open="(" separator="," close=")">
+            #{outproofid}
+        </foreach>
+    </delete>
+</mapper>

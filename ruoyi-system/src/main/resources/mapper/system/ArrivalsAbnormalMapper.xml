@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ArrivalsAbnormalMapper">
+    
+    <resultMap type="ArrivalsAbnormal" id="ArrivalsAbnormalResult">
+        <result property="abnomalid"    column="abnomalid"    />
+        <result property="arrivalsBillid"    column="arrivals_billid"    />
+        <result property="bbDictionaryid"    column="bb_dictionaryid"    />
+        <result property="qty"    column="qty"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectArrivalsAbnormalVo">
+        select abnomalid, arrivals_billid, bb_dictionaryid, qty, remark from arrivals_abnormal
+    </sql>
+
+    <select id="selectArrivalsAbnormalList" parameterType="ArrivalsAbnormal" resultMap="ArrivalsAbnormalResult">
+        <include refid="selectArrivalsAbnormalVo"/>
+        <where>  
+            <if test="arrivalsBillid != null "> and arrivals_billid = #{arrivalsBillid}</if>
+            <if test="bbDictionaryid != null "> and bb_dictionaryid = #{bbDictionaryid}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+        </where>
+    </select>
+    
+    <select id="selectArrivalsAbnormalByAbnomalid" parameterType="Long" resultMap="ArrivalsAbnormalResult">
+    </select>
+        
+    <insert id="insertArrivalsAbnormal" parameterType="ArrivalsAbnormal" useGeneratedKeys="true" keyProperty="abnomalid">
+        insert into arrivals_abnormal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid,</if>
+            <if test="bbDictionaryid != null">bb_dictionaryid,</if>
+            <if test="qty != null">qty,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="arrivalsBillid != null">#{arrivalsBillid},</if>
+            <if test="bbDictionaryid != null">#{bbDictionaryid},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateArrivalsAbnormal" parameterType="ArrivalsAbnormal">
+        update arrivals_abnormal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="arrivalsBillid != null">arrivals_billid = #{arrivalsBillid},</if>
+            <if test="bbDictionaryid != null">bb_dictionaryid = #{bbDictionaryid},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where abnomalid = #{abnomalid}
+    </update>
+
+    <delete id="deleteArrivalsAbnormalByAbnomalid" parameterType="Long">
+        delete from arrivals_abnormal where abnomalid = #{abnomalid}
+    </delete>
+
+    <delete id="deleteArrivalsAbnormalByAbnomalids" parameterType="String">
+        delete from arrivals_abnormal where abnomalid in 
+        <foreach item="abnomalid" collection="array" open="(" separator="," close=")">
+            #{abnomalid}
+        </foreach>
+    </delete>
+</mapper>

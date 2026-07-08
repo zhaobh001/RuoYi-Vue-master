@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ExpcollectdataMapper">
+    
+    <resultMap type="Expcollectdata" id="ExpcollectdataResult">
+        <result property="expcollectdataid"    column="expcollectdataid"    />
+        <result property="dcConnectid"    column="dc_connectid"    />
+        <result property="taskid"    column="taskid"    />
+        <result property="collecttime"    column="collecttime"    />
+        <result property="expsite"    column="expsite"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="qty"    column="qty"    />
+        <result property="sn"    column="sn"    />
+        <result property="protype"    column="protype"    />
+        <result property="exptype"    column="exptype"    />
+        <result property="expdesc"    column="expdesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="cstate"    column="cstate"    />
+        <result property="palletno"    column="palletno"    />
+        <result property="taskno"    column="taskno"    />
+        <result property="proofno"    column="proofno"    />
+        <result property="errlogsaveid"    column="errlogsaveid"    />
+    </resultMap>
+
+    <sql id="selectExpcollectdataVo">
+        select expcollectdataid, dc_connectid, taskid, collecttime, expsite, materialid, batchno, qty, sn, protype, exptype, expdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, cstate, palletno, taskno, proofno, errlogsaveid from expcollectdata
+    </sql>
+
+    <select id="selectExpcollectdataList" parameterType="Expcollectdata" resultMap="ExpcollectdataResult">
+        <include refid="selectExpcollectdataVo"/>
+        <where>  
+            <if test="dcConnectid != null "> and dc_connectid = #{dcConnectid}</if>
+            <if test="taskid != null "> and taskid = #{taskid}</if>
+            <if test="collecttime != null "> and collecttime = #{collecttime}</if>
+            <if test="expsite != null "> and expsite = #{expsite}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="protype != null  and protype != ''"> and protype = #{protype}</if>
+            <if test="exptype != null  and exptype != ''"> and exptype = #{exptype}</if>
+            <if test="expdesc != null  and expdesc != ''"> and expdesc = #{expdesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="cstate != null "> and cstate = #{cstate}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+            <if test="taskno != null  and taskno != ''"> and taskno = #{taskno}</if>
+            <if test="proofno != null  and proofno != ''"> and proofno = #{proofno}</if>
+            <if test="errlogsaveid != null "> and errlogsaveid = #{errlogsaveid}</if>
+        </where>
+    </select>
+    
+    <select id="selectExpcollectdataByExpcollectdataid" parameterType="Long" resultMap="ExpcollectdataResult">
+    </select>
+        
+    <insert id="insertExpcollectdata" parameterType="Expcollectdata" useGeneratedKeys="true" keyProperty="expcollectdataid">
+        <selectKey keyProperty="expcollectdataid" resultType="long" order="BEFORE">
+            SELECT EXPCOLLECTDATAID_SEQ.NEXTVAL as expcollectdataid FROM DUAL
+        </selectKey>
+        insert into expcollectdata
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="expcollectdataid != null">expcollectdataid,</if>
+            <if test="dcConnectid != null">dc_connectid,</if>
+            <if test="taskid != null">taskid,</if>
+            <if test="collecttime != null">collecttime,</if>
+            <if test="expsite != null">expsite,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="qty != null">qty,</if>
+            <if test="sn != null">sn,</if>
+            <if test="protype != null">protype,</if>
+            <if test="exptype != null">exptype,</if>
+            <if test="expdesc != null">expdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="cstate != null">cstate,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="taskno != null">taskno,</if>
+            <if test="proofno != null">proofno,</if>
+            <if test="errlogsaveid != null">errlogsaveid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="expcollectdataid != null">#{expcollectdataid},</if>
+            <if test="dcConnectid != null">#{dcConnectid},</if>
+            <if test="taskid != null">#{taskid},</if>
+            <if test="collecttime != null">#{collecttime},</if>
+            <if test="expsite != null">#{expsite},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="protype != null">#{protype},</if>
+            <if test="exptype != null">#{exptype},</if>
+            <if test="expdesc != null">#{expdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="cstate != null">#{cstate},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="taskno != null">#{taskno},</if>
+            <if test="proofno != null">#{proofno},</if>
+            <if test="errlogsaveid != null">#{errlogsaveid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExpcollectdata" parameterType="Expcollectdata">
+        update expcollectdata
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dcConnectid != null">dc_connectid = #{dcConnectid},</if>
+            <if test="taskid != null">taskid = #{taskid},</if>
+            <if test="collecttime != null">collecttime = #{collecttime},</if>
+            <if test="expsite != null">expsite = #{expsite},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="protype != null">protype = #{protype},</if>
+            <if test="exptype != null">exptype = #{exptype},</if>
+            <if test="expdesc != null">expdesc = #{expdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="cstate != null">cstate = #{cstate},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="taskno != null">taskno = #{taskno},</if>
+            <if test="proofno != null">proofno = #{proofno},</if>
+            <if test="errlogsaveid != null">errlogsaveid = #{errlogsaveid},</if>
+        </trim>
+        where expcollectdataid = #{expcollectdataid}
+    </update>
+
+    <delete id="deleteExpcollectdataByExpcollectdataid" parameterType="Long">
+        delete from expcollectdata where expcollectdataid = #{expcollectdataid}
+    </delete>
+
+    <delete id="deleteExpcollectdataByExpcollectdataids" parameterType="String">
+        delete from expcollectdata where expcollectdataid in 
+        <foreach item="expcollectdataid" collection="array" open="(" separator="," close=")">
+            #{expcollectdataid}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DrawmaterialRfBillItemMapper">
+    
+    <resultMap type="DrawmaterialRfBillItem" id="DrawmaterialRfBillItemResult">
+        <result property="drawmaterialRfBillItemid"    column="drawmaterial_rf_bill_itemid"    />
+        <result property="drawmaterialRfBillid"    column="drawmaterial_rf_billid"    />
+        <result property="goodsshelf"    column="goodsshelf"    />
+        <result property="matcode"    column="matcode"    />
+        <result property="planqty"    column="planqty"    />
+        <result property="finishqty"    column="finishqty"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="transactionid"    column="transactionid"    />
+        <result property="organizationcode"    column="organizationcode"    />
+        <result property="warehouse"    column="warehouse"    />
+        <result property="productline"    column="productline"    />
+        <result property="workstation"    column="workstation"    />
+    </resultMap>
+
+    <sql id="selectDrawmaterialRfBillItemVo">
+        select drawmaterial_rf_bill_itemid, drawmaterial_rf_billid, goodsshelf, matcode, planqty, finishqty, dataversion, data1, data2, data3, data4, transactionid, organizationcode, warehouse, productline, workstation from drawmaterial_rf_bill_item
+    </sql>
+
+    <select id="selectDrawmaterialRfBillItemList" parameterType="DrawmaterialRfBillItem" resultMap="DrawmaterialRfBillItemResult">
+        <include refid="selectDrawmaterialRfBillItemVo"/>
+        <where>  
+            <if test="drawmaterialRfBillid != null "> and drawmaterial_rf_billid = #{drawmaterialRfBillid}</if>
+            <if test="goodsshelf != null  and goodsshelf != ''"> and goodsshelf = #{goodsshelf}</if>
+            <if test="matcode != null  and matcode != ''"> and matcode = #{matcode}</if>
+            <if test="planqty != null "> and planqty = #{planqty}</if>
+            <if test="finishqty != null "> and finishqty = #{finishqty}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="transactionid != null  and transactionid != ''"> and transactionid = #{transactionid}</if>
+            <if test="organizationcode != null  and organizationcode != ''"> and organizationcode = #{organizationcode}</if>
+            <if test="warehouse != null  and warehouse != ''"> and warehouse = #{warehouse}</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''"> and workstation = #{workstation}</if>
+        </where>
+    </select>
+    
+    <select id="selectDrawmaterialRfBillItemByDrawmaterialRfBillItemid" parameterType="Long" resultMap="DrawmaterialRfBillItemResult">
+    </select>
+        
+    <insert id="insertDrawmaterialRfBillItem" parameterType="DrawmaterialRfBillItem" useGeneratedKeys="true" keyProperty="drawmaterialRfBillItemid">
+        <selectKey keyProperty="drawmaterialRfBillItemid" resultType="long" order="BEFORE">
+            SELECT DRAWMATERIAL_RF_BILL_IID_SEQ.NEXTVAL as drawmaterialRfBillItemid FROM DUAL
+        </selectKey>
+        insert into drawmaterial_rf_bill_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="drawmaterialRfBillItemid != null">drawmaterial_rf_bill_itemid,</if>
+            <if test="drawmaterialRfBillid != null">drawmaterial_rf_billid,</if>
+            <if test="goodsshelf != null">goodsshelf,</if>
+            <if test="matcode != null">matcode,</if>
+            <if test="planqty != null">planqty,</if>
+            <if test="finishqty != null">finishqty,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="transactionid != null">transactionid,</if>
+            <if test="organizationcode != null">organizationcode,</if>
+            <if test="warehouse != null">warehouse,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="drawmaterialRfBillItemid != null">#{drawmaterialRfBillItemid},</if>
+            <if test="drawmaterialRfBillid != null">#{drawmaterialRfBillid},</if>
+            <if test="goodsshelf != null">#{goodsshelf},</if>
+            <if test="matcode != null">#{matcode},</if>
+            <if test="planqty != null">#{planqty},</if>
+            <if test="finishqty != null">#{finishqty},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="transactionid != null">#{transactionid},</if>
+            <if test="organizationcode != null">#{organizationcode},</if>
+            <if test="warehouse != null">#{warehouse},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDrawmaterialRfBillItem" parameterType="DrawmaterialRfBillItem">
+        update drawmaterial_rf_bill_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drawmaterialRfBillid != null">drawmaterial_rf_billid = #{drawmaterialRfBillid},</if>
+            <if test="goodsshelf != null">goodsshelf = #{goodsshelf},</if>
+            <if test="matcode != null">matcode = #{matcode},</if>
+            <if test="planqty != null">planqty = #{planqty},</if>
+            <if test="finishqty != null">finishqty = #{finishqty},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="transactionid != null">transactionid = #{transactionid},</if>
+            <if test="organizationcode != null">organizationcode = #{organizationcode},</if>
+            <if test="warehouse != null">warehouse = #{warehouse},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+        </trim>
+        where drawmaterial_rf_bill_itemid = #{drawmaterialRfBillItemid}
+    </update>
+
+    <delete id="deleteDrawmaterialRfBillItemByDrawmaterialRfBillItemid" parameterType="Long">
+        delete from drawmaterial_rf_bill_item where drawmaterial_rf_bill_itemid = #{drawmaterialRfBillItemid}
+    </delete>
+
+    <delete id="deleteDrawmaterialRfBillItemByDrawmaterialRfBillItemids" parameterType="String">
+        delete from drawmaterial_rf_bill_item where drawmaterial_rf_bill_itemid in 
+        <foreach item="drawmaterialRfBillItemid" collection="array" open="(" separator="," close=")">
+            #{drawmaterialRfBillItemid}
+        </foreach>
+    </delete>
+</mapper>

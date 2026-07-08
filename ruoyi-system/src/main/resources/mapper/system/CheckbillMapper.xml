@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CheckbillMapper">
+    
+    <resultMap type="Checkbill" id="CheckbillResult">
+        <result property="checkbillid"    column="checkbillid"    />
+        <result property="billno"    column="billno"    />
+        <result property="creator"    column="creator"    />
+        <result property="createdate"    column="createdate"    />
+        <result property="checktype"    column="checktype"    />
+        <result property="checkmethod"    column="checkmethod"    />
+        <result property="billstate"    column="billstate"    />
+        <result property="depotno"    column="depotno"    />
+        <result property="checkbilldesc"    column="checkbilldesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="executedate"    column="executedate"    />
+        <result property="finishdate"    column="finishdate"    />
+        <result property="batchstate"    column="batchstate"    />
+    </resultMap>
+
+    <sql id="selectCheckbillVo">
+        select checkbillid, billno, creator, createdate, checktype, checkmethod, billstate, depotno, checkbilldesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, executedate, finishdate, batchstate from checkbill
+    </sql>
+
+    <select id="selectCheckbillList" parameterType="Checkbill" resultMap="CheckbillResult">
+        <include refid="selectCheckbillVo"/>
+        <where>  
+            <if test="billno != null  and billno != ''"> and billno = #{billno}</if>
+            <if test="creator != null "> and creator = #{creator}</if>
+            <if test="createdate != null "> and createdate = #{createdate}</if>
+            <if test="checktype != null "> and checktype = #{checktype}</if>
+            <if test="checkmethod != null "> and checkmethod = #{checkmethod}</if>
+            <if test="billstate != null "> and billstate = #{billstate}</if>
+            <if test="depotno != null "> and depotno = #{depotno}</if>
+            <if test="checkbilldesc != null  and checkbilldesc != ''"> and checkbilldesc = #{checkbilldesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="executedate != null "> and executedate = #{executedate}</if>
+            <if test="finishdate != null "> and finishdate = #{finishdate}</if>
+            <if test="batchstate != null "> and batchstate = #{batchstate}</if>
+        </where>
+    </select>
+    
+    <select id="selectCheckbillByCheckbillid" parameterType="Long" resultMap="CheckbillResult">
+    </select>
+        
+    <insert id="insertCheckbill" parameterType="Checkbill" useGeneratedKeys="true" keyProperty="checkbillid">
+        insert into checkbill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billno != null">billno,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createdate != null">createdate,</if>
+            <if test="checktype != null">checktype,</if>
+            <if test="checkmethod != null">checkmethod,</if>
+            <if test="billstate != null">billstate,</if>
+            <if test="depotno != null">depotno,</if>
+            <if test="checkbilldesc != null">checkbilldesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="executedate != null">executedate,</if>
+            <if test="finishdate != null">finishdate,</if>
+            <if test="batchstate != null">batchstate,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billno != null">#{billno},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createdate != null">#{createdate},</if>
+            <if test="checktype != null">#{checktype},</if>
+            <if test="checkmethod != null">#{checkmethod},</if>
+            <if test="billstate != null">#{billstate},</if>
+            <if test="depotno != null">#{depotno},</if>
+            <if test="checkbilldesc != null">#{checkbilldesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="executedate != null">#{executedate},</if>
+            <if test="finishdate != null">#{finishdate},</if>
+            <if test="batchstate != null">#{batchstate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCheckbill" parameterType="Checkbill">
+        update checkbill
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="billno != null">billno = #{billno},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createdate != null">createdate = #{createdate},</if>
+            <if test="checktype != null">checktype = #{checktype},</if>
+            <if test="checkmethod != null">checkmethod = #{checkmethod},</if>
+            <if test="billstate != null">billstate = #{billstate},</if>
+            <if test="depotno != null">depotno = #{depotno},</if>
+            <if test="checkbilldesc != null">checkbilldesc = #{checkbilldesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="executedate != null">executedate = #{executedate},</if>
+            <if test="finishdate != null">finishdate = #{finishdate},</if>
+            <if test="batchstate != null">batchstate = #{batchstate},</if>
+        </trim>
+        where checkbillid = #{checkbillid}
+    </update>
+
+    <delete id="deleteCheckbillByCheckbillid" parameterType="Long">
+        delete from checkbill where checkbillid = #{checkbillid}
+    </delete>
+
+    <delete id="deleteCheckbillByCheckbillids" parameterType="String">
+        delete from checkbill where checkbillid in 
+        <foreach item="checkbillid" collection="array" open="(" separator="," close=")">
+            #{checkbillid}
+        </foreach>
+    </delete>
+</mapper>

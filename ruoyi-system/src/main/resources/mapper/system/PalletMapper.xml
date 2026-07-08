@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PalletMapper">
+    
+    <resultMap type="Pallet" id="PalletResult">
+        <result property="palletid"    column="palletid"    />
+        <result property="palletNo"    column="pallet_no"    />
+        <result property="palletName"    column="pallet_name"    />
+        <result property="palletLength"    column="pallet_length"    />
+        <result property="palletWidth"    column="pallet_width"    />
+        <result property="palletHight"    column="pallet_hight"    />
+        <result property="palletPlotratio"    column="pallet_plotratio"    />
+        <result property="palletCurrentPlot"    column="pallet_current_plot"    />
+        <result property="palletCurrentWeight"    column="pallet_current_weight"    />
+        <result property="palletIsfull"    column="pallet_isfull"    />
+        <result property="palletUseState"    column="pallet_use_state"    />
+        <result property="palletIslack"    column="pallet_islack"    />
+        <result property="palletWorkOrderNo"    column="pallet_work_order_no"    />
+        <result property="palletSite"    column="pallet_site"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="currentposition"    column="currentposition"    />
+        <result property="goalposition"    column="goalposition"    />
+    </resultMap>
+
+    <sql id="selectPalletVo">
+        select palletid, pallet_no, pallet_name, pallet_length, pallet_width, pallet_hight, pallet_plotratio, pallet_current_plot, pallet_current_weight, pallet_isfull, pallet_use_state, pallet_islack, pallet_work_order_no, pallet_site, dataversion, data1, data2, data3, data4, currentposition, goalposition from pallet
+    </sql>
+
+    <select id="selectPalletList" parameterType="Pallet" resultMap="PalletResult">
+        <include refid="selectPalletVo"/>
+        <where>  
+            <if test="palletNo != null  and palletNo != ''"> and pallet_no = #{palletNo}</if>
+            <if test="palletName != null  and palletName != ''"> and pallet_name like concat('%', #{palletName}, '%')</if>
+            <if test="palletLength != null "> and pallet_length = #{palletLength}</if>
+            <if test="palletWidth != null "> and pallet_width = #{palletWidth}</if>
+            <if test="palletHight != null "> and pallet_hight = #{palletHight}</if>
+            <if test="palletPlotratio != null "> and pallet_plotratio = #{palletPlotratio}</if>
+            <if test="palletCurrentPlot != null "> and pallet_current_plot = #{palletCurrentPlot}</if>
+            <if test="palletCurrentWeight != null "> and pallet_current_weight = #{palletCurrentWeight}</if>
+            <if test="palletIsfull != null  and palletIsfull != ''"> and pallet_isfull = #{palletIsfull}</if>
+            <if test="palletUseState != null  and palletUseState != ''"> and pallet_use_state = #{palletUseState}</if>
+            <if test="palletIslack != null  and palletIslack != ''"> and pallet_islack = #{palletIslack}</if>
+            <if test="palletWorkOrderNo != null  and palletWorkOrderNo != ''"> and pallet_work_order_no = #{palletWorkOrderNo}</if>
+            <if test="palletSite != null "> and pallet_site = #{palletSite}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="currentposition != null "> and currentposition = #{currentposition}</if>
+            <if test="goalposition != null "> and goalposition = #{goalposition}</if>
+        </where>
+    </select>
+    
+    <select id="selectPalletByPalletid" parameterType="Long" resultMap="PalletResult">
+        <include refid="selectPalletVo"/>
+        where palletid = #{palletid}
+    </select>
+
+    <select id="selectPalletByPalletNo" parameterType="String" resultMap="PalletResult">
+        <include refid="selectPalletVo"/>
+        where pallet_no = #{palletNo}
+    </select>
+
+    <!-- 通过HashMap 作为参数实现 -->
+    <!--<select id="checkBindingTrayNo" statementType="CALLABLE" parameterMap="PalletInfomation" resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CheckBindingTrayNo(?,?,?,?)}
+  </select>
+
+    <parameterMap id="PalletInfomation" type="java.util.HashMap">
+        <parameter property="taskId" jdbcType="INTEGER" javaType="java.lang.Integer" mode="IN"/>
+        <parameter property="palletNo" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+        <parameter property="tasktype" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+        <parameter property="o_message" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
+        <parameter property="o_true" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
+    </parameterMap>-->
+
+    <!-- 通过实体类作为参数实现 -->
+    <select id="checkBindingTrayNo" statementType="CALLABLE"  parameterType="Pallet" resultType="java.lang.String">
+    {call WMS_ASWH_PAK.CheckBindingTrayNo(
+                     #{i_taskId,mode=IN,jdbcType=INTEGER},
+                     #{i_palletNo,mode=IN,jdbcType=VARCHAR},
+                     #{i_tasktype,mode=IN,jdbcType=VARCHAR},
+                     #{o_message,mode=OUT,jdbcType=VARCHAR},
+                     #{o_true,mode=OUT,jdbcType=VARCHAR}
+      )}
+  </select>
+        
+    <insert id="insertPallet" parameterType="Pallet" useGeneratedKeys="true" keyProperty="palletid">
+        insert into pallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="palletNo != null">pallet_no,</if>
+            <if test="palletName != null">pallet_name,</if>
+            <if test="palletLength != null">pallet_length,</if>
+            <if test="palletWidth != null">pallet_width,</if>
+            <if test="palletHight != null">pallet_hight,</if>
+            <if test="palletPlotratio != null">pallet_plotratio,</if>
+            <if test="palletCurrentPlot != null">pallet_current_plot,</if>
+            <if test="palletCurrentWeight != null">pallet_current_weight,</if>
+            <if test="palletIsfull != null">pallet_isfull,</if>
+            <if test="palletUseState != null">pallet_use_state,</if>
+            <if test="palletIslack != null">pallet_islack,</if>
+            <if test="palletWorkOrderNo != null">pallet_work_order_no,</if>
+            <if test="palletSite != null">pallet_site,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="currentposition != null">currentposition,</if>
+            <if test="goalposition != null">goalposition,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="palletNo != null">#{palletNo},</if>
+            <if test="palletName != null">#{palletName},</if>
+            <if test="palletLength != null">#{palletLength},</if>
+            <if test="palletWidth != null">#{palletWidth},</if>
+            <if test="palletHight != null">#{palletHight},</if>
+            <if test="palletPlotratio != null">#{palletPlotratio},</if>
+            <if test="palletCurrentPlot != null">#{palletCurrentPlot},</if>
+            <if test="palletCurrentWeight != null">#{palletCurrentWeight},</if>
+            <if test="palletIsfull != null">#{palletIsfull},</if>
+            <if test="palletUseState != null">#{palletUseState},</if>
+            <if test="palletIslack != null">#{palletIslack},</if>
+            <if test="palletWorkOrderNo != null">#{palletWorkOrderNo},</if>
+            <if test="palletSite != null">#{palletSite},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="currentposition != null">#{currentposition},</if>
+            <if test="goalposition != null">#{goalposition},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePallet" parameterType="Pallet">
+        update pallet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="palletNo != null">pallet_no = #{palletNo},</if>
+            <if test="palletName != null">pallet_name = #{palletName},</if>
+            <if test="palletLength != null">pallet_length = #{palletLength},</if>
+            <if test="palletWidth != null">pallet_width = #{palletWidth},</if>
+            <if test="palletHight != null">pallet_hight = #{palletHight},</if>
+            <if test="palletPlotratio != null">pallet_plotratio = #{palletPlotratio},</if>
+            <if test="palletCurrentPlot != null">pallet_current_plot = #{palletCurrentPlot},</if>
+            <if test="palletCurrentWeight != null">pallet_current_weight = #{palletCurrentWeight},</if>
+            <if test="palletIsfull != null">pallet_isfull = #{palletIsfull},</if>
+            <if test="palletUseState != null">pallet_use_state = #{palletUseState},</if>
+            <if test="palletIslack != null">pallet_islack = #{palletIslack},</if>
+            <if test="palletWorkOrderNo != null">pallet_work_order_no = #{palletWorkOrderNo},</if>
+            <if test="palletSite != null">pallet_site = #{palletSite},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="currentposition != null">currentposition = #{currentposition},</if>
+            <if test="goalposition != null">goalposition = #{goalposition},</if>
+        </trim>
+        where palletid = #{palletid}
+    </update>
+
+    <delete id="deletePalletByPalletid" parameterType="Long">
+        delete from pallet where palletid = #{palletid}
+    </delete>
+
+    <delete id="deletePalletByPalletids" parameterType="String">
+        delete from pallet where palletid in 
+        <foreach item="palletid" collection="array" open="(" separator="," close=")">
+            #{palletid}
+        </foreach>
+    </delete>
+</mapper>

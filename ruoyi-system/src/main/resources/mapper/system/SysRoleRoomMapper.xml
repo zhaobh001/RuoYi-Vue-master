@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysRoleRoomMapper">
+    
+    <resultMap type="SysRoleRoom" id="SysRoleRoomResult">
+        <result property="roleId"    column="role_id"    />
+        <result property="storeroomid"    column="storeroomid"    />
+    </resultMap>
+
+    <sql id="selectSysRoleRoomVo">
+        select role_id, storeroomid from sys_role_room
+    </sql>
+
+    <select id="selectSysRoleRoomList" parameterType="SysRoleRoom" resultMap="SysRoleRoomResult">
+        <include refid="selectSysRoleRoomVo"/>
+        <where>  
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+            <if test="storeroomid != null "> and storeroomid = #{storeroomid}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysRoleRoomByRoleId" parameterType="Long" resultMap="SysRoleRoomResult">
+    </select>
+        
+    <insert id="insertSysRoleRoom" parameterType="SysRoleRoom">
+        insert into sys_role_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">role_id,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">#{roleId},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysRoleRoom" parameterType="SysRoleRoom">
+        update sys_role_room
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+        </trim>
+        where role_id = #{roleId}
+    </update>
+
+    <delete id="deleteSysRoleRoomByRoleId" parameterType="Long">
+        delete from sys_role_room where role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteSysRoleRoomByRoleIds" parameterType="String">
+        delete from sys_role_room where role_id in 
+        <foreach item="roleId" collection="array" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRoleRoomInfo" parameterType="SysRoleRoom">
+		delete from sys_role_room where storeroomid=#{storeroomid} and role_id=#{roleId}
+	</delete>
+
+    <delete id="deleteRoleRoomInfos">
+        delete from sys_role_room where role_id=#{roleId} and storeroomid in
+        <foreach collection="roomIds" item="roomId" open="(" separator="," close=")">
+            #{roomId}
+        </foreach>
+    </delete>
+
+    <insert id="batchRoleRoom" useGeneratedKeys="false">
+        insert all
+        <foreach item="item" index="index" collection="list">
+            into sys_role_room(storeroomid, role_id) values (#{item.storeroomid},#{item.roleId})
+        </foreach>
+        SELECT 1 FROM DUAL
+    </insert>
+</mapper>

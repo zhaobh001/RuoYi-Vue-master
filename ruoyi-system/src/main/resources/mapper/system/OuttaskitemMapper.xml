@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OuttaskitemMapper">
+
+    <resultMap type="Outtaskitem" id="OuttaskitemResult">
+        <result property="outtaskitemid" column="outtaskitemid"/>
+        <result property="outtaskid" column="outtaskid"/>
+        <result property="outbillid" column="outbillid"/>
+        <result property="outorderid" column="outorderid"/>
+        <result property="hintsite" column="hintsite"/>
+        <result property="hintbatchno" column="hintbatchno"/>
+        <result property="sn" column="sn"/>
+        <result property="hintqty" column="hintqty"/>
+        <result property="outdesc" column="outdesc"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="data5" column="data5"/>
+        <result property="data6" column="data6"/>
+        <result property="data7" column="data7"/>
+        <result property="data8" column="data8"/>
+        <result property="materialid" column="materialid"/>
+        <result property="collectedqty" column="collectedqty"/>
+        <result property="collecter" column="collecter"/>
+        <result property="outstate" column="outstate"/>
+        <result property="collectDate" column="collect_date"/>
+        <result property="repertoryid" column="repertoryid"/>
+        <result property="occupyqty" column="occupyqty"/>
+        <result property="occupyflag" column="occupyflag"/>
+        <result property="subinventoryCode" column="subinventory_code"/>
+        <result property="hintfinish" column="hintfinish"/>
+        <result property="palletno" column="palletno"/>
+        <result property="productline" column="productline"/>
+        <result property="workstation" column="workstation"/>
+        <result property="agvstate" column="agvstate"/>
+        <result property="beatflag" column="beatflag"/>
+
+        <result property="taskcomment" column="taskcomment"/>
+        <result property="storeroomno" column="storeroomno"/>
+        <result property="orderno" column="orderno"/>
+        <result property="po_number" column="po_number"/>
+        <result property="forcesite" column="forcesite"/>
+        <result property="forcebatch" column="forcebatch"/>
+        <result property="outtaskno" column="outtaskno"/>
+        <result property="storesiteno" column="storesiteno"/>
+        <result property="matcode" column="matcode"/>
+        <result property="matname" column="matname"/>
+        <result property="operation" column="operation"/>
+        <result property="userId" column="userid"/>
+        <result property="i_collecter" column="i_collecter"/>
+        <result property="t_collecter" column="t_collecter"/>
+        <result property="outdate" column="outdate"/>
+        <result property="roomTag" column="roomtag"/>
+        <result property="id" column="id"/>
+        <result property="wip_supplement_flag" column="wip_supplement_flag"/>
+        <result property="schedule_group_name" column="schedule_group_name"/>
+        <result property="transferType" column="transfertype"/>
+        <result property="batchflag" column="batchflag"/>
+        <result property="delivery_data" column="delivery_data"/>
+        <result property="delivery_time" column="delivery_time"/>
+        <result property="repqty" column="repqty"/>
+        <result property="palletStatus" column="palletStatus"/>
+    </resultMap>
+
+    <sql id="selectOuttaskitemVo">
+        select outtaskitemid, outtaskid, outbillid, outorderid, hintsite, hintbatchno, sn, hintqty, outdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, materialid, collectedqty, collecter, outstate, collect_date, repertoryid, occupyqty, occupyflag, subinventory_code, hintfinish, palletno, productline, workstation, agvstate, beatflag from outtaskitem
+    </sql>
+
+    <select id="selectOuttaskitemList" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        <include refid="selectOuttaskitemVo"/>
+        <where>
+            <if test="outtaskid != null ">and outtaskid = #{outtaskid}</if>
+            <if test="outbillid != null ">and outbillid = #{outbillid}</if>
+            <if test="outorderid != null ">and outorderid = #{outorderid}</if>
+            <if test="hintsite != null ">and hintsite = #{hintsite}</if>
+            <if test="hintbatchno != null  and hintbatchno != ''">and hintbatchno = #{hintbatchno}</if>
+            <if test="sn != null  and sn != ''">and sn = #{sn}</if>
+            <if test="hintqty != null ">and hintqty = #{hintqty}</if>
+            <if test="outdesc != null  and outdesc != ''">and outdesc = #{outdesc}</if>
+            <if test="dataversion != null ">and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''">and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''">and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''">and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''">and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''">and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''">and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''">and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''">and data8 = #{data8}</if>
+            <if test="materialid != null ">and materialid = #{materialid}</if>
+            <if test="collectedqty != null ">and collectedqty = #{collectedqty}</if>
+            <if test="collecter != null ">and collecter = #{collecter}</if>
+            <if test="outstate != null ">and outstate = #{outstate}</if>
+            <if test="collectDate != null ">and collect_date = #{collectDate}</if>
+            <if test="repertoryid != null ">and repertoryid = #{repertoryid}</if>
+            <if test="occupyqty != null ">and occupyqty = #{occupyqty}</if>
+            <if test="occupyflag != null ">and occupyflag = #{occupyflag}</if>
+            <if test="subinventoryCode != null  and subinventoryCode != ''">and subinventory_code =
+                #{subinventoryCode}
+            </if>
+            <if test="hintfinish != null ">and hintfinish = #{hintfinish}</if>
+            <if test="palletno != null  and palletno != ''">and palletno = #{palletno}</if>
+            <if test="productline != null  and productline != ''">and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''">and workstation = #{workstation}</if>
+            <if test="agvstate != null  and agvstate != ''">and agvstate = #{agvstate}</if>
+            <if test="beatflag != null  and beatflag != ''">and beatflag = #{beatflag}</if>
+        </where>
+    </select>
+
+    <select id="selectOuttaskitemByOuttaskitemid" parameterType="Long" resultMap="OuttaskitemResult">
+        <include refid="selectOuttaskitemVo"/>
+        where outtaskitemid = #{outtaskitemid}
+    </select>
+
+    <insert id="insertOuttaskitem" parameterType="Outtaskitem" useGeneratedKeys="true" keyProperty="outtaskitemid">
+        insert into outtaskitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outtaskid != null">outtaskid,</if>
+            <if test="outbillid != null">outbillid,</if>
+            <if test="outorderid != null">outorderid,</if>
+            <if test="hintsite != null">hintsite,</if>
+            <if test="hintbatchno != null">hintbatchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="hintqty != null">hintqty,</if>
+            <if test="outdesc != null">outdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="collectedqty != null">collectedqty,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="outstate != null">outstate,</if>
+            <if test="collectDate != null">collect_date,</if>
+            <if test="repertoryid != null">repertoryid,</if>
+            <if test="occupyqty != null">occupyqty,</if>
+            <if test="occupyflag != null">occupyflag,</if>
+            <if test="subinventoryCode != null">subinventory_code,</if>
+            <if test="hintfinish != null">hintfinish,</if>
+            <if test="palletno != null">palletno,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="agvstate != null">agvstate,</if>
+            <if test="beatflag != null">beatflag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outtaskid != null">#{outtaskid},</if>
+            <if test="outbillid != null">#{outbillid},</if>
+            <if test="outorderid != null">#{outorderid},</if>
+            <if test="hintsite != null">#{hintsite},</if>
+            <if test="hintbatchno != null">#{hintbatchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="hintqty != null">#{hintqty},</if>
+            <if test="outdesc != null">#{outdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="collectedqty != null">#{collectedqty},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="outstate != null">#{outstate},</if>
+            <if test="collectDate != null">#{collectDate},</if>
+            <if test="repertoryid != null">#{repertoryid},</if>
+            <if test="occupyqty != null">#{occupyqty},</if>
+            <if test="occupyflag != null">#{occupyflag},</if>
+            <if test="subinventoryCode != null">#{subinventoryCode},</if>
+            <if test="hintfinish != null">#{hintfinish},</if>
+            <if test="palletno != null">#{palletno},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="agvstate != null">#{agvstate},</if>
+            <if test="beatflag != null">#{beatflag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOuttaskitem" parameterType="Outtaskitem">
+        update outtaskitem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="outtaskid != null">outtaskid = #{outtaskid},</if>
+            <if test="outbillid != null">outbillid = #{outbillid},</if>
+            <if test="outorderid != null">outorderid = #{outorderid},</if>
+            <if test="hintsite != null">hintsite = #{hintsite},</if>
+            <if test="hintbatchno != null">hintbatchno = #{hintbatchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="hintqty != null">hintqty = #{hintqty},</if>
+            <if test="outdesc != null">outdesc = #{outdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="collectedqty != null">collectedqty = #{collectedqty},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="outstate != null">outstate = #{outstate},</if>
+            <if test="collectDate != null">collect_date = #{collectDate},</if>
+            <if test="repertoryid != null">repertoryid = #{repertoryid},</if>
+            <if test="occupyqty != null">occupyqty = #{occupyqty},</if>
+            <if test="occupyflag != null">occupyflag = #{occupyflag},</if>
+            <if test="subinventoryCode != null">subinventory_code = #{subinventoryCode},</if>
+            <if test="hintfinish != null">hintfinish = #{hintfinish},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="agvstate != null">agvstate = #{agvstate},</if>
+            <if test="beatflag != null">beatflag = #{beatflag},</if>
+        </trim>
+        where outtaskitemid = #{outtaskitemid}
+    </update>
+
+    <delete id="deleteOuttaskitemByOuttaskitemid" parameterType="Long">
+        delete from outtaskitem where outtaskitemid = #{outtaskitemid}
+    </delete>
+
+    <delete id="deleteOuttaskitemByOuttaskitemids" parameterType="String">
+        delete from outtaskitem where outtaskitemid in
+        <foreach item="outtaskitemid" collection="array" open="(" separator="," close=")">
+            #{outtaskitemid}
+        </foreach>
+    </delete>
+
+    <select id="selectOuttaskitemList2" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        select d1.* from (
+        select
+        b.taskcomment,
+        nvl(c.storeroomno,' ') as storeroomno,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        b.forcesite,
+        b.forcebatch,
+        b.outtaskno,
+        d.storesiteno,
+        f.matcode,
+        f.matname,
+        a.palletno,
+        nvl(b.outdesc,' ') as outdesc,
+        b.outtaskid,
+        e.operation,
+        e.userid,
+        nvl(a.outstate,0) as outstate,
+        nvl(b.collecter,0) as collecter,
+        nvl(a.collecter,0) as i_collecter,
+        nvl(b.collecter,0) as t_collecter,
+        b.outdate,
+        c.roomtag,
+        a.hintqty,
+        a.collectedqty,
+        a.outtaskitemid,
+        nvl(op.wip_supplement_flag,'N') as wip_supplement_flag,
+        nvl(g.schedule_group_name,'') as schedule_group_name,
+        nvl(g.workstation,'N') as workstation,
+        nvl(op.transfertype,'0') as transfertype,
+        nvl(b.batchflag,0) as batchflag,
+        g.delivery_data,
+        g.delivery_time,
+        b.beatflag,
+        a.subinventory_code
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        pda_user_storeroomno e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomno = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+        and nvl(a.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and nvl(a.hintqty,0) - nvl(a.collectedqty,0) > 0
+
+        <if test="outtaskid != null ">and a.outtaskid=#{outtaskid}</if>
+        <if test="beatflag != null ">and nvl(b.beatflag,'N')=#{beatflag}</if>
+        <if test="batchflag != null ">and NVL(b.batchflag,0) = #{batchflag}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outstate != null ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null ">and c.roomtag = #{roomTag}</if>
+        <if test="transferType != null "> and nvl(op.transfertype,'0') = #{transferType}</if>
+        )d1 where 1=1
+        <if test="searchKey != null">
+            and (
+            d1.matcode like concat(concat('%',#{searchKey}),'%') or
+            d1.storesiteno like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+
+        <if test="sortColumn == null ">order by d1.outdate desc,d1.taskcomment desc , d1.orderno desc,d1.storesiteno asc,d1.matcode asc</if>
+        <if test="sortColumn != null">order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+
+      <select id="selectOuttaskitemList3" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        select d1.* from (
+        select
+        b.taskcomment,
+        nvl(c.storeroomno,' ') as storeroomno,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        b.forcesite,
+        b.forcebatch,
+        b.outtaskno,
+        d.storesiteno,
+        f.matcode,
+        f.matname,
+        a.palletno,
+        nvl(b.outdesc,' ') as outdesc,
+        b.outtaskid,
+        e.operation,
+        e.userid,
+        nvl(a.outstate,0) as outstate,
+        nvl(b.collecter,0) as collecter,
+        nvl(a.collecter,0) as i_collecter,
+        nvl(b.collecter,0) as t_collecter,
+        b.outdate,
+        c.roomtag,
+        a.hintqty,
+        a.collectedqty,
+        a.outtaskitemid,
+        nvl(op.wip_supplement_flag,'N') as wip_supplement_flag,
+        nvl(g.schedule_group_name,'') as schedule_group_name,
+        nvl(g.workstation,'N') as workstation,
+        nvl(op.transfertype,'0') as transfertype,
+        nvl(b.batchflag,0) as batchflag,
+        g.delivery_data,
+        g.delivery_time,
+        b.beatflag,
+        a.subinventory_code
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        pda_user_storeroomno e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomno = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+        and nvl(a.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and nvl(a.hintqty,0) - nvl(a.collectedqty,0) > 0
+
+        <if test="outtaskid != null ">and a.outtaskid=#{outtaskid}</if>
+        <if test="beatflag != null ">and nvl(b.beatflag,'N')=#{beatflag}</if>
+        <if test="batchflag != null ">and NVL(b.batchflag,0) = #{batchflag}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outstate != null ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null ">and c.roomtag = #{roomTag}</if>
+        <if test="transferType != null "> and nvl(op.transfertype,'0') = #{transferType}</if>
+        )d1 where 1=1
+        <if test="searchKey != null">
+            and (
+            d1.matcode like concat(concat('%',#{searchKey}),'%') or
+            d1.storesiteno like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+
+        <if test="sortColumn == null ">order by d1.outdate desc,d1.taskcomment desc , d1.orderno desc,d1.storesiteno asc,d1.matcode asc</if>
+        <if test="sortColumn != null">order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+    </select>
+
+    <select id="getOutTaskItem" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        select pm.matcode,
+        sts.storesiteno,
+        oi.hintqty,
+        oi.collectedqty ,
+        oi.hintbatchno,
+        oi.sn,
+        str.storeroomno,
+        oi.outtaskitemid,
+        oi.subinventory_code,
+        pm.matname,
+        oi.palletno,
+        onf.orderno,
+        GetRepQtyByOutTaskItemId(oi.repertoryid,oi.materialid,oi.outtaskitemid) as repqty,
+        GetPalletStatusByOutTaskItemId(oi.outtaskid,oi.palletno) as palletStatus,
+        pm.matinnercode,
+        row_number() over(order by sts.storesiteno,pm.matcode,oi.outtaskitemid) as data1
+        from outtask o,
+        outtaskitem oi,
+        pm_material pm,
+        storeroom str,
+        storesite sts,
+        outbill g,
+        outproof onf
+        where o.outtaskid=oi.outtaskid
+        and oi.materialid=pm.pm_materialid
+        and o.storeroomid = str.storeroomid
+        and oi.hintsite = sts.storesiteid
+        and oi.outstate = 1
+        and oi.outbillid = g.outbillid
+        and g.OUTPROOFID = onf.OUTPROOFID
+        and nvl(oi.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and (nvl(oi.hintqty,0)-nvl(oi.collectedqty,0))> 0
+        <if test="outtaskno != null ">and o.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null ">and str.roomtag = #{roomTag}</if>
+        <if test="collecter != null "> and oi.collecter = #{collecter}</if>
+        <if test="workstation != null "> and nvl(g.workstation,'N')= #{workstation}</if>
+        order by sts.storesiteno,pm.matcode,oi.outtaskitemid
+
+    </select>
+
+
+      <select id="getOutTaskItemFinish" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        select pm.matcode,
+        sts.storesiteno,
+        oi.hintqty,
+        oi.collectedqty ,
+        oi.hintbatchno,
+        oi.sn,
+        str.storeroomno,
+        oi.outtaskitemid,
+        oi.subinventory_code,
+        pm.matname,
+        oi.palletno,
+        onf.orderno,
+        GetRepQtyByOutTaskItemId(oi.repertoryid,oi.materialid,oi.outtaskitemid) as repqty,
+        GetPalletStatusByOutTaskItemId(oi.outtaskid,oi.palletno) as palletStatus,
+        pm.matinnercode
+        from outtask o,
+        outtaskitem oi,
+        pm_material pm,
+        storeroom str,
+        storesite sts,
+        outbill g,
+        outproof onf
+        where o.outtaskid=oi.outtaskid
+        and oi.materialid=pm.pm_materialid
+        and o.storeroomid = str.storeroomid
+        and oi.hintsite = sts.storesiteid
+        and oi.outstate = 1
+        and oi.outbillid = g.outbillid
+        and g.OUTPROOFID = onf.OUTPROOFID
+        and nvl(oi.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        <if test="outtaskno != null ">and o.outtaskno = #{outtaskno}</if>
+        <if test="roomTag != null ">and str.roomtag = #{roomTag}</if>
+        <if test="collecter != null "> and oi.collecter = #{collecter}</if>
+        <if test="workstation != null "> and nvl(g.workstation,'N')= #{workstation}</if>
+        order by sts.storesiteno,pm.matcode
+
+    </select>
+
+       <select id="getOutTaskPalletNo" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+       select distinct
+                                                     onf.outproofno as taskcomment,
+                                                     onf.orderno,
+                                                     onf.po_number,
+                                                     oi.palletno,
+                                                     sts.storesiteno,
+                                                     o.outtaskno,
+                                                     1 as hintqty,
+                                                     GetPalletNumByTaskId(o.outtaskid,oi.palletno) as hintfinish,
+                                                     GetPalletStatusByOutTaskItemId(oi.outtaskid,oi.palletno) palletStatus,
+                                                     nvl(g.workStation,'N') as workStation
+                                                from outtask o,
+                                                     outtaskitem oi,
+                                                     pm_material pm,
+                                                     storeroom str,
+                                                     storesite sts,
+                                                     outbill g,
+                                                     outproof onf
+                                               where o.outtaskid=oi.outtaskid
+                                                 and oi.materialid=pm.pm_materialid
+                                                 and o.storeroomid = str.storeroomid
+                                                 and oi.hintsite = sts.storesiteid
+                                                 and oi.outstate = 1
+                                                 and oi.outbillid = g.outbillid
+                                                 and g.OUTPROOFID = onf.OUTPROOFID
+                                                 and nvl(oi.hintfinish,0) = 0
+                                                 and nvl(g.hintfinish,0) = 0
+                                                 and (nvl(oi.hintqty,0)-nvl(oi.collectedqty,0))> 0
+
+                                      <if test="outtaskno != null ">and o.outtaskno = #{outtaskno}</if>
+                                      <if test="roomTag != null ">and str.roomtag = #{roomTag}</if>
+                                      <if test="collecter != null "> and oi.collecter = #{collecter}</if>
+                                      <if test="workstation != null "> and nvl(g.workstation,'N')= #{workstation}</if>
+
+                                                order by oi.palletno,sts.storesiteno
+    </select>
+
+         <select id="getOutTaskPalletNoByUserID" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+       select d1.* from (
+        select
+        distinct
+        b.taskcomment,
+        nvl(op.orderno,' ') as orderno,
+        nvl(op.po_number,' ') as po_number,
+        a.palletno,
+        b.outtaskno,
+        d.storesiteno,
+        b.outtaskid
+
+        from outtaskitem a,
+        outtask b,
+        storeroom c,
+        storesite d,
+        pda_user_storeroomno e,
+        pm_material f,
+        outbill g,
+        outproof op
+        where a.outtaskid = b.outtaskid
+        and a.outbillid = g.outbillid
+        and a.hintsite = d.storesiteid
+        and a.materialid = f.pm_materialid
+        and b.storeroomid = c.storeroomid
+        and c.storeroomno = e.operation
+        and g.outproofid = op.outproofid
+        and b.tasksource = op.outproofid
+        and nvl(a.hintfinish,0) = 0
+        and nvl(g.hintfinish,0) = 0
+        and nvl(a.hintqty,0) - nvl(a.collectedqty,0) > 0
+
+        <if test="workstation != null ">and nvl(g.workstation,'N')= #{workstation}</if>
+        <if test="roomTag != null ">and c.roomtag = #{roomTag}</if>
+        <if test="taskcomment != null ">and b.taskcomment like concat(concat('%',#{taskcomment}),'%')</if>
+        <if test="userId != null ">and e.userid = #{userId}</if>
+        <if test="outstate != null ">and nvl(a.outstate,0) = #{outstate}</if>
+        <if test="i_collecter != null ">and nvl(a.collecter,0) = #{i_collecter}</if>
+        <if test="outtaskid != null ">and a.outtaskid=#{outtaskid}</if>
+        <if test="outtaskno != null ">and b.outtaskno = #{outtaskno}</if>
+        )d1 where 1=1 order by d1.palletno asc
+    </select>
+
+    <select id="selectOutTaskByPalletNoCol" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        <include refid="selectOuttaskitemVo"/>
+        where COLLECTEDQTY != 0 and outtaskid = #{outtaskid} and  PALLETNO = #{palletno}
+    </select>
+
+    <select id="selectOutTaskByPalletNo" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+ <include refid="selectOuttaskitemVo"/>
+        where outtaskid = #{outtaskid} and  PALLETNO = #{palletno}
+    </select>
+
+    <select id="selecttransQty" parameterType="Outtaskitem" resultMap="OuttaskitemResult">
+        <include refid="selectOuttaskitemVo"/>
+        where hintsite = #{hintsite} and  materialid = #{materialid} and COLLECTEDQTY = 0 and rownum &lt; 2
+    </select>
+</mapper>

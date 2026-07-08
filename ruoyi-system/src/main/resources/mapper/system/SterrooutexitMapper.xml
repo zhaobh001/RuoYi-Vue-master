@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SterrooutexitMapper">
+    
+    <resultMap type="Sterrooutexit" id="SterrooutexitResult">
+        <result property="sterrooutexitid"    column="sterrooutexitid"    />
+        <result property="exitcode"    column="exitcode"    />
+        <result property="exitname"    column="exitname"    />
+        <result property="type"    column="type"    />
+        <result property="remark"    column="remark"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+    </resultMap>
+
+    <sql id="selectSterrooutexitVo">
+        select sterrooutexitid, exitcode, exitname, type, remark, dataversion, data1, data2, data3, data4 from sterrooutexit
+    </sql>
+
+    <select id="selectSterrooutexitList" parameterType="Sterrooutexit" resultMap="SterrooutexitResult">
+        <include refid="selectSterrooutexitVo"/>
+        <where>  
+            <if test="exitcode != null  and exitcode != ''"> and exitcode = #{exitcode}</if>
+            <if test="exitname != null  and exitname != ''"> and exitname like concat('%', #{exitname}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 != #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+        </where>
+    </select>
+    
+    <select id="selectSterrooutexitBySterrooutexitid" parameterType="Long" resultMap="SterrooutexitResult">
+    </select>
+        
+    <insert id="insertSterrooutexit" parameterType="Sterrooutexit" useGeneratedKeys="true" keyProperty="sterrooutexitid">
+        insert into sterrooutexit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="exitcode != null">exitcode,</if>
+            <if test="exitname != null">exitname,</if>
+            <if test="type != null">type,</if>
+            <if test="remark != null">remark,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="exitcode != null">#{exitcode},</if>
+            <if test="exitname != null">#{exitname},</if>
+            <if test="type != null">#{type},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSterrooutexit" parameterType="Sterrooutexit">
+        update sterrooutexit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="exitcode != null">exitcode = #{exitcode},</if>
+            <if test="exitname != null">exitname = #{exitname},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+        </trim>
+        where sterrooutexitid = #{sterrooutexitid}
+    </update>
+
+    <delete id="deleteSterrooutexitBySterrooutexitid" parameterType="Long">
+        delete from sterrooutexit where sterrooutexitid = #{sterrooutexitid}
+    </delete>
+
+    <delete id="deleteSterrooutexitBySterrooutexitids" parameterType="String">
+        delete from sterrooutexit where sterrooutexitid in 
+        <foreach item="sterrooutexitid" collection="array" open="(" separator="," close=")">
+            #{sterrooutexitid}
+        </foreach>
+    </delete>
+</mapper>

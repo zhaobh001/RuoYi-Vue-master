@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PalletItemMapper">
+
+    <resultMap type="PalletItem" id="PalletItemResult">
+        <result property="palletItemid" column="pallet_itemid"/>
+        <result property="palletid" column="palletid"/>
+        <result property="itemMaterialid" column="item_materialid"/>
+        <result property="itemBatch" column="item_batch"/>
+        <result property="itemSn" column="item_sn"/>
+        <result property="itemQty" column="item_qty"/>
+        <result property="dataversion" column="dataversion"/>
+        <result property="data1" column="data1"/>
+        <result property="data2" column="data2"/>
+        <result property="data3" column="data3"/>
+        <result property="data4" column="data4"/>
+        <result property="taskid" column="taskid"/>
+        <result property="taskno" column="taskno"/>
+        <result property="billid" column="billid"/>
+        <result property="billno" column="billno"/>
+        <result property="proofid" column="proofid"/>
+        <result property="proofno" column="proofno"/>
+        <result property="taskitemid" column="taskitemid"/>
+        <result property="collecttime" column="collecttime"/>
+        <result property="collector" column="collector"/>
+        <result property="palletNo" column="pallet_no"/>
+    </resultMap>
+
+    <sql id="selectPalletItemVo">
+        select pallet_itemid, palletid, item_materialid, item_batch, item_sn, item_qty, dataversion, data1, data2, data3, data4, taskid, taskno, billid, billno, proofid, proofno, taskitemid, collecttime, collector from pallet_item
+    </sql>
+
+    <select id="selectPalletItemList" parameterType="PalletItem" resultMap="PalletItemResult">
+        <include refid="selectPalletItemVo"/>
+        <where>
+            <if test="palletid != null ">and palletid = #{palletid}</if>
+            <if test="itemMaterialid != null ">and item_materialid = #{itemMaterialid}</if>
+            <if test="itemBatch != null  and itemBatch != ''">and item_batch = #{itemBatch}</if>
+            <if test="itemSn != null  and itemSn != ''">and item_sn = #{itemSn}</if>
+            <if test="itemQty != null ">and item_qty = #{itemQty}</if>
+            <if test="dataversion != null ">and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''">and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''">and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''">and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''">and data4 = #{data4}</if>
+            <if test="taskid != null ">and taskid = #{taskid}</if>
+            <if test="taskno != null  and taskno != ''">and taskno = #{taskno}</if>
+            <if test="billid != null ">and billid = #{billid}</if>
+            <if test="billno != null  and billno != ''">and billno = #{billno}</if>
+            <if test="proofid != null ">and proofid = #{proofid}</if>
+            <if test="proofno != null  and proofno != ''">and proofno = #{proofno}</if>
+            <if test="taskitemid != null ">and taskitemid = #{taskitemid}</if>
+            <if test="collecttime != null ">and collecttime = #{collecttime}</if>
+            <if test="collector != null ">and collector = #{collector}</if>
+        </where>
+    </select>
+
+    <select id="selectPalletItemByPalletItemid" parameterType="Long" resultMap="PalletItemResult">
+    </select>
+
+    <insert id="insertPalletItem" parameterType="PalletItem" useGeneratedKeys="true" keyProperty="palletItemid">
+        <selectKey keyProperty="palletItemid" order="BEFORE" resultType="Long">
+            select PALLET_ITEMID_SEQ.nextval as palletItemid from DUAL
+        </selectKey>
+
+        insert into pallet_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="palletItemid != null">pallet_itemid,</if>
+            <if test="palletid != null">palletid,</if>
+            <if test="itemMaterialid != null">item_materialid,</if>
+            <if test="itemBatch != null">item_batch,</if>
+            <if test="itemSn != null">item_sn,</if>
+            <if test="itemQty != null">item_qty,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="taskid != null">taskid,</if>
+            <if test="taskno != null">taskno,</if>
+            <if test="billid != null">billid,</if>
+            <if test="billno != null">billno,</if>
+            <if test="proofid != null">proofid,</if>
+            <if test="proofno != null">proofno,</if>
+            <if test="taskitemid != null">taskitemid,</if>
+            <if test="collecttime != null">collecttime,</if>
+            <if test="collector != null">collector,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="palletItemid != null">#{palletItemid},</if>
+            <if test="palletid != null">#{palletid},</if>
+            <if test="itemMaterialid != null">#{itemMaterialid},</if>
+            <if test="itemBatch != null">#{itemBatch},</if>
+            <if test="itemSn != null">#{itemSn},</if>
+            <if test="itemQty != null">#{itemQty},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="taskid != null">#{taskid},</if>
+            <if test="taskno != null">#{taskno},</if>
+            <if test="billid != null">#{billid},</if>
+            <if test="billno != null">#{billno},</if>
+            <if test="proofid != null">#{proofid},</if>
+            <if test="proofno != null">#{proofno},</if>
+            <if test="taskitemid != null">#{taskitemid},</if>
+            <if test="collecttime != null">#{collecttime},</if>
+            <if test="collector != null">#{collector},</if>
+        </trim>
+    </insert>
+
+    <update id="updatePalletItem" parameterType="PalletItem">
+        update pallet_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="palletid != null">palletid = #{palletid},</if>
+            <if test="itemMaterialid != null">item_materialid = #{itemMaterialid},</if>
+            <if test="itemBatch != null">item_batch = #{itemBatch},</if>
+            <if test="itemSn != null">item_sn = #{itemSn},</if>
+            <if test="itemQty != null">item_qty = #{itemQty},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="taskid != null">taskid = #{taskid},</if>
+            <if test="taskno != null">taskno = #{taskno},</if>
+            <if test="billid != null">billid = #{billid},</if>
+            <if test="billno != null">billno = #{billno},</if>
+            <if test="proofid != null">proofid = #{proofid},</if>
+            <if test="proofno != null">proofno = #{proofno},</if>
+            <if test="taskitemid != null">taskitemid = #{taskitemid},</if>
+            <if test="collecttime != null">collecttime = #{collecttime},</if>
+            <if test="collector != null">collector = #{collector},</if>
+        </trim>
+        where pallet_itemid = #{palletItemid}
+    </update>
+
+    <delete id="deletePalletItemByPalletItemid" parameterType="Long">
+        delete from pallet_item where pallet_itemid = #{palletItemid}
+    </delete>
+
+    <delete id="deletePalletItemByPalletItemids" parameterType="String">
+        delete from pallet_item where pallet_itemid in
+        <foreach item="palletItemid" collection="array" open="(" separator="," close=")">
+            #{palletItemid}
+        </foreach>
+    </delete>
+
+    <select id="selectPalletItemByTaskID" parameterType="PalletItem" resultMap="PalletItemResult">
+        SELECT a.palletid,
+        a.item_materialid,
+        c.matcode ,
+        c.matname ,
+        a.item_batch ,
+        a.item_sn ,
+        a.item_qty ,
+        a.taskno ,
+        a.billid ,
+        a.billno ,
+        a.proofid ,
+        a.proofno ,
+        a.taskitemid ,
+        a.collecttime ,
+        a.collector ,
+        b.pallet_no,
+        a.taskid
+        FROM pallet_item a,
+        pallet b,
+        pm_material c
+        WHERE a.palletid = b.palletid
+        AND a.item_materialid = c.pm_materialid
+        AND a.collecttime > sysdate - 2
+        <if test="palletNo != null">AND b.pallet_no = #{palletNo}</if>
+        <if test="collector != null">AND NVL(a.collector,0) = #{collector}</if>
+    </select>
+</mapper>

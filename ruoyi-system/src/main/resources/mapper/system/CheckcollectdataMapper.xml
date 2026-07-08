@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CheckcollectdataMapper">
+    
+    <resultMap type="Checkcollectdata" id="CheckcollectdataResult">
+        <result property="checkcollectdataid"    column="checkcollectdataid"    />
+        <result property="dcConnectid"    column="dc_connectid"    />
+        <result property="chcektaskitemid"    column="chcektaskitemid"    />
+        <result property="collecttime"    column="collecttime"    />
+        <result property="checksite"    column="checksite"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="sn"    column="sn"    />
+        <result property="qty"    column="qty"    />
+        <result property="checkdesc"    column="checkdesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="cstate"    column="cstate"    />
+        <result property="palletno"    column="palletno"    />
+    </resultMap>
+
+    <sql id="selectCheckcollectdataVo">
+        select checkcollectdataid, dc_connectid, chcektaskitemid, collecttime, checksite, materialid, batchno, sn, qty, checkdesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, cstate, palletno from checkcollectdata
+    </sql>
+
+    <select id="selectCheckcollectdataList" parameterType="Checkcollectdata" resultMap="CheckcollectdataResult">
+        <include refid="selectCheckcollectdataVo"/>
+        <where>  
+            <if test="dcConnectid != null "> and dc_connectid = #{dcConnectid}</if>
+            <if test="chcektaskitemid != null "> and chcektaskitemid = #{chcektaskitemid}</if>
+            <if test="collecttime != null "> and collecttime = #{collecttime}</if>
+            <if test="checksite != null "> and checksite = #{checksite}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="checkdesc != null  and checkdesc != ''"> and checkdesc = #{checkdesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="cstate != null "> and cstate = #{cstate}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+        </where>
+    </select>
+    
+    <select id="selectCheckcollectdataByCheckcollectdataid" parameterType="Long" resultMap="CheckcollectdataResult">
+    </select>
+        
+    <insert id="insertCheckcollectdata" parameterType="Checkcollectdata" useGeneratedKeys="true" keyProperty="checkcollectdataid">
+        <selectKey keyProperty="checkcollectdataid" resultType="long" order="BEFORE">
+            SELECT CHECKCOLLECTDATAID_SEQ.NEXTVAL as checkcollectdataid FROM DUAL
+        </selectKey>
+        insert into checkcollectdata
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checkcollectdataid != null">checkcollectdataid,</if>
+            <if test="dcConnectid != null">dc_connectid,</if>
+            <if test="chcektaskitemid != null">chcektaskitemid,</if>
+            <if test="collecttime != null">collecttime,</if>
+            <if test="checksite != null">checksite,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="qty != null">qty,</if>
+            <if test="checkdesc != null">checkdesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="cstate != null">cstate,</if>
+            <if test="palletno != null">palletno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checkcollectdataid != null">#{checkcollectdataid},</if>
+            <if test="dcConnectid != null">#{dcConnectid},</if>
+            <if test="chcektaskitemid != null">#{chcektaskitemid},</if>
+            <if test="collecttime != null">#{collecttime},</if>
+            <if test="checksite != null">#{checksite},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="checkdesc != null">#{checkdesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="cstate != null">#{cstate},</if>
+            <if test="palletno != null">#{palletno},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCheckcollectdata" parameterType="Checkcollectdata">
+        update checkcollectdata
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dcConnectid != null">dc_connectid = #{checkcollectdataid},</if>
+            <if test="chcektaskitemid != null">chcektaskitemid = #{chcektaskitemid},</if>
+            <if test="collecttime != null">collecttime = #{collecttime},</if>
+            <if test="checksite != null">checksite = #{checksite},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="checkdesc != null">checkdesc = #{checkdesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="cstate != null">cstate = #{cstate},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+        </trim>
+        where checkcollectdataid = #{checkcollectdataid}
+    </update>
+
+    <delete id="deleteCheckcollectdataByCheckcollectdataid" parameterType="Long">
+        delete from checkcollectdata where checkcollectdataid = #{checkcollectdataid}
+    </delete>
+
+    <delete id="deleteCheckcollectdataByCheckcollectdataids" parameterType="String">
+        delete from checkcollectdata where checkcollectdataid in 
+        <foreach item="checkcollectdataid" collection="array" open="(" separator="," close=")">
+            #{checkcollectdataid}
+        </foreach>
+    </delete>
+</mapper>
