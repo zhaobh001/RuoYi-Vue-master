@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DeliverytaskitemMapper">
+    
+    <resultMap type="Deliverytaskitem" id="DeliverytaskitemResult">
+        <result property="intaskitemid"    column="intaskitemid"    />
+        <result property="intaskid"    column="intaskid"    />
+        <result property="inbillid"    column="inbillid"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="hintedsite"    column="hintedsite"    />
+        <result property="qty"    column="qty"    />
+        <result property="indesc"    column="indesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="inorderid"    column="inorderid"    />
+        <result property="batchno"    column="batchno"    />
+        <result property="sn"    column="sn"    />
+        <result property="collectedqty"    column="collectedqty"    />
+        <result property="collecter"    column="collecter"    />
+        <result property="instate"    column="instate"    />
+        <result property="collectDate"    column="collect_date"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="productline"    column="productline"    />
+        <result property="workstation"    column="workstation"    />
+        <result property="palletno"    column="palletno"    />
+    </resultMap>
+
+    <sql id="selectDeliverytaskitemVo">
+        select intaskitemid, intaskid, inbillid, materialid, hintedsite, qty, indesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, inorderid, batchno, sn, collectedqty, collecter, instate, collect_date, transaction_id, productline, workstation, palletno from deliverytaskitem
+    </sql>
+
+    <select id="selectDeliverytaskitemList" parameterType="Deliverytaskitem" resultMap="DeliverytaskitemResult">
+        <include refid="selectDeliverytaskitemVo"/>
+        <where>  
+            <if test="intaskid != null "> and intaskid = #{intaskid}</if>
+            <if test="inbillid != null "> and inbillid = #{inbillid}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="hintedsite != null "> and hintedsite = #{hintedsite}</if>
+            <if test="qty != null "> and qty = #{qty}</if>
+            <if test="indesc != null  and indesc != ''"> and indesc = #{indesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="inorderid != null "> and inorderid = #{inorderid}</if>
+            <if test="batchno != null  and batchno != ''"> and batchno = #{batchno}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="collectedqty != null "> and collectedqty = #{collectedqty}</if>
+            <if test="collecter != null "> and collecter = #{collecter}</if>
+            <if test="instate != null "> and instate = #{instate}</if>
+            <if test="collectDate != null "> and collect_date = #{collectDate}</if>
+            <if test="transactionId != null "> and transaction_id = #{transactionId}</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+            <if test="workstation != null  and workstation != ''"> and workstation = #{workstation}</if>
+            <if test="palletno != null  and palletno != ''"> and palletno = #{palletno}</if>
+        </where>
+    </select>
+    
+    <select id="selectDeliverytaskitemByIntaskitemid" parameterType="Long" resultMap="DeliverytaskitemResult">
+        <include refid="selectDeliverytaskitemVo"/>
+        where intaskitemid = #{intaskitemid}
+    </select>
+        
+    <insert id="insertDeliverytaskitem" parameterType="Deliverytaskitem" useGeneratedKeys="true" keyProperty="intaskitemid">
+        insert into deliverytaskitem
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intaskid != null">intaskid,</if>
+            <if test="inbillid != null">inbillid,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="hintedsite != null">hintedsite,</if>
+            <if test="qty != null">qty,</if>
+            <if test="indesc != null">indesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="inorderid != null">inorderid,</if>
+            <if test="batchno != null">batchno,</if>
+            <if test="sn != null">sn,</if>
+            <if test="collectedqty != null">collectedqty,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="instate != null">instate,</if>
+            <if test="collectDate != null">collect_date,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="productline != null">productline,</if>
+            <if test="workstation != null">workstation,</if>
+            <if test="palletno != null">palletno,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intaskid != null">#{intaskid},</if>
+            <if test="inbillid != null">#{inbillid},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="hintedsite != null">#{hintedsite},</if>
+            <if test="qty != null">#{qty},</if>
+            <if test="indesc != null">#{indesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="inorderid != null">#{inorderid},</if>
+            <if test="batchno != null">#{batchno},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="collectedqty != null">#{collectedqty},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="instate != null">#{instate},</if>
+            <if test="collectDate != null">#{collectDate},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="productline != null">#{productline},</if>
+            <if test="workstation != null">#{workstation},</if>
+            <if test="palletno != null">#{palletno},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeliverytaskitem" parameterType="Deliverytaskitem">
+        update deliverytaskitem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="intaskid != null">intaskid = #{intaskid},</if>
+            <if test="inbillid != null">inbillid = #{inbillid},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="hintedsite != null">hintedsite = #{hintedsite},</if>
+            <if test="qty != null">qty = #{qty},</if>
+            <if test="indesc != null">indesc = #{indesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="inorderid != null">inorderid = #{inorderid},</if>
+            <if test="batchno != null">batchno = #{batchno},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="collectedqty != null">collectedqty = #{collectedqty},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="instate != null">instate = #{instate},</if>
+            <if test="collectDate != null">collect_date = #{collectDate},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="productline != null">productline = #{productline},</if>
+            <if test="workstation != null">workstation = #{workstation},</if>
+            <if test="palletno != null">palletno = #{palletno},</if>
+        </trim>
+        where intaskitemid = #{intaskitemid}
+    </update>
+
+    <delete id="deleteDeliverytaskitemByIntaskitemid" parameterType="Long">
+        delete from deliverytaskitem where intaskitemid = #{intaskitemid}
+    </delete>
+
+    <delete id="deleteDeliverytaskitemByIntaskitemids" parameterType="String">
+        delete from deliverytaskitem where intaskitemid in 
+        <foreach item="intaskitemid" collection="array" open="(" separator="," close=")">
+            #{intaskitemid}
+        </foreach>
+    </delete>
+</mapper>

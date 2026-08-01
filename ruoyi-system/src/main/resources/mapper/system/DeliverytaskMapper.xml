@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DeliverytaskMapper">
+    
+    <resultMap type="Deliverytask" id="DeliverytaskResult">
+        <result property="intaskid"    column="intaskid"    />
+        <result property="intaskno"    column="intaskno"    />
+        <result property="tasksource"    column="tasksource"    />
+        <result property="taskcomment"    column="taskcomment"    />
+        <result property="storeroomid"    column="storeroomid"    />
+        <result property="collecter"    column="collecter"    />
+        <result property="instate"    column="instate"    />
+        <result property="collectkind"    column="collectkind"    />
+        <result property="indate"    column="indate"    />
+        <result property="indesc"    column="indesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="data5"    column="data5"    />
+        <result property="data6"    column="data6"    />
+        <result property="data7"    column="data7"    />
+        <result property="data8"    column="data8"    />
+        <result property="forcesite"    column="forcesite"    />
+        <result property="forcebatch"    column="forcebatch"    />
+        <result property="batchflag"    column="batchflag"    />
+    </resultMap>
+
+    <sql id="selectDeliverytaskVo">
+        select intaskid, intaskno, tasksource, taskcomment, storeroomid, collecter, instate, collectkind, indate, indesc, dataversion, data1, data2, data3, data4, data5, data6, data7, data8, forcesite, forcebatch, batchflag from deliverytask
+    </sql>
+
+    <select id="selectDeliverytaskList" parameterType="Deliverytask" resultMap="DeliverytaskResult">
+        <include refid="selectDeliverytaskVo"/>
+        <where>  
+            <if test="intaskno != null  and intaskno != ''"> and intaskno = #{intaskno}</if>
+            <if test="tasksource != null "> and tasksource = #{tasksource}</if>
+            <if test="taskcomment != null  and taskcomment != ''"> and taskcomment = #{taskcomment}</if>
+            <if test="storeroomid != null "> and storeroomid = #{storeroomid}</if>
+            <if test="collecter != null "> and collecter = #{collecter}</if>
+            <if test="instate != null "> and instate = #{instate}</if>
+            <if test="collectkind != null "> and collectkind = #{collectkind}</if>
+            <if test="indate != null "> and indate = #{indate}</if>
+            <if test="indesc != null  and indesc != ''"> and indesc = #{indesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="data5 != null  and data5 != ''"> and data5 = #{data5}</if>
+            <if test="data6 != null  and data6 != ''"> and data6 = #{data6}</if>
+            <if test="data7 != null  and data7 != ''"> and data7 = #{data7}</if>
+            <if test="data8 != null  and data8 != ''"> and data8 = #{data8}</if>
+            <if test="forcesite != null  and forcesite != ''"> and forcesite = #{forcesite}</if>
+            <if test="forcebatch != null  and forcebatch != ''"> and forcebatch = #{forcebatch}</if>
+            <if test="batchflag != null "> and batchflag = #{batchflag}</if>
+        </where>
+    </select>
+    
+    <select id="selectDeliverytaskByIntaskid" parameterType="Long" resultMap="DeliverytaskResult">
+        <include refid="selectDeliverytaskVo"/>
+        where intaskid = #{intaskid}
+    </select>
+        
+    <insert id="insertDeliverytask" parameterType="Deliverytask" useGeneratedKeys="true" keyProperty="intaskid">
+        insert into deliverytask
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intaskno != null">intaskno,</if>
+            <if test="tasksource != null">tasksource,</if>
+            <if test="taskcomment != null">taskcomment,</if>
+            <if test="storeroomid != null">storeroomid,</if>
+            <if test="collecter != null">collecter,</if>
+            <if test="instate != null">instate,</if>
+            <if test="collectkind != null">collectkind,</if>
+            <if test="indate != null">indate,</if>
+            <if test="indesc != null">indesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="data5 != null">data5,</if>
+            <if test="data6 != null">data6,</if>
+            <if test="data7 != null">data7,</if>
+            <if test="data8 != null">data8,</if>
+            <if test="forcesite != null">forcesite,</if>
+            <if test="forcebatch != null">forcebatch,</if>
+            <if test="batchflag != null">batchflag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intaskno != null">#{intaskno},</if>
+            <if test="tasksource != null">#{tasksource},</if>
+            <if test="taskcomment != null">#{taskcomment},</if>
+            <if test="storeroomid != null">#{storeroomid},</if>
+            <if test="collecter != null">#{collecter},</if>
+            <if test="instate != null">#{instate},</if>
+            <if test="collectkind != null">#{collectkind},</if>
+            <if test="indate != null">#{indate},</if>
+            <if test="indesc != null">#{indesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="data5 != null">#{data5},</if>
+            <if test="data6 != null">#{data6},</if>
+            <if test="data7 != null">#{data7},</if>
+            <if test="data8 != null">#{data8},</if>
+            <if test="forcesite != null">#{forcesite},</if>
+            <if test="forcebatch != null">#{forcebatch},</if>
+            <if test="batchflag != null">#{batchflag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeliverytask" parameterType="Deliverytask">
+        update deliverytask
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="intaskno != null">intaskno = #{intaskno},</if>
+            <if test="tasksource != null">tasksource = #{tasksource},</if>
+            <if test="taskcomment != null">taskcomment = #{taskcomment},</if>
+            <if test="storeroomid != null">storeroomid = #{storeroomid},</if>
+            <if test="collecter != null">collecter = #{collecter},</if>
+            <if test="instate != null">instate = #{instate},</if>
+            <if test="collectkind != null">collectkind = #{collectkind},</if>
+            <if test="indate != null">indate = #{indate},</if>
+            <if test="indesc != null">indesc = #{indesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="data5 != null">data5 = #{data5},</if>
+            <if test="data6 != null">data6 = #{data6},</if>
+            <if test="data7 != null">data7 = #{data7},</if>
+            <if test="data8 != null">data8 = #{data8},</if>
+            <if test="forcesite != null">forcesite = #{forcesite},</if>
+            <if test="forcebatch != null">forcebatch = #{forcebatch},</if>
+            <if test="batchflag != null">batchflag = #{batchflag},</if>
+        </trim>
+        where intaskid = #{intaskid}
+    </update>
+
+    <delete id="deleteDeliverytaskByIntaskid" parameterType="Long">
+        delete from deliverytask where intaskid = #{intaskid}
+    </delete>
+
+    <delete id="deleteDeliverytaskByIntaskids" parameterType="String">
+        delete from deliverytask where intaskid in 
+        <foreach item="intaskid" collection="array" open="(" separator="," close=")">
+            #{intaskid}
+        </foreach>
+    </delete>
+</mapper>

@@ -74,6 +74,16 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 配送核验单 PDF 生成 -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

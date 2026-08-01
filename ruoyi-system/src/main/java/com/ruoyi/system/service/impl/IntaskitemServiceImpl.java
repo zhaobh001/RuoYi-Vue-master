@@ -149,4 +149,14 @@ public class IntaskitemServiceImpl implements IIntaskitemService
     public List<Intaskitem> selectInTaskByPalletNoCol(Intaskitem intaskitem){
         return intaskitemMapper.selectInTaskByPalletNo(intaskitem);
     };
+
+    /**
+     * 根据托盘号获取任务
+     *
+     * @param intaskitem 入库任务ID
+     * @return 入库任务明细集合
+     */
+    public List<Intaskitem> selectIntaskitemListDelivery(Intaskitem intaskitem){
+        return intaskitemMapper.selectIntaskitemListDelivery(intaskitem);
+    };
 }

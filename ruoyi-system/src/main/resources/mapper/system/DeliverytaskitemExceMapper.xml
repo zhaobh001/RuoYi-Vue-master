@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DeliverytaskitemExceMapper">
+    
+    <resultMap type="DeliverytaskitemExce" id="DeliverytaskitemExceResult">
+        <result property="intaskitemid"    column="intaskitemid"    />
+        <result property="intaskid"    column="intaskid"    />
+        <result property="inbillid"    column="inbillid"    />
+        <result property="materialid"    column="materialid"    />
+        <result property="indesc"    column="indesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="exexType"    column="exex_type"    />
+        <result property="collectDate"    column="collect_date"    />
+        <result property="transactionId"    column="transaction_id"    />
+        <result property="productline"    column="productline"    />
+        <result property="exexid"    column="exexid"    />
+    </resultMap>
+
+    <sql id="selectDeliverytaskitemExceVo">
+        select intaskitemid, intaskid, inbillid, materialid, indesc, dataversion, exex_type, collect_date, transaction_id, productline, exexid from deliverytaskitem_exce
+    </sql>
+
+    <select id="selectDeliverytaskitemExceList" parameterType="DeliverytaskitemExce" resultMap="DeliverytaskitemExceResult">
+        <include refid="selectDeliverytaskitemExceVo"/>
+        <where>  
+            <if test="intaskitemid != null "> and intaskitemid = #{intaskitemid}</if>
+            <if test="intaskid != null "> and intaskid = #{intaskid}</if>
+            <if test="inbillid != null "> and inbillid = #{inbillid}</if>
+            <if test="materialid != null "> and materialid = #{materialid}</if>
+            <if test="indesc != null  and indesc != ''"> and indesc = #{indesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="exexType != null  and exexType != ''"> and exex_type = #{exexType}</if>
+            <if test="collectDate != null "> and collect_date = #{collectDate}</if>
+            <if test="transactionId != null "> and transaction_id = #{transactionId}</if>
+            <if test="productline != null  and productline != ''"> and productline = #{productline}</if>
+        </where>
+    </select>
+    
+    <select id="selectDeliverytaskitemExceByExexid" parameterType="Long" resultMap="DeliverytaskitemExceResult">
+        <include refid="selectDeliverytaskitemExceVo"/>
+        where exexid = #{exexid}
+    </select>
+        
+    <insert id="insertDeliverytaskitemExce" parameterType="DeliverytaskitemExce" useGeneratedKeys="true" keyProperty="exexid">
+        <selectKey keyProperty="exexid" resultType="long" order="BEFORE">
+            SELECT DELIVERYTASKITEM_EXCE_SEQ.NEXTVAL as exexid FROM DUAL
+        </selectKey>
+
+        insert into deliverytaskitem_exce
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="exexid != null">exexid,</if>
+            <if test="intaskitemid != null">intaskitemid,</if>
+            <if test="intaskid != null">intaskid,</if>
+            <if test="inbillid != null">inbillid,</if>
+            <if test="materialid != null">materialid,</if>
+            <if test="indesc != null">indesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="exexType != null">exex_type,</if>
+            <if test="collectDate != null">collect_date,</if>
+            <if test="transactionId != null">transaction_id,</if>
+            <if test="productline != null">productline,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="exexid != null">#{exexid},</if>
+            <if test="intaskitemid != null">#{intaskitemid},</if>
+            <if test="intaskid != null">#{intaskid},</if>
+            <if test="inbillid != null">#{inbillid},</if>
+            <if test="materialid != null">#{materialid},</if>
+            <if test="indesc != null">#{indesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="exexType != null">#{exexType},</if>
+            <if test="collectDate != null">#{collectDate},</if>
+            <if test="transactionId != null">#{transactionId},</if>
+            <if test="productline != null">#{productline},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeliverytaskitemExce" parameterType="DeliverytaskitemExce">
+        update deliverytaskitem_exce
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="intaskitemid != null">intaskitemid = #{intaskitemid},</if>
+            <if test="intaskid != null">intaskid = #{intaskid},</if>
+            <if test="inbillid != null">inbillid = #{inbillid},</if>
+            <if test="materialid != null">materialid = #{materialid},</if>
+            <if test="indesc != null">indesc = #{indesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="exexType != null">exex_type = #{exexType},</if>
+            <if test="collectDate != null">collect_date = #{collectDate},</if>
+            <if test="transactionId != null">transaction_id = #{transactionId},</if>
+            <if test="productline != null">productline = #{productline},</if>
+        </trim>
+        where exexid = #{exexid}
+    </update>
+
+    <delete id="deleteDeliverytaskitemExceByExexid" parameterType="Long">
+        delete from deliverytaskitem_exce where exexid = #{exexid}
+    </delete>
+
+    <delete id="deleteDeliverytaskitemExceByExexids" parameterType="String">
+        delete from deliverytaskitem_exce where exexid in 
+        <foreach item="exexid" collection="array" open="(" separator="," close=")">
+            #{exexid}
+        </foreach>
+    </delete>
+</mapper>

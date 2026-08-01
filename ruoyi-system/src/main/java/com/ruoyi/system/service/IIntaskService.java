@@ -66,4 +66,12 @@ public interface IIntaskService
      * @return 入库任务
      */
     public Intask selectIntaskByIntaskNo(String intaskno);
+
+    /**
+     * 查询入库任务列表
+     *
+     * @param intask 入库任务
+     * @return 入库任务集合
+     */
+    public List<Intask> selectIntaskListDelivery(Intask intask);
 }

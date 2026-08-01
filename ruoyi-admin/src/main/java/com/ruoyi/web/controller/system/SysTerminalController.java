@@ -138,6 +138,21 @@ public class SysTerminalController extends BaseController {
     @Autowired
     private ISysConfigService configService;
 
+    // ===================== 配送核验（work_delivery）依赖 =====================
+
+    @Autowired
+    private IDeliverybillService iDeliverybillService;
+
+    @Autowired
+    private IDeliverytaskService iDeliverytaskService;
+
+    @Autowired
+    private IDeliverytaskitemService iDeliverytaskitemService;
+
+    @Autowired
+    private IDeliverytaskitemExceService iDeliverytaskitemExceService;
+
+
     /**
      * 根据用户编号获已接收未完成到货任务清单
      */
@@ -1774,6 +1789,60 @@ public class SysTerminalController extends BaseController {
             intask.setInstate(inState);
             intask.setCollecter(userId);
             iIntaskService.updateIntask(intask);
+        }
+        AjaxResult ajax = AjaxResult.success();
+        return ajax;
+    }
+
+    /// 下架任务接收
+    /// </summary>
+    /// <param name="taskcomment"></param>
+    /// <param name="userId"></param>
+    /// <param name="isCanel">是否取消 true 是</param>
+    @Transactional(rollbackFor = Exception.class)
+    @PostMapping("/commitRCInTaskItemDelivery")
+    public AjaxResult CommitRCInTaskItemDelivery(@RequestBody UpShelvesInfoReq req) {
+
+        List<Long> inTaskItemIds = req.getIntaskitemids();
+        String roomTag = req.getRoomTag();
+        String isCanel = req.getIsCanel();
+
+        if (inTaskItemIds.size() <= 0) {
+            return error("任务项ID不能为空");
+        }
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Long userId = user.getUserId();
+
+        Long inState = -1L;
+        if (isCanel.equals("true")) {
+            inState = 0L;
+            userId = 0L;
+        } else {
+            inState = 1L;
+        }
+        for (int i = 0; i < inTaskItemIds.size(); i++) {
+            Long inTaskItemId = inTaskItemIds.get(i);
+            Deliverytaskitem intaskitem = iDeliverytaskitemService.selectDeliverytaskitemByIntaskitemid(inTaskItemId);
+            if (StringUtils.isNull(intaskitem)) {
+                return error("任务查找失败");
+            }
+            BigDecimal collqty = intaskitem.getCollectedqty();
+            if (collqty != null && collqty.compareTo(BigDecimal.ZERO) > 0) {
+                return error("任务项ID：【" + intaskitem + "】已经开始采集不可以取消");
+            }
+            intaskitem.setCollecter(userId);
+            intaskitem.setInstate(inState);
+            iDeliverytaskitemService.updateDeliverytaskitem(intaskitem);
+
+            Long inTaskId = intaskitem.getIntaskid();
+            Deliverytask intask = iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId);
+            if (StringUtils.isNull(intask)) {
+                return error("任务查找失败");
+            }
+            intask.setInstate(inState);
+            intask.setCollecter(userId);
+            iDeliverytaskService.updateDeliverytask(intask);
         }
         AjaxResult ajax = AjaxResult.success();
         return ajax;
@@ -16456,5 +16525,528 @@ public class SysTerminalController extends BaseController {
         AjaxResult ajax = AjaxResult.success(jsonObject);
         return ajax;
     }
+
+    // ================================================================
+    // 配送核验（work_delivery）—— 前端 flutter 需要的三个新端点
+    // 对应 lib/modules/work_delivery/services/work_delivery_task_service.dart
+    // 中的 reportVerifyStatus / reportVerifyException / commitVerifyResult
+    // ================================================================
+
+    /** VerifyStatus 前端枚举字符串 → INSTATE 数值（0未处理/1通过/2异常/3物损） */
+    private Long resolveInstate(String status)
+    {
+        if (status == null) {
+            return 1L;
+        }
+        switch (status)
+        {
+            case "pass":
+                return 4L;
+            case "shortage":
+                // 缺料在业务上归为"异常"分支
+                return 2L;
+            case "damage":
+                return 3L;
+            case "pending":
+            default:
+                return 1L;
+        }
+    }
+
+    /** 将 Map 取值转为字符串，null → ""。 */
+    private static String strOrEmpty(Object v)
+    {
+        return v == null ? "" : v.toString();
+    }
+
+    /** 依序返回第一个非空/非空白字符串，全空返回 ""。 */
+    private static String firstNonBlank(String... values)
+    {
+        if (values == null)
+        {
+            return "";
+        }
+        for (String v : values)
+        {
+            if (v != null && !v.trim().isEmpty())
+            {
+                return v;
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 配送核验 · 按任务明细 ID 查询异常记录列表。
+     *
+     * <p>对应前端接口：{@code GET /system/terminal/selectDeliveryVerifyExceptList}，
+     * 参见 flutter 端 {@code work_delivery_task_service.dart#getVerifyExceptionListByTaskItem}。
+     * <p>入参 {@code intaskitemid} 对应 DELIVERYTASKITEM.INTASKITEMID，
+     * 也就是核验明细 ID。返回该行的全部异常记录，按 collect_date 倒序。
+     * <p>返回字段与前端 {@code DeliveryVerifyException.fromJson} 兼容：
+     * <ul>
+     *   <li>id / exceptionId</li>
+     *   <li>detailId / intaskitemid / taskDetailId</li>
+     *   <li>exceptionType / type（例：shortage / damage / packageDamage / ...）</li>
+     *   <li>materialCode / matcode</li>
+     *   <li>description / remark / desc</li>
+     *   <li>images（当前后端未存图，返回空数组）</li>
+     *   <li>reportTime / createTime（ISO8601 字符串）</li>
+     * </ul>
+     */
+    @GetMapping("/selectDeliveryVerifyExceptList")
+    public AjaxResult selectDeliveryVerifyExceptList(Long intaskitemid)
+    {
+        if (intaskitemid == null)
+        {
+            return error("intaskitemid 不能为空");
+        }
+
+        DeliverytaskitemExce query = new DeliverytaskitemExce();
+        query.setIntaskitemid(intaskitemid);
+        List<DeliverytaskitemExce> exceList = iDeliverytaskitemExceService.selectDeliverytaskitemExceList(query);
+        if (exceList == null)
+        {
+            exceList = new ArrayList<>();
+        }
+
+        // materialid → matcode 一次性缓存，避免同一物料重复查库
+        Map<Long, String> matcodeCache = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        List<Map<String, Object>> rows = new ArrayList<>(exceList.size());
+        for (DeliverytaskitemExce exce : exceList)
+        {
+            if (exce == null)
+            {
+                continue;
+            }
+            String matcode = "";
+            Long matId = exce.getMaterialid();
+            if (matId != null)
+            {
+                matcode = matcodeCache.computeIfAbsent(matId, id -> {
+                    PmMaterial pm = iPmMaterialService.selectPmMaterialByPmMaterialid(id);
+                    return pm == null || pm.getMatcode() == null ? "" : pm.getMatcode();
+                });
+            }
+
+            Map<String, Object> row = new LinkedHashMap<>();
+            row.put("id", exce.getExexid());
+            row.put("exceptionId", exce.getExexid());
+            row.put("detailId", exce.getIntaskitemid());
+            row.put("intaskitemid", exce.getIntaskitemid());
+            row.put("taskDetailId", exce.getIntaskitemid());
+            row.put("intaskid", exce.getIntaskid());
+            row.put("inbillid", exce.getInbillid());
+            row.put("materialid", exce.getMaterialid());
+            row.put("materialCode", matcode);
+            row.put("matcode", matcode);
+            row.put("exceptionType", exce.getExexType());
+            row.put("type", exce.getExexType());
+            row.put("description", exce.getIndesc());
+            row.put("remark", exce.getIndesc());
+            row.put("images", new ArrayList<String>());
+            String timeStr = exce.getCollectDate() == null ? "" : sdf.format(exce.getCollectDate());
+            row.put("reportTime", timeStr);
+            row.put("createTime", timeStr);
+            row.put("productline", exce.getProductline());
+            row.put("transactionId", exce.getTransactionId());
+            rows.add(row);
+        }
+
+        // 按上报时间倒序：新异常在前
+        rows.sort((a, b) -> {
+            String ta = a.get("reportTime") == null ? "" : a.get("reportTime").toString();
+            String tb = b.get("reportTime") == null ? "" : b.get("reportTime").toString();
+            return tb.compareTo(ta);
+        });
+
+        return AjaxResult.success(getDataTable(rows));
+    }
+
+    /**
+     * 配送核验 · 单条状态更新（通过 / 缺料 / 物损）。
+     *
+     * <p>对应前端接口：{@code POST /system/terminal/verify/updateStatus}。
+     * <p>规则：
+     * <ul>
+     *   <li>按 detailId (=DELIVERYTASKITEM.INTASKITEMID) 更新 INSTATE、COLLECTEDQTY、备注、采集人。</li>
+     *   <li>若状态为缺料/物损，同步向 DELIVERYTASKITEM_EXCE 写一条异常明细。</li>
+     * </ul>
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @PostMapping("/verify/updateStatus")
+    public AjaxResult verifyUpdateStatus(@RequestBody Map<String, Object> body)
+    {
+        if (body == null || body.get("detailId") == null)
+        {
+            return error("detailId 不能为空");
+        }
+
+        Long intaskitemid = Long.valueOf(body.get("detailId").toString());
+        String status = body.get("status") == null ? "" : body.get("status").toString();
+        String remark = body.get("remark") == null ? "" : body.get("remark").toString();
+
+        Deliverytaskitem item = iDeliverytaskitemService.selectDeliverytaskitemByIntaskitemid(intaskitemid);
+        if (StringUtils.isNull(item))
+        {
+            return error("配送核验明细不存在：" + intaskitemid);
+        }
+
+        LoginUser loginUser = getLoginUser();
+        Long userId = loginUser.getUser().getUserId();
+
+        item.setInstate(resolveInstate(status));
+        if (body.get("actualQty") != null)
+        {
+            try
+            {
+                //item.setCollectedqty(new BigDecimal(body.get("actualQty").toString()).longValue());
+            }
+            catch (NumberFormatException ignore)
+            {
+                // 忽略非法数字
+            }
+        }
+        if (StringUtils.isNotEmpty(remark))
+        {
+            item.setIndesc(remark);
+        }
+        item.setCollecter(userId);
+        item.setCollectDate(new Date());
+        iDeliverytaskitemService.updateDeliverytaskitem(item);
+
+        // 缺料 / 物损 → 追加一条异常记录，通过 intaskitemid 关联主表
+        if ("shortage".equals(status) || "damage".equals(status))
+        {
+            DeliverytaskitemExce exce = new DeliverytaskitemExce();
+            exce.setIntaskitemid(intaskitemid);
+            exce.setIntaskid(item.getIntaskid());
+            exce.setInbillid(item.getInbillid());
+            exce.setMaterialid(item.getMaterialid());
+            exce.setExexType(status);
+            exce.setIndesc(remark);
+            exce.setCollectDate(new Date());
+            exce.setTransactionId(item.getTransactionId());
+            exce.setProductline(item.getProductline());
+            iDeliverytaskitemExceService.insertDeliverytaskitemExce(exce);
+        }
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 配送核验 · 异常记录写入（异常标记按钮）。
+     *
+     * <p>对应前端接口：{@code POST /system/terminal/verify/addException}。
+     * <p>不修改 INSTATE，仅向 DELIVERYTASKITEM_EXCE 追加一条异常明细，
+     * 通过 detailId(=intaskitemid) 反查主表用于回填 inbillid/materialid 等字段。
+     */
+    @PostMapping("/verify/addException")
+    public AjaxResult verifyAddException(@RequestBody Map<String, Object> body)
+    {
+        if (body == null || body.get("detailId") == null)
+        {
+            return error("detailId 不能为空");
+        }
+
+        Long intaskitemid = Long.valueOf(body.get("detailId").toString());
+        Deliverytaskitem item = iDeliverytaskitemService.selectDeliverytaskitemByIntaskitemid(intaskitemid);
+        if (StringUtils.isNull(item))
+        {
+            return error("配送核验明细不存在：" + intaskitemid);
+        }
+
+        String exceptionType = body.get("exceptionType") == null ? "" : body.get("exceptionType").toString();
+        String description = body.get("description") == null ? "" : body.get("description").toString();
+
+        DeliverytaskitemExce exce = new DeliverytaskitemExce();
+        exce.setIntaskitemid(intaskitemid);
+        exce.setIntaskid(item.getIntaskid());
+        exce.setInbillid(item.getInbillid());
+        exce.setMaterialid(item.getMaterialid());
+        exce.setExexType(exceptionType);
+        exce.setIndesc(description);
+        exce.setCollectDate(new Date());
+        exce.setTransactionId(item.getTransactionId());
+        exce.setProductline(item.getProductline());
+        iDeliverytaskitemExceService.insertDeliverytaskitemExce(exce);
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 配送核验 · 全量提交（签字确认）。
+     *
+     * <p>对应前端接口：{@code POST /system/terminal/verify/commitResult}。
+     * <p>步骤：
+     * <ol>
+     *   <li>逐条更新 DELIVERYTASKITEM.INSTATE / COLLECTEDQTY / INDESC。</li>
+     *   <li>批量写入 DELIVERYTASKITEM_EXCE 异常明细。</li>
+     *   <li>领用人 / 配送人签字图分别落盘为文件，URL 存入
+     *       DELIVERYBILL.DATA8（领用人）与 DATA9（配送人）；同时读取 DATA10 作为班组/领料单位。</li>
+     *   <li>基于"推式出库单.xls"版式生成 PDF，两枚签名图分别嵌入 PDF 尾部
+     *       签字区的「领用人」与「配送人」栏位，返回下载 URL。</li>
+     * </ol>
+     *
+     * @param body 前端 payload：
+     *             inTaskId / inTaskNo / receiverSignature / delivererSignature /
+     *             (兼容旧字段 signatureReq / signatureWh / signatureImage) /
+     *             details[] / exceptions[]
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @PostMapping("/verify/commitResult")
+    public AjaxResult verifyCommitResult(@RequestBody Map<String, Object> body)
+    {
+        if (body == null)
+        {
+            return error("请求体不能为空");
+        }
+
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Long userId = user.getUserId();
+        Long inTaskId = body.get("inTaskId") == null ? null : Long.valueOf(body.get("inTaskId").toString());
+        String inTaskNo = body.get("inTaskNo") == null ? "" : body.get("inTaskNo").toString();
+        // 兼容三套字段名：
+        //   - receiverSignature / delivererSignature（前端 flutter 当前使用，见 work_delivery_task_service.dart）
+        //   - signatureReq / signatureWh（后端旧字段命名）
+        //   - signatureImage（更早期版本，只有一路签字，视作领用人签字）
+        String receiverSignature = firstNonBlank(
+                strOrEmpty(body.get("receiverSignature")),
+                strOrEmpty(body.get("signatureReq")),
+                strOrEmpty(body.get("signatureImage")));
+        String delivererSignature = firstNonBlank(
+                strOrEmpty(body.get("delivererSignature")),
+                strOrEmpty(body.get("signatureWh")));
+
+        // ---- 1. 明细状态更新 ----
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> details = (List<Map<String, Object>>) body.get("details");
+        Long inBillId = null;
+        if (details != null)
+        {
+            for (Map<String, Object> d : details)
+            {
+                if (d == null || d.get("detailId") == null)
+                {
+                    continue;
+                }
+                Long intaskitemid = Long.valueOf(d.get("detailId").toString());
+                Deliverytaskitem item = iDeliverytaskitemService.selectDeliverytaskitemByIntaskitemid(intaskitemid);
+                if (item == null)
+                {
+                    continue;
+                }
+                if (inBillId == null)
+                {
+                    inBillId = item.getInbillid();
+                }
+                String status = d.get("status") == null ? "" : d.get("status").toString();
+                item.setInstate(resolveInstate(status));
+                // COLLECTEDQTY = 实发数量
+                if (d.get("actualQty") != null)
+                {
+                    try
+                    {
+                        item.setCollectedqty(new BigDecimal(d.get("actualQty").toString()));
+                    }
+                    catch (NumberFormatException ignore)
+                    {
+                        // skip
+                    }
+                }
+                if (d.get("remark") != null)
+                {
+                    item.setIndesc(d.get("remark").toString());
+                }
+                item.setCollecter(userId);
+                item.setCollectDate(new Date());
+                iDeliverytaskitemService.updateDeliverytaskitem(item);
+            }
+        }
+
+        // ---- 2. 异常明细写入 ----
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> exceptions = (List<Map<String, Object>>) body.get("exceptions");
+        if (exceptions != null)
+        {
+            for (Map<String, Object> e : exceptions)
+            {
+                if (e == null || e.get("detailId") == null)
+                {
+                    continue;
+                }
+                Long intaskitemid = Long.valueOf(e.get("detailId").toString());
+                Deliverytaskitem item = iDeliverytaskitemService.selectDeliverytaskitemByIntaskitemid(intaskitemid);
+                if (item == null)
+                {
+                    continue;
+                }
+                DeliverytaskitemExce exce = new DeliverytaskitemExce();
+                exce.setIntaskitemid(intaskitemid);
+                exce.setIntaskid(item.getIntaskid());
+                exce.setInbillid(item.getInbillid());
+                exce.setMaterialid(item.getMaterialid());
+                exce.setExexType(e.get("exceptionType") == null ? "" : e.get("exceptionType").toString());
+                exce.setIndesc(e.get("description") == null ? "" : e.get("description").toString());
+                exce.setCollectDate(new Date());
+                exce.setTransactionId(item.getTransactionId());
+                exce.setProductline(item.getProductline());
+                iDeliverytaskitemExceService.insertDeliverytaskitemExce(exce);
+            }
+        }
+
+        // ---- 3. 双方签字图存入 DELIVERYBILL：data8=领用人 / data9=配送人，读取 DATA10 作为班组/领料单位 ----
+        //     Oracle DATA* 是 VARCHAR2/LONG，直接塞 base64 会触发 ORA-01461，
+        //     所以先把签名图落盘为文件，DB 里只保存相对访问 URL。
+        Deliverybill deliverybill = null;
+        String groupOrDept = "";
+        String billNo = inTaskNo;
+        String receiverSignUrl = null;
+        String delivererSignUrl = null;
+        if (inBillId != null)
+        {
+            deliverybill = iDeliverybillService.selectDeliverybillByInbillid(inBillId);
+            if (deliverybill != null)
+            {
+                if (StringUtils.isNotEmpty(deliverybill.getInbillno()))
+                {
+                    billNo = deliverybill.getInbillno();
+                }
+                if (StringUtils.isNotEmpty(receiverSignature))
+                {
+                    receiverSignUrl = com.ruoyi.web.controller.system.deliveryverify.DeliveryVerifyPdfUtil
+                            .saveSignatureImage(billNo + "_req", receiverSignature);
+                    if (StringUtils.isNotEmpty(receiverSignUrl))
+                    {
+                        deliverybill.setData8(receiverSignUrl);
+                    }
+                }
+                if (StringUtils.isNotEmpty(delivererSignature))
+                {
+                    delivererSignUrl = com.ruoyi.web.controller.system.deliveryverify.DeliveryVerifyPdfUtil
+                            .saveSignatureImage(billNo + "_wh", delivererSignature);
+                    if (StringUtils.isNotEmpty(delivererSignUrl))
+                    {
+                        deliverybill.setData9(delivererSignUrl);
+                    }
+                }
+                iDeliverybillService.updateDeliverybill(deliverybill);
+                groupOrDept = StringUtils.isNotEmpty(deliverybill.getData10())
+                        ? deliverybill.getData10()
+                        : "";
+            }
+        }
+
+        // ---- 4. 生成 PDF（推式出库单.xls 版式） ----
+        //   领用人签字（receiverSignature）→ 领用人位；配送人签字（delivererSignature）→ 配送人位
+        String pdfUrl = com.ruoyi.web.controller.system.deliveryverify.DeliveryVerifyPdfUtil.buildPdf(
+                billNo,
+                groupOrDept,
+                groupOrDept,
+                details,
+                exceptions,
+                user.getNickName() == null ? user.getUserName() : user.getNickName(),
+                receiverSignature,
+                delivererSignature);
+
+        // ---- 5. PDF 访问地址回写 DELIVERYTASK.DATA7 ----
+        if (StringUtils.isNotEmpty(pdfUrl) && inTaskId != null)
+        {
+            Deliverytask deliverytask = iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId);
+            if (deliverytask != null)
+            {
+                deliverytask.setData7(pdfUrl);
+                iDeliverytaskService.updateDeliverytask(deliverytask);
+            }
+        }
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("inTaskId", inTaskId);
+        resp.put("inTaskNo", billNo);
+        resp.put("pdfUrl", pdfUrl);
+        resp.put("receiverSignUrl", receiverSignUrl);
+        resp.put("delivererSignUrl", delivererSignUrl);
+        // 兼容旧客户端字段
+        resp.put("signatureUrl", receiverSignUrl);
+        return AjaxResult.success(resp);
+    }
+
+
+
+
+    /**
+     * 获取尚未完成的已经收入库单据
+     */
+    @GetMapping("/intaskListDelivery")
+    // @Log(title = "获取尚未完成的已经收入库单据", businessType = BusinessType.INSERT)
+    public AjaxResult getIntaskListDelivery(Intask intask) {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Long userId = user.getUserId();
+
+        intask.setI_collecter(userId);
+        intask.setInstate(userId);
+
+        Long iInstate = -1L;
+        Long iUserId = 0L;
+        if (intask.getUserId().equals("ALL")) {
+            iInstate = 0L;
+        } else {
+            iUserId = Long.parseLong(intask.getUserId());
+            iInstate = 1L;
+        }
+        intask.setI_collecter(iUserId);
+        intask.setInstate(iInstate);
+        intask.setUserId(intask.getRoleoRuserId());
+        intask.setRoomTag(intask.getRoomTag());
+        intask.setTransferType(intask.getTransferType());
+        if (intask.getPageIndex() > 0 && intask.getPageSize() > 0) {
+            PageHelper.startPage(intask.getPageIndex(), intask.getPageSize());
+        }
+
+        List<Intask> intaskList = intaskService.selectIntaskListDelivery(intask);
+        AjaxResult ajax = AjaxResult.success(getDataTable(intaskList));
+        return ajax;
+    }
+
+    /**
+     * 获取尚未完成的已经收入库单据
+     *
+     * @param intaskitem 任务查询条件
+     * @return 单据明细
+     */
+    @GetMapping("/intaskitemListDelivery")
+    //@Log(title = "单据明细", businessType = BusinessType.INSERT)
+    public AjaxResult getIntaskitemListDelivery(Intaskitem intaskitem) {
+
+        Long iUserId = 0L;
+        Long iInstate = -1L;
+
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        Long userId = user.getUserId();
+
+        if (intaskitem.getUserId().equals("ALL")) {
+            iInstate = 0L;
+        } else {
+            iInstate = 1L;
+            iUserId = Long.parseLong(intaskitem.getUserId());
+        }
+
+        intaskitem.setInstate(iInstate);
+        intaskitem.setUserId(userId.toString());
+        intaskitem.setI_collecter(iUserId);
+        /*if (intaskitem.getPageIndex() > 0 && intaskitem.getPageSize() > 0) {
+            PageHelper.startPage(intaskitem.getPageIndex(), intaskitem.getPageSize());
+        }*/
+
+        List<Intaskitem> intaskitemList = iIntaskitemService.selectIntaskitemListDelivery(intaskitem);
+        AjaxResult ajax = AjaxResult.success(getDataTable(intaskitemList));
+        return ajax;
+    }
+
 
 }

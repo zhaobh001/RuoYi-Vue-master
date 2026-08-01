@@ -126,13 +126,13 @@
         p.PARNAME
 
         FROM
-        intask i,
-        intaskitem ii,
+        deliverytask i,
+        deliverytaskitem ii,
         pm_material pm,
         storeroom str,
         storesite sts,
-        inproof inf,
-        inbill ibl,
+        deliveryproof inf,
+        deliverybill ibl,
         (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where
         r.ROLE_ID=m.ROLE_ID) e,
         partner p
@@ -191,6 +191,168 @@
 
 
     </select>
+
+
+    <select id="selectIntaskListDelivery" parameterType="Intask" resultMap="IntaskResult">
+        select distinct
+        taskcomment,
+        storeroomno,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskno,
+        indesc,
+        workstation,
+        intaskid,
+        indate,
+        PARNAME
+        from
+
+        (
+        SELECT
+        taskcomment,
+        storeroomno,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskno,
+        indesc,
+        workstation,
+        storeroomname,
+        operation,
+        userid,
+        instate,
+        data1,
+        collecter,
+        i_collecter,
+        t_collecter,
+        roomtag,
+        intaskid,
+        transfertype,
+        indate,
+        PARNAME
+
+        FROM (
+        SELECT
+        pm.matcode,
+        pm.matname,
+        sts.Storesiteno,
+        ii.qty,
+        NVL(ii.collectedqty,0) as collectedqty,
+        ii.batchno,
+        NVL(i.indesc,' ') AS indesc,
+        ii.sn,
+        str.storeroomno AS storeroomno,
+        ibl.subinventory_code,
+        i.forcesite,
+        i.forcebatch,
+        NVL(i.data2,' ') as data2,
+        NVL(i.data3,' ') as data3,
+        i.intaskno,
+        i.taskcomment,
+        NVL(ibl.workstation,'N') AS workstation,
+        ibl.palletno,
+        i.data1,
+        ii.intaskitemid,
+        ii.intaskitemid AS ID,
+        ii.intaskid,
+        ii.materialid,
+        ii.inbillid,
+        str.storeroomname,
+        str.roomtag,
+        e.operation,
+        e.userid,
+        NVL(ii.instate,0) AS instate,
+        NVL(i.collecter,0) AS collecter,
+        NVL(ii.collecter,0) AS i_collecter,
+        NVL(i.collecter,0) AS t_collecter,
+        i.indate,
+        p.parno,
+        NVL(inf.transfertype,'0') transfertype,
+        inf.proofno,
+        inf.protype,
+        p.PARNAME
+
+        FROM
+        deliverytask i,
+        deliverytaskitem ii,
+        pm_material pm,
+        storeroom str,
+        storesite sts,
+        deliveryproof inf,
+        deliverybill ibl,
+        (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where
+        r.ROLE_ID=m.ROLE_ID) e,
+        partner p
+        WHERE
+        i.intaskid=ii.intaskid
+        AND ii.materialid = pm.pm_materialid
+        AND i.storeroomid = str.storeroomid
+        AND ii.hintedsite = sts.storesiteid(+)
+        AND inf.inproofid = i.tasksource
+        AND ibl.inproofid = inf.inproofid
+        AND inf.partnerid = p.partnerid(+)
+        AND ibl.materialid = pm.pm_materialid
+        AND ibl.inbillid = ii.inbillid
+        AND str.storeroomid = e.operation
+        AND (NVL(ii.qty,0)-NVL(ii.collectedqty,0)) > 0
+        <if test="i_collecter != null ">and nvl(ii.collecter,0) = #{i_collecter}</if>
+       <!-- <if test="instate != null ">and nvl(ii.instate,0) = #{instate}</if>-->
+
+        <if test="instate != null">
+        <if test="instate ==0">
+            and nvl(ii.instate,0) = #{instate}
+        </if>
+
+            <if test="instate ==1">
+                and nvl(ii.instate,0) >=1
+            </if>
+        </if>
+
+        <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
+        <if test="roomTag != null ">and nvl(str.roomtag,0) = #{roomTag}</if>
+        <if test="transferType != null ">and nvl(inf.transfertype,0) = #{transferType}</if>
+        )
+        GROUP BY
+        taskcomment,
+        storeroomno,
+        storeroomname,
+        data1,
+        data2,
+        data3,
+        forcesite,
+        forcebatch,
+        intaskid,
+        intaskno,
+        workstation,
+        transfertype,
+        indesc,
+        operation,
+        userid,
+        instate,
+        collecter,
+        i_collecter,
+        t_collecter,
+        roomtag,
+        indate,
+        PARNAME)d1 where 1=1
+        <if test="searchKey != null">
+            and(
+            d1.taskcomment like concat(concat('%',#{searchKey}),'%') or
+            d1.intaskno like concat(concat('%',#{searchKey}),'%') or
+            d1.data2 like concat(concat('%',#{searchKey}),'%')
+            )
+        </if>
+
+        <if test="sortColumn == null ">order by d1.indate desc,d1.taskcomment desc, d1.intaskno desc</if>
+        <if test="sortColumn != null">order by d1.${sortColumn}</if>
+        <if test="sortType != null">${sortType}</if>
+
+
+    </select>
+
 
     <select id="selectIntaskByIntaskid" parameterType="Long" resultMap="IntaskResult">
         <include refid="selectIntaskVo"/>
