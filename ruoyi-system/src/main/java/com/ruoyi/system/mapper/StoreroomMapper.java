@@ -85,4 +85,13 @@ public interface StoreroomMapper
      */
     public List<Storeroom> selectStoreSiteByRoom(Storeroom storeroom);
 
+    /**
+     * 依据库房主键查询库管员姓名：
+     * STOREROOM.ROOMCHARGER 关联 EMPLOYEE.EMP_ID，取 EMPLOYEE.EMP_NAME（LEFT JOIN，可能为空）。
+     *
+     * @param storeroomid 库房主键
+     * @return 库管员姓名；查不到返回 null
+     */
+    public String selectKeeperNameByStoreroomid(Long storeroomid);
+
 }

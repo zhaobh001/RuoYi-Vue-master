@@ -130,6 +130,13 @@
         order by storesiteno
     </select>
 
+    <select id="selectKeeperNameByStoreroomid" parameterType="Long" resultType="java.lang.String">
+        select emp.emp_name
+        from storeroom s
+        left join employee emp on emp.emp_id = s.roomcharger
+        where s.storeroomid = #{storeroomid}
+    </select>
+
     <select id="selectAllocatedList" parameterType="Storeroom" resultMap="StoreroomResult">
         select distinct u.storeroomid, u.storeroomno, u.storeroomname, u.roomtag, u.data2, u.data1
         from storeroom u

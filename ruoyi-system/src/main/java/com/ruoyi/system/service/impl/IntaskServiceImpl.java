@@ -114,4 +114,16 @@ public class IntaskServiceImpl implements IIntaskService
     {
         return intaskMapper.selectIntaskListDelivery(intask);
     }
+
+    /**
+     * 查询入库任务列表
+     *
+     * @param intask 入库任务
+     * @return 入库任务
+     */
+    @Override
+    public List<Intask> selectIntaskListDeliveryAll(Intask intask)
+    {
+        return intaskMapper.selectIntaskListDeliveryAll(intask);
+    }
 }

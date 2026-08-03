@@ -12,6 +12,7 @@ import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.config.ServerConfig;
 import com.ruoyi.system.domain.*;
 import com.ruoyi.system.service.*;
 import org.apache.poi.hpsf.Decimal;
@@ -136,12 +137,18 @@ public class SysTerminalController extends BaseController {
     private RedisCache redisCache;
 
     @Autowired
+    private ServerConfig serverConfig;
+
+    @Autowired
     private ISysConfigService configService;
 
     // ===================== 配送核验（work_delivery）依赖 =====================
 
     @Autowired
     private IDeliverybillService iDeliverybillService;
+
+    @Autowired
+    private IDeliveryproofService iDeliveryproofService;
 
     @Autowired
     private IDeliverytaskService iDeliverytaskService;
@@ -16825,6 +16832,7 @@ public class SysTerminalController extends BaseController {
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> details = (List<Map<String, Object>>) body.get("details");
         Long inBillId = null;
+        Date nowDate = new Date();
         if (details != null)
         {
             for (Map<String, Object> d : details)
@@ -16845,12 +16853,15 @@ public class SysTerminalController extends BaseController {
                 }
                 String status = d.get("status") == null ? "" : d.get("status").toString();
                 item.setInstate(resolveInstate(status));
-                // COLLECTEDQTY = 实发数量
+                // COLLECTEDQTY = 实发数量；同时换算为 Long 用于回写 DELIVERYBILL.FINISHQTY
+                Long passQty = null;
                 if (d.get("actualQty") != null)
                 {
                     try
                     {
-                        item.setCollectedqty(new BigDecimal(d.get("actualQty").toString()));
+                        BigDecimal actual = new BigDecimal(d.get("actualQty").toString());
+                        item.setCollectedqty(actual);
+                        passQty = actual.longValue();
                     }
                     catch (NumberFormatException ignore)
                     {
@@ -16862,8 +16873,25 @@ public class SysTerminalController extends BaseController {
                     item.setIndesc(d.get("remark").toString());
                 }
                 item.setCollecter(userId);
-                item.setCollectDate(new Date());
+                item.setCollectDate(nowDate);
                 iDeliverytaskitemService.updateDeliverytaskitem(item);
+
+                // ---- 1.1 同步回写 DELIVERYBILL：FINISHQTY=通过数量，BILLSTATE=2 已审核，COLLECT_DATE=当前时间 ----
+                Long lineBillId = item.getInbillid();
+                if (lineBillId != null)
+                {
+                    Deliverybill billLine = iDeliverybillService.selectDeliverybillByInbillid(lineBillId);
+                    if (billLine != null)
+                    {
+                        if (passQty != null)
+                        {
+                            billLine.setFinishqty(passQty);
+                        }
+                        billLine.setBillstate(2L);
+                        billLine.setCollectDate(nowDate);
+                        iDeliverybillService.updateDeliverybill(billLine);
+                    }
+                }
             }
         }
 
@@ -16902,7 +16930,7 @@ public class SysTerminalController extends BaseController {
         //     Oracle DATA* 是 VARCHAR2/LONG，直接塞 base64 会触发 ORA-01461，
         //     所以先把签名图落盘为文件，DB 里只保存相对访问 URL。
         Deliverybill deliverybill = null;
-        String groupOrDept = "";
+        Long inProofId = null;
         String billNo = inTaskNo;
         String receiverSignUrl = null;
         String delivererSignUrl = null;
@@ -16911,6 +16939,7 @@ public class SysTerminalController extends BaseController {
             deliverybill = iDeliverybillService.selectDeliverybillByInbillid(inBillId);
             if (deliverybill != null)
             {
+                inProofId = deliverybill.getInproofid();
                 if (StringUtils.isNotEmpty(deliverybill.getInbillno()))
                 {
                     billNo = deliverybill.getInbillno();
@@ -16934,21 +16963,100 @@ public class SysTerminalController extends BaseController {
                     }
                 }
                 iDeliverybillService.updateDeliverybill(deliverybill);
-                groupOrDept = StringUtils.isNotEmpty(deliverybill.getData10())
-                        ? deliverybill.getData10()
-                        : "";
             }
         }
 
-        // ---- 4. 生成 PDF（推式出库单.xls 版式） ----
+        // ---- 4. 组装 PDF 数据：DELIVERYPROOF 抬头 + DELIVERYBILL 全部明细行 ----
+        //   领料单位=DELIVERYBILL.WIP_ENTITY_NAME（第一行）；搬运单号=PROOF.ORDERNO；
+        //   任务号=PROOF.PO_NUMBER；备注=PROOF.PRODESC；日期=当前日期 yyyyMMdd。
+        Deliveryproof proof = inProofId == null ? null
+                : iDeliveryproofService.selectDeliveryproofByInproofid(inProofId);
+        String proofNo = "";
+        String orderno = "";
+        String poNumber = "";
+        String remark = "";
+        String storekeeperName = "";
+        if (proof != null)
+        {
+            proofNo = proof.getProofno() == null ? "" : proof.getProofno();
+            orderno = proof.getOrderno() == null ? "" : proof.getOrderno();
+            poNumber = proof.getPoNumber() == null ? "" : proof.getPoNumber();
+            remark = proof.getProdesc() == null ? "" : proof.getProdesc();
+
+            // 库管员：DELIVERYPROOF.DEPOTNO → STOREROOM.ROOMCHARGER → EMPLOYEE.EMP_NAME
+            if (proof.getDepotno() != null)
+            {
+                String keeper = iStoreroomService.selectKeeperNameByStoreroomid(proof.getDepotno());
+                if (StringUtils.isNotEmpty(keeper))
+                {
+                    storekeeperName = keeper;
+                }
+            }
+
+            // ---- 同步审核 DELIVERYPROOF：PROSTATE=2 已审核，DATA10=审核时间 ----
+            proof.setProstate(2L);
+            proof.setData10(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(nowDate));
+            iDeliveryproofService.updateDeliveryproof(proof);
+        }
+
+        List<Deliverybill> billLines = null;
+        if (inProofId != null)
+        {
+            Deliverybill lineQuery = new Deliverybill();
+            lineQuery.setInproofid(inProofId);
+            billLines = iDeliverybillService.selectDeliverybillList(lineQuery);
+        }
+
+        List<Map<String, Object>> pdfLines = new ArrayList<>();
+        String wipEntityName = "";
+        Map<Long, PmMaterial> matCache = new HashMap<>();
+        if (billLines != null)
+        {
+            for (Deliverybill line : billLines)
+            {
+                if (line == null)
+                {
+                    continue;
+                }
+                // 领料单位：取第一行的 WIP_ENTITY_NAME
+                if (wipEntityName.isEmpty() && StringUtils.isNotEmpty(line.getWipEntityName()))
+                {
+                    wipEntityName = line.getWipEntityName();
+                }
+
+                Long matId = line.getMaterialid();
+                PmMaterial mat = null;
+                if (matId != null)
+                {
+                    mat = matCache.computeIfAbsent(matId,
+                            id -> iPmMaterialService.selectPmMaterialByPmMaterialid(id));
+                }
+
+                Map<String, Object> row = new LinkedHashMap<>();
+                row.put("materialCode", mat == null || mat.getMatcode() == null ? "" : mat.getMatcode());
+                row.put("materialName", mat == null || mat.getMatname() == null ? "" : mat.getMatname());
+                // 物料单位：PM_MATUNIT 为外键 Long，当前系统无单位名称解析服务，参考 PDF 统一为 EA
+                row.put("unit", "EA");
+                row.put("taskQty", line.getTaskqty());
+                row.put("finishQty", line.getFinishqty());
+                row.put("subInventoryCode", line.getSubinventoryCode() == null ? "" : line.getSubinventoryCode());
+                row.put("hintDesc", line.getHintdesc() == null ? "" : line.getHintdesc());
+                row.put("palletNo", line.getPalletno() == null ? "" : line.getPalletno());
+                pdfLines.add(row);
+            }
+        }
+
         //   领用人签字（receiverSignature）→ 领用人位；配送人签字（delivererSignature）→ 配送人位
         String pdfUrl = com.ruoyi.web.controller.system.deliveryverify.DeliveryVerifyPdfUtil.buildPdf(
                 billNo,
-                groupOrDept,
-                groupOrDept,
-                details,
-                exceptions,
+                proofNo,
+                wipEntityName,
+                orderno,
+                poNumber,
+                remark,
+                pdfLines,
                 user.getNickName() == null ? user.getUserName() : user.getNickName(),
+                storekeeperName,
                 receiverSignature,
                 delivererSignature);
 
@@ -16963,15 +17071,70 @@ public class SysTerminalController extends BaseController {
             }
         }
 
+        // 相对路径 → 绝对下载链接，供 App 直接下载查看 PDF / 签名图
+        String baseUrl = serverConfig.getUrl();
+        String pdfDownloadUrl = StringUtils.isNotEmpty(pdfUrl) ? baseUrl + pdfUrl : "";
+        String receiverSignDownloadUrl = StringUtils.isNotEmpty(receiverSignUrl) ? baseUrl + receiverSignUrl : "";
+        String delivererSignDownloadUrl = StringUtils.isNotEmpty(delivererSignUrl) ? baseUrl + delivererSignUrl : "";
+
         Map<String, Object> resp = new HashMap<>();
         resp.put("inTaskId", inTaskId);
         resp.put("inTaskNo", billNo);
         resp.put("pdfUrl", pdfUrl);
+        resp.put("pdfDownloadUrl", pdfDownloadUrl);
         resp.put("receiverSignUrl", receiverSignUrl);
+        resp.put("receiverSignDownloadUrl", receiverSignDownloadUrl);
         resp.put("delivererSignUrl", delivererSignUrl);
+        resp.put("delivererSignDownloadUrl", delivererSignDownloadUrl);
         // 兼容旧客户端字段
         resp.put("signatureUrl", receiverSignUrl);
+        resp.put("downloadUrl", pdfDownloadUrl);
         return AjaxResult.success(resp);
+    }
+
+    /**
+     * 配送核验 · 获取已核对完成单据的 PDF 下载链接。
+     *
+     * <p>页面初始化时，针对已经核对完成（verifyCommitResult 已执行）的单据调用本接口。
+     * PDF 的相对访问路径在提交时写入了 DELIVERYTASK.DATA7，这里读出并拼上服务端域名，
+     * 返回可直接下载/查看的绝对链接。
+     *
+     * @param inTaskId 配送任务 ID（DELIVERYTASK.INTASKID）
+     * @return data 中包含：
+     *         <ul>
+     *           <li>inTaskId</li>
+     *           <li>pdfUrl（相对路径，可能为空，表示尚未生成 PDF）</li>
+     *           <li>pdfDownloadUrl（绝对下载链接）</li>
+     *           <li>downloadUrl（pdfDownloadUrl 的别名，兼容旧客户端）</li>
+     *         </ul>
+     */
+    @GetMapping("/verify/pdfUrl")
+    public AjaxResult getVerifyPdfUrl(Long inTaskId)
+    {
+        if (inTaskId == null)
+        {
+            return error("inTaskId 不能为空");
+        }
+
+        Deliverytask deliverytask = iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId);
+        if (deliverytask == null)
+        {
+            return error("配送任务不存在：" + inTaskId);
+        }
+
+        String pdfUrl = deliverytask.getData7();
+        if (StringUtils.isEmpty(pdfUrl))
+        {
+            pdfUrl = "";
+        }
+        String pdfDownloadUrl = pdfUrl.isEmpty() ? "" : serverConfig.getUrl() + pdfUrl;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("inTaskId", inTaskId);
+        data.put("pdfUrl", pdfUrl);
+        data.put("pdfDownloadUrl", pdfDownloadUrl);
+        data.put("downloadUrl", pdfDownloadUrl);
+        return AjaxResult.success(data);
     }
 
 
@@ -17006,8 +17169,19 @@ public class SysTerminalController extends BaseController {
         if (intask.getPageIndex() > 0 && intask.getPageSize() > 0) {
             PageHelper.startPage(intask.getPageIndex(), intask.getPageSize());
         }
+        List<Intask> intaskList= new ArrayList<>();
+        String finshFlg=intask.getFinshFlg();
 
-        List<Intask> intaskList = intaskService.selectIntaskListDelivery(intask);
+        if(StringUtils.isEmpty(finshFlg)||finshFlg.equals("0")){
+            intaskList = intaskService.selectIntaskListDelivery(intask);
+        }else{
+            String searchKey=intask.getSearchKey();
+            if(StringUtils.isEmpty(searchKey)){
+                return error("请输入查询单号");
+            }
+            intaskList = intaskService.selectIntaskListDeliveryAll(intask);
+        }
+
         AjaxResult ajax = AjaxResult.success(getDataTable(intaskList));
         return ajax;
     }

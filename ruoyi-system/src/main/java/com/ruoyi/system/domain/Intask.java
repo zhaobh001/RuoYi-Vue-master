@@ -154,10 +154,22 @@ public class Intask extends BaseEntity
     private String sortColumn;
 
     /** 搜索关键字 */
-    @Excel(name = "搜索关键字")
+
+
     private String searchKey;
 
     private String parname;
+
+
+    private String  finshFlg;
+
+    public String getFinshFlg() {
+        return finshFlg;
+    }
+
+    public void setFinshFlg(String finshFlg) {
+        this.finshFlg = finshFlg;
+    }
 
     public String getParname() {
         return parname;
@@ -527,6 +539,7 @@ public class Intask extends BaseEntity
                 .append("sortColumn", sortColumn)
                 .append("searchKey", searchKey)
                 .append("roleoRuserId", roleoRuserId)
+                .append("finshFlg", finshFlg)
                 .toString();
     }
 }

@@ -130,4 +130,20 @@ public class StoreroomServiceImpl implements IStoreroomService
         return storeroomMapper.selectStoreSiteByRoom(storeroom);
     };
 
+    /**
+     * 依据库房主键查询库管员姓名（STOREROOM.ROOMCHARGER → EMPLOYEE.EMP_NAME）。
+     *
+     * @param storeroomid 库房主键
+     * @return 库管员姓名；查不到返回 null
+     */
+    @Override
+    public String selectKeeperNameByStoreroomid(Long storeroomid)
+    {
+        if (storeroomid == null)
+        {
+            return null;
+        }
+        return storeroomMapper.selectKeeperNameByStoreroomid(storeroomid);
+    }
+
 }

@@ -1,13 +1,11 @@
 package com.ruoyi.web.controller.system.deliveryverify;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.Barcode128;
@@ -31,11 +29,28 @@ import java.util.Map;
 /**
  * 配送核验单 PDF 生成工具类。
  *
- * <p>版式参考 <code>tmpF144.tmp.pdf</code>（北京天诚同创电气有限公司推式出库单）：
- * 横向 A4，每页重复表头（公司标题 + 右上条形码 + 六栏信息 + 14 列明细表列头），
+ * <p>版式参考 {@code OUT202607240025.pdf}（北京天诚同创电气有限公司推式出库单）：
+ * 横向 A4，每页重复表头（公司标题 + 右上条形码 + 三行信息区 + 11 列明细表列头），
  * 每页底部有 <b>制单人 / 系统操作员 / 第 X 页</b> 页脚；
  * 明细表跨页自动分页；末页追加 <b>小计</b> 行与 <b>库管员 / 配送人 / 领用人</b> 签字区，
- * 若前端上传签名图 base64 则将其嵌入领用人签字位。
+ * 若前端上传签名图 base64 则嵌入对应签字位。
+ *
+ * <p>头信息取值：
+ * <ul>
+ *   <li>领料单位：DELIVERYBILL.WIP_ENTITY_NAME（取第一行）</li>
+ *   <li>物料 / 发料类型 / 配件数量 / 装配件描述：空白</li>
+ *   <li>搬运单号：DELIVERYPROOF.ORDERNO</li>
+ *   <li>任务号：DELIVERYPROOF.PO_NUMBER</li>
+ *   <li>日期：当前日期 YYYYMMDD</li>
+ * </ul>
+ *
+ * <p>明细取值：
+ * <ul>
+ *   <li>物料编码：PM_MATERIAL.MATCODE；物料描述：PM_MATERIAL.MATNAME；单位：物料单位</li>
+ *   <li>应发数量：DELIVERYBILL.TASKQTY；实发数量：DELIVERYBILL.FINISHQTY</li>
+ *   <li>发料仓库：DELIVERYBILL.SUBINVENTORY_CODE；货位：DELIVERYBILL.HINTDESC；托盘号：DELIVERYBILL.PALLETNO</li>
+ *   <li>备注：DELIVERYPROOF.PRODESC</li>
+ * </ul>
  *
  * <p>生成的 PDF 落到 {@link RuoYiConfig#getProfile()}/delivery-verify/ 下，
  * 通过若依资源前缀 <code>/profile</code> 暴露访问。
@@ -61,55 +76,45 @@ public class DeliveryVerifyPdfUtil
 
     private static final SimpleDateFormat FILE_TIME_FMT = new SimpleDateFormat("yyyyMMddHHmmssSSS");
     private static final SimpleDateFormat DISPLAY_FMT = new SimpleDateFormat("yyyyMMdd");
+    private static final SimpleDateFormat SIGN_DATE_FMT = new SimpleDateFormat("yyyy-MM-dd");
 
-    /** 明细表头（14 列，与参考 PDF 对齐） */
+    /** 明细表头（11 列，与参考 PDF 对齐，去掉批次号列） */
     private static final String[] TABLE_HEADERS = new String[] {
             "序号", "行号", "物料编码", "物料描述", "单位", "应发数量", "实发数量",
-            "存储类别", "发料仓库", "货位", "批次号", "ABC分类", "托盘号", "备注"
+            "发料仓库", "货位", "托盘号", "备注"
     };
 
-    /** 明细表 14 列相对宽度 */
+    /** 明细表 11 列相对宽度 */
     private static final float[] TABLE_WIDTHS = new float[] {
-            0.6f, 0.6f, 1.4f, 3.0f, 0.6f, 0.9f, 0.9f, 1.0f, 1.0f, 0.9f, 1.5f, 0.9f, 1.2f, 1.4f
+            0.6f, 0.6f, 1.4f, 3.4f, 0.6f, 0.9f, 0.9f, 1.1f, 1.2f, 1.2f, 1.6f
     };
-
-    /**
-     * 生成核验单 PDF（兼容旧调用：单一签名，作为「领用人」签字）。
-     *
-     * @see #buildPdf(String, String, String, List, List, String, String, String)
-     */
-    public static String buildPdf(String inBillNo,
-                                  String deptName,
-                                  String groupName,
-                                  List<Map<String, Object>> details,
-                                  List<Map<String, Object>> exceptions,
-                                  String operatorName,
-                                  String signBase64)
-    {
-        // 旧调用只有一个签名，保留原语义：视作领用人签字，配送人留空
-        return buildPdf(inBillNo, deptName, groupName, details, exceptions,
-                operatorName, signBase64, null);
-    }
 
     /**
      * 生成核验单 PDF。
      *
-     * @param inBillNo             单据号（{@code Deliverybill.inbillno}，同时作为条形码值）
-     * @param deptName             领料单位（{@code Deliverybill.data10}，若为空取工位/产线兜底）
-     * @param groupName            班组（当前实现由 data10 取值）
-     * @param details              明细集合（每一项来自前端 {@code DeliveryVerifyDetail}）
-     * @param exceptions           异常明细集合（当前版式未在正表内展示，仍保留参数以便扩展）
+     * @param billNo               单据号（用作文件名前缀）
+     * @param barcodeValue         一维码数据源：出库凭证号（DELIVERYPROOF.PROOFNO）
+     * @param wipEntityName        领料单位（DELIVERYBILL.WIP_ENTITY_NAME，取第一行）
+     * @param orderno              搬运单号（DELIVERYPROOF.ORDERNO）
+     * @param poNumber             任务号（DELIVERYPROOF.PO_NUMBER）
+     * @param remark               备注（DELIVERYPROOF.PRODESC，明细每行相同）
+     * @param lines                明细行，每项需包含 materialCode/materialName/unit/taskQty/
+     *                             finishQty/subInventoryCode/hintDesc/palletNo
      * @param operatorName         操作人姓名（用作制单人/系统操作员）
+     * @param storekeeperName      库管员姓名（DELIVERYPROOF.DEPOTNO→STOREROOM.ROOMCHARGER→EMPLOYEE.EMP_NAME）
      * @param receiverSignBase64   领用人签字图片 base64（可为空，允许 data:image/png;base64,... 前缀）
      * @param delivererSignBase64  配送人签字图片 base64（可为空）
      * @return PDF 相对访问 URL，如 /profile/delivery-verify/xxx.pdf；生成失败时返回 null
      */
-    public static String buildPdf(String inBillNo,
-                                  String deptName,
-                                  String groupName,
-                                  List<Map<String, Object>> details,
-                                  List<Map<String, Object>> exceptions,
+    public static String buildPdf(String billNo,
+                                  String barcodeValue,
+                                  String wipEntityName,
+                                  String orderno,
+                                  String poNumber,
+                                  String remark,
+                                  List<Map<String, Object>> lines,
                                   String operatorName,
+                                  String storekeeperName,
                                   String receiverSignBase64,
                                   String delivererSignBase64)
     {
@@ -121,7 +126,7 @@ public class DeliveryVerifyPdfUtil
             return null;
         }
 
-        String safeBillNo = (inBillNo == null ? "verify" : inBillNo).replaceAll("[^0-9A-Za-z_\\-]", "_");
+        String safeBillNo = (billNo == null ? "verify" : billNo).replaceAll("[^0-9A-Za-z_\\-]", "_");
         String fileName = safeBillNo + "_" + FILE_TIME_FMT.format(new Date()) + ".pdf";
         String absPath = baseDir + fileName;
 
@@ -145,7 +150,7 @@ public class DeliveryVerifyPdfUtil
             // 页眉/页脚事件（每页重复）
             HeaderFooterEvent event = new HeaderFooterEvent(
                     baseFont, titleFont, labelFont, footerFont,
-                    inBillNo, deptName, groupName, operatorName);
+                    barcodeValue, wipEntityName, orderno, poNumber, operatorName);
             writer.setPageEvent(event);
 
             document.open();
@@ -167,14 +172,14 @@ public class DeliveryVerifyPdfUtil
 
             double totalPlan = 0d;
             double totalActual = 0d;
-            if (details != null)
+            if (lines != null)
             {
                 int idx = 0;
-                for (Map<String, Object> d : details)
+                for (Map<String, Object> d : lines)
                 {
                     idx++;
-                    double plan = asDouble(d, "planQty");
-                    double actual = asDouble(d, "actualQty");
+                    double plan = asDouble(d, "taskQty");
+                    double actual = asDouble(d, "finishQty");
                     totalPlan += plan;
                     totalActual += actual;
 
@@ -185,13 +190,10 @@ public class DeliveryVerifyPdfUtil
                     addBodyCell(table, strOrDefault(d, "unit", "EA"), normalFont, Element.ALIGN_CENTER);
                     addBodyCell(table, trimZero(plan), normalFont, Element.ALIGN_RIGHT);
                     addBodyCell(table, trimZero(actual), normalFont, Element.ALIGN_RIGHT);
-                    addBodyCell(table, str(d, "storageType"), normalFont, Element.ALIGN_CENTER);
                     addBodyCell(table, str(d, "subInventoryCode"), normalFont, Element.ALIGN_CENTER);
-                    addBodyCell(table, str(d, "storeSite"), normalFont, Element.ALIGN_CENTER);
-                    addBodyCell(table, str(d, "batchNo"), normalFont, Element.ALIGN_CENTER);
-                    addBodyCell(table, str(d, "abcClass"), normalFont, Element.ALIGN_CENTER);
+                    addBodyCell(table, str(d, "hintDesc"), normalFont, Element.ALIGN_CENTER);
                     addBodyCell(table, str(d, "palletNo"), normalFont, Element.ALIGN_CENTER);
-                    addBodyCell(table, str(d, "remark"), normalFont, Element.ALIGN_LEFT);
+                    addBodyCell(table, remark == null ? "" : remark, normalFont, Element.ALIGN_LEFT);
                 }
             }
 
@@ -204,8 +206,8 @@ public class DeliveryVerifyPdfUtil
             table.addCell(subtotalLabel);
             addBodyCell(table, trimZero(totalPlan), headerFont, Element.ALIGN_RIGHT);
             addBodyCell(table, trimZero(totalActual), headerFont, Element.ALIGN_RIGHT);
-            // 后 7 列留空
-            for (int i = 0; i < 7; i++)
+            // 后 4 列留空
+            for (int i = 0; i < 4; i++)
             {
                 addBodyCell(table, "", normalFont, Element.ALIGN_CENTER);
             }
@@ -214,7 +216,7 @@ public class DeliveryVerifyPdfUtil
 
             // 签字区（作为最后添加的内容，iText 会顺流放到最后一页）
             document.add(buildSignatureBlock(baseFont, headerFont, normalFont,
-                    receiverSignBase64, delivererSignBase64));
+                    storekeeperName, receiverSignBase64, delivererSignBase64));
 
             // 关闭 Document（flush 到 fos），随后 finally 再关 fos
             document.close();
@@ -267,7 +269,7 @@ public class DeliveryVerifyPdfUtil
     // ---------------------------------------------------------------------
 
     /**
-     * 每一页顶部渲染：标题 + 右上条形码 + 六栏信息区（领料单位 / 物料 / 发料类型 /
+     * 每一页顶部渲染：标题 + 右上条形码 + 三行信息区（领料单位 / 物料 / 发料类型 /
      * 搬运单号 / 任务号 / 配件数量 / 日期 / 装配件描述），
      * 底部渲染：制单人 / 系统操作员 / 第 X 页。
      */
@@ -277,22 +279,25 @@ public class DeliveryVerifyPdfUtil
         private final Font titleFont;
         private final Font labelFont;
         private final Font footerFont;
-        private final String billNo;
-        private final String deptName;
-        private final String groupName;
+        private final String barcodeValue;
+        private final String wipEntityName;
+        private final String orderno;
+        private final String poNumber;
         private final String operatorName;
         private final String printDate;
 
         HeaderFooterEvent(BaseFont baseFont, Font titleFont, Font labelFont, Font footerFont,
-                          String billNo, String deptName, String groupName, String operatorName)
+                          String barcodeValue, String wipEntityName, String orderno, String poNumber,
+                          String operatorName)
         {
             this.baseFont = baseFont;
             this.titleFont = titleFont;
             this.labelFont = labelFont;
             this.footerFont = footerFont;
-            this.billNo = nvl(billNo);
-            this.deptName = nvl(deptName);
-            this.groupName = nvl(groupName);
+            this.barcodeValue = nvl(barcodeValue);
+            this.wipEntityName = nvl(wipEntityName);
+            this.orderno = nvl(orderno);
+            this.poNumber = nvl(poNumber);
             this.operatorName = nvl(operatorName);
             this.printDate = DISPLAY_FMT.format(new Date());
         }
@@ -315,11 +320,11 @@ public class DeliveryVerifyPdfUtil
                 cb.showText(COMPANY_TITLE);
                 cb.endText();
 
-                // 条形码（右上角），使用单据号编码
-                if (!billNo.isEmpty())
+                // 条形码（右上角），数据源：出库凭证号 DELIVERYPROOF.PROOFNO
+                if (!barcodeValue.isEmpty())
                 {
                     Barcode128 barcode = new Barcode128();
-                    barcode.setCode(billNo);
+                    barcode.setCode(barcodeValue);
                     barcode.setBarHeight(22f);
                     barcode.setX(1.0f);
                     barcode.setSize(7f);
@@ -330,22 +335,34 @@ public class DeliveryVerifyPdfUtil
                     document.add(barcodeImg);
                 }
 
-                // ---- 六栏信息区 ----
-                PdfPTable info = new PdfPTable(6);
+                // ---- 三行信息区（标签 / 值 交替，对齐参考 PDF 网格） ----
+                // 8 列：4 组 "标签 + 值"。第 2 行任务号值合并 3 列，第 3 行装配件描述值合并 7 列。
+                PdfPTable info = new PdfPTable(8);
                 info.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
                 info.setLockedWidth(true);
-                info.setWidths(new float[] { 1.1f, 3.0f, 1.1f, 3.0f, 1.1f, 3.0f });
+                info.setWidths(new float[] { 1.0f, 1.7f, 0.9f, 1.7f, 1.0f, 1.7f, 1.0f, 2.0f });
 
-                addInfoCell(info, "领料单位：" + deptName);
-                addInfoCell(info, "物料：");
-                addInfoCell(info, "发料类型：");
-                addInfoCell(info, "搬运单号：");
-                addInfoCell(info, "任务号：" + billNo);
-                addInfoCell(info, "配件数量：");
-                addInfoCell(info, "日期：" + printDate);
-                addInfoCell(info, "装配件描述：");
-                // 让第 2 行的"装配件描述"合并占 5 列显得更接近参考版式
-                // 上面已经写满 8 单元格 = 2 行，无需额外合并
+                // 第一行：领料单位 | 值 | 物料 | 值（空） | 发料类型 | 值（空） | 搬运单号 | 值
+                info.addCell(infoCell("领料单位：", Element.ALIGN_LEFT));
+                info.addCell(infoCell(wipEntityName, Element.ALIGN_LEFT));
+                info.addCell(infoCell("物料：", Element.ALIGN_LEFT));
+                info.addCell(infoCell("", Element.ALIGN_LEFT));
+                info.addCell(infoCell("发料类型：", Element.ALIGN_LEFT));
+                info.addCell(infoCell("", Element.ALIGN_LEFT));
+                info.addCell(infoCell("搬运单号：", Element.ALIGN_LEFT));
+                info.addCell(infoCell(orderno, Element.ALIGN_LEFT));
+
+                // 第二行：任务号 | 值（合并 3 列） | 配件数量 | 值 | 日期 | 值
+                info.addCell(infoCell("任务号：", Element.ALIGN_LEFT));
+                info.addCell(span(infoCell(poNumber, Element.ALIGN_LEFT), 3));
+                info.addCell(infoCell("配件数量：", Element.ALIGN_LEFT));
+                info.addCell(infoCell("", Element.ALIGN_LEFT));
+                info.addCell(infoCell("日期：", Element.ALIGN_LEFT));
+                info.addCell(infoCell(printDate, Element.ALIGN_LEFT));
+
+                // 第三行：装配件描述 | 值（空，占满剩余 7 列）
+                info.addCell(infoCell("装配件描述：", Element.ALIGN_LEFT));
+                info.addCell(span(infoCell("", Element.ALIGN_LEFT), 7));
 
                 float infoY = titleY - 32f;
                 info.writeSelectedRows(0, -1, document.leftMargin(), infoY, writer.getDirectContent());
@@ -369,14 +386,21 @@ public class DeliveryVerifyPdfUtil
             }
         }
 
-        private void addInfoCell(PdfPTable table, String text)
+        private PdfPCell infoCell(String text, int align)
         {
-            PdfPCell cell = new PdfPCell(new Phrase(text, labelFont));
+            PdfPCell cell = new PdfPCell(new Phrase(text == null ? "" : text, labelFont));
             cell.setPadding(4f);
-            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setHorizontalAlignment(align);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             cell.setMinimumHeight(18f);
-            table.addCell(cell);
+            return cell;
+        }
+
+        /** 返回一个横向合并 colspan 列的单元格副本。 */
+        private PdfPCell span(PdfPCell cell, int colspan)
+        {
+            cell.setColspan(colspan);
+            return cell;
         }
 
         private PdfPCell footerCell(String text, int align)
@@ -393,6 +417,7 @@ public class DeliveryVerifyPdfUtil
     // ---------------------------------------------------------------------
 
     private static PdfPTable buildSignatureBlock(BaseFont baseFont, Font headerFont, Font normalFont,
+                                                 String storekeeperName,
                                                  String receiverSignBase64,
                                                  String delivererSignBase64) throws DocumentException
     {
@@ -407,13 +432,32 @@ public class DeliveryVerifyPdfUtil
         sig.addCell(sigLabelCell("配送人：", headerFont));
         sig.addCell(sigLabelCell("领用人：", headerFont));
 
-        // 签字区：库管员留空 / 配送人嵌入配送人签字 / 领用人嵌入领用人签字。
-        // 领用人下方不再叠加 operatorName —— 签字人身份已在图片里，避免误导。
-        sig.addCell(sigContentCell(null, normalFont));
-        sig.addCell(buildSignatureCell(delivererSignBase64, null, normalFont));
-        sig.addCell(buildSignatureCell(receiverSignBase64, null, normalFont));
+        // 签字区：库管员显示姓名（无日期）；配送人嵌入配送人签字 + 日期；领用人嵌入领用人签字 + 日期。
+        String signDate = SIGN_DATE_FMT.format(new Date());
+        sig.addCell(buildKeeperCell(storekeeperName, normalFont));
+        sig.addCell(buildSignatureCell(delivererSignBase64, signDate, normalFont));
+        sig.addCell(buildSignatureCell(receiverSignBase64, signDate, normalFont));
 
         return sig;
+    }
+
+    /**
+     * 库管员签字格：无签名图，居中显示库管员姓名（不显示日期）。
+     */
+    private static PdfPCell buildKeeperCell(String keeperName, Font normalFont)
+    {
+        PdfPCell cell = new PdfPCell();
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setMinimumHeight(80f);
+        cell.setPadding(4f);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+        com.itextpdf.text.Paragraph name = new com.itextpdf.text.Paragraph(
+                keeperName == null ? "" : keeperName, normalFont);
+        name.setAlignment(Element.ALIGN_CENTER);
+        cell.addElement(name);
+        return cell;
     }
 
     /**
@@ -450,7 +494,7 @@ public class DeliveryVerifyPdfUtil
         }
         if (nameLabel != null && !nameLabel.isEmpty())
         {
-            Paragraph name = new Paragraph(nameLabel, normalFont);
+            com.itextpdf.text.Paragraph name = new com.itextpdf.text.Paragraph(nameLabel, normalFont);
             name.setAlignment(Element.ALIGN_CENTER);
             cell.addElement(name);
         }
