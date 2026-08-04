@@ -157,6 +157,8 @@ public class Intaskitem extends BaseEntity
     /** 存放：入库凭证号 */
     @Excel(name = "存放：入库凭证号")
     private String taskfinishflag;
+    @Excel(name = "存放：入库凭证号")
+    private String taskFinishFlag;
 
     /** 排序方式 */
     @Excel(name = "排序方式")
@@ -286,6 +288,14 @@ public class Intaskitem extends BaseEntity
 
     public void setIndate(String indate) {
         this.indate = indate;
+    }
+
+    public String getTaskFinishFlag() {
+        return taskFinishFlag;
+    }
+
+    public void setTaskFinishFlag(String taskFinishFlag) {
+        this.taskFinishFlag = taskFinishFlag;
     }
 
     public String getTransfertype() {
@@ -761,6 +771,9 @@ public class Intaskitem extends BaseEntity
                 .append("t_collecter", t_collecter)
                 .append("indate", indate)
                 .append("transfertype", transfertype)
+                .append("taskFinishFlag", taskFinishFlag)
+
+
                 .toString();
     }
 }

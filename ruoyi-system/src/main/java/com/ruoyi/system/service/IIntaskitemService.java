@@ -114,4 +114,12 @@ public interface IIntaskitemService
      * @return 入库任务明细集合
      */
     public List<Intaskitem> selectIntaskitemListDelivery(Intaskitem intaskitem);
+
+    /**
+     * 根据托盘号获取任务
+     *
+     * @param intaskitem 入库任务ID
+     * @return 入库任务明细集合
+     */
+    public List<Intaskitem> selectIntaskitemListDeliveryAll(Intaskitem intaskitem);
 }

@@ -17216,8 +17216,15 @@ public class SysTerminalController extends BaseController {
         /*if (intaskitem.getPageIndex() > 0 && intaskitem.getPageSize() > 0) {
             PageHelper.startPage(intaskitem.getPageIndex(), intaskitem.getPageSize());
         }*/
+        List<Intaskitem> intaskitemList= new ArrayList<>();
+        String finshFlg=intaskitem.getTaskFinishFlag();
 
-        List<Intaskitem> intaskitemList = iIntaskitemService.selectIntaskitemListDelivery(intaskitem);
+        if(StringUtils.isEmpty(finshFlg)||finshFlg.equals("0")){
+            intaskitemList = iIntaskitemService.selectIntaskitemListDelivery(intaskitem);
+        }else{
+            intaskitemList = iIntaskitemService.selectIntaskitemListDeliveryAll(intaskitem);
+        }
+
         AjaxResult ajax = AjaxResult.success(getDataTable(intaskitemList));
         return ajax;
     }
