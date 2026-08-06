@@ -81,7 +81,7 @@ public class DeliveryproofServiceImpl implements IDeliveryproofService
 
     /**
      * 删除【请填写功能名称】信息
-     * 
+     *
      * @param inproofid 【请填写功能名称】主键
      * @return 结果
      */
@@ -89,5 +89,23 @@ public class DeliveryproofServiceImpl implements IDeliveryproofService
     public int deleteDeliveryproofByInproofid(Long inproofid)
     {
         return deliveryproofMapper.deleteDeliveryproofByInproofid(inproofid);
+    }
+
+    /**
+     * 查询待同步到 DELIVERYPROOF 的出库凭证 ID 列表
+     */
+    @Override
+    public List<Long> selectPendingOutProofIds()
+    {
+        return deliveryproofMapper.selectPendingOutProofIds();
+    }
+
+    /**
+     * 根据单个 OUTPROOFID 将该出库凭证写入 DELIVERYPROOF（单条插入）
+     */
+    @Override
+    public int insertDeliveryProofById(Long outproofId)
+    {
+        return deliveryproofMapper.insertDeliveryProofById(outproofId);
     }
 }

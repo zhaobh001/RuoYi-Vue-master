@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Deliverybill;
+import io.lettuce.core.dynamic.annotation.Param;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -53,9 +54,20 @@ public interface DeliverybillMapper
 
     /**
      * 批量删除【请填写功能名称】
-     * 
+     *
      * @param inbillids 需要删除的数据主键集合
      * @return 结果
      */
     public int deleteDeliverybillByInbillids(Long[] inbillids);
+
+    /**
+     * 根据单个 OUTPROOFID，将该出库凭证对应的 OUTBILL/OUTTASKITEM/OUTCOLLECTDATA
+     * 汇总写入 DELIVERYBILL（精确到单个凭证）。
+     *
+     * <p>按 OUTBILLID 去重，DELIVERYBILL 中已存在的 OUTBILLID 不再重复插入。
+     *
+     * @param inproofid 出库凭证主键（对应 DELIVERYBILL.INPROOFID）
+     * @return 插入行数
+     */
+    public int insertDeliveryBillByOutProofId(Long inproofid);
 }

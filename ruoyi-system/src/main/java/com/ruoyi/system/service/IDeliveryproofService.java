@@ -53,9 +53,24 @@ public interface IDeliveryproofService
 
     /**
      * 删除【请填写功能名称】信息
-     * 
+     *
      * @param inproofid 【请填写功能名称】主键
      * @return 结果
      */
     public int deleteDeliveryproofByInproofid(Long inproofid);
+
+    /**
+     * 查询待同步到 DELIVERYPROOF 的出库凭证 ID 列表。
+     *
+     * @return OUTPROOFID 列表
+     */
+    public List<Long> selectPendingOutProofIds();
+
+    /**
+     * 根据单个 OUTPROOFID 将该出库凭证写入 DELIVERYPROOF（单条插入）。
+     *
+     * @param inproofid 出库凭证主键，同时作为 DELIVERYPROOF.INPROOFID
+     * @return 插入行数
+     */
+    public int insertDeliveryProofById(Long inproofid);
 }

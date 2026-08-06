@@ -159,6 +159,16 @@ public class SysTerminalController extends BaseController {
     @Autowired
     private IDeliverytaskitemExceService iDeliverytaskitemExceService;
 
+    @Autowired
+    private IIotypeService iIotypeService;
+
+    @Autowired
+    private IOutproofService iOutproofService;
+
+
+    @Autowired
+    private IInproofService iInproofService;
+
 
     /**
      * 根据用户编号获已接收未完成到货任务清单
@@ -2448,7 +2458,7 @@ public class SysTerminalController extends BaseController {
             outcollectdata.setOutdesc(info.getDesc());
             outcollectdata.setDataversion(1L);
             outcollectdata.setData1(info.getErpStore());
-            outcollectdata.setData2(info.getData2());
+            outcollectdata.setData2(info.getProductionDate());
             outcollectdata.setData3(info.getData3());
             outcollectdata.setCstate(0L);
             //iOutcollectdataService.insertOutcollectdata(outcollectdata);
@@ -16514,8 +16524,6 @@ public class SysTerminalController extends BaseController {
         Incollectdata con= new Incollectdata();
         con.setData1(sourceno);
 
-
-
         List<Incollectdata> IncollectdataList4=iIncollectdataService.getZXD(con);
         if(IncollectdataList4.size()>0){
             Incollectdata incollectdata=IncollectdataList4.get(0);
@@ -17137,6 +17145,63 @@ public class SysTerminalController extends BaseController {
         return AjaxResult.success(data);
     }
 
+    /**
+     * 配送核验 · 将出库数据同步写入 DELIVERYPROOF、DELIVERYBILL。
+     *
+     * <p>先查询待同步的 OUTPROOFID 列表（transaction_type='5'、outstate='2'、data7 非空、
+     * 且尚未同步），然后在 Java 中 for 循环逐条处理：
+     * <ol>
+     *   <li>按 OUTPROOFID 单条插入 DELIVERYPROOF（INPROOFID 沿用 OUTPROOFID）；</li>
+     *   <li>插入成功后，立即按 {@code BILL1.OUTPROOFID = 刚处理的 OUTPROOFID} 精确汇总
+     *       OUTBILL/OUTTASKITEM/OUTCOLLECTDATA 写入 DELIVERYBILL。</li>
+     * </ol>
+     * DELIVERYBILL 按 OUTBILLID 去重，重复调用不会产生重复明细。整个过程在同一事务内，
+     * 任意一步异常整体回滚。
+     *
+     * @return data 中包含 proofCount（写入凭证数）、billCount（写入明细总数）
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @PostMapping("/delivery/syncFromOutbound")
+    public AjaxResult syncDeliveryFromOutbound()
+    {
+        // 先查询待同步的 OUTPROOFID 列表（已按 data7 倒序、限量 100、排除已同步）
+        List<Long> outProofIds = iDeliveryproofService.selectPendingOutProofIds();
+
+        int proofCount = 0;
+        int billCount = 0;
+        for (Long outProofId : outProofIds)
+        {
+            if (outProofId == null)
+            {
+                continue;
+            }
+            // 1. 先单条写入 DELIVERYPROOF
+            int inserted = iDeliveryproofService.insertDeliveryProofById(outProofId);
+            if (inserted <= 0)
+            {
+                // 未插入（并发等原因已存在），跳过该凭证的明细同步
+                continue;
+            }
+            proofCount++;
+
+            // 2. 插入成功后，按 OUTPROOFID 精确写入该凭证对应的 DELIVERYBILL
+            billCount += iDeliverybillService.insertDeliveryBillByOutProofId(outProofId);
+
+            Outproof outproof=iOutproofService.selectOutproofByOutproofid(outProofId);
+            if (outproof == null)
+            {
+                return error("出库凭证不存在：" + outProofId);
+            }
+            outproof.setData1("1");
+            iOutproofService.updateOutproof(outproof);
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("proofCount", proofCount);
+        data.put("billCount", billCount);
+        return AjaxResult.success(data);
+    }
+
 
 
 
@@ -17229,5 +17294,64 @@ public class SysTerminalController extends BaseController {
         return ajax;
     }
 
+    /**
+     * 根据用户编号获已接收未完成到货任务清单
+     */
+    @Anonymous
+    @GetMapping("/productCheckF")
+    public AjaxResult productCheckF(String storeRoomNo,String taskComment,String ioType) {
+        String orderType="";
+        String productCheck="N";
+        if (StringUtils.isNull(storeRoomNo)) {
+            return error("库房编码不能为空");
+        }
+        if (StringUtils.isNull(taskComment)) {
+            return error("单据号不能为空");
+        }
+        Storeroom room=new Storeroom();
+        room.setStoreroomno(storeRoomNo);
+        List<Storeroom> storeRoomList=iStoreroomService.selectStoreroomList(room);
+        if (storeRoomList.isEmpty() || storeRoomList.size() <= 0) {
+            return error("库房参数错误");
+        }
+        Storeroom room1=storeRoomList.get(0);
+        String checkFlagRoom=room1.getData7()+"";
 
+        if(ioType.equals("O")){
+            Outproof outproof1=new Outproof();
+            outproof1.setOutproofno(taskComment);
+            List<Outproof> outproofList=iOutproofService.selectOutproofList(outproof1);
+            if (outproofList.isEmpty() || outproofList.size() <= 0) {
+                return error("单据错误");
+            }
+            orderType=outproofList.get(0).getProtype()+"";
+        }else{
+
+            Inproof inproof1=new Inproof();
+            inproof1.setProofno(taskComment);
+            List<Inproof> inproofList= iInproofService.selectInproofList(inproof1);
+            if (inproofList.isEmpty() || inproofList.size() <= 0) {
+                return error("单据错误");
+            }
+            orderType=inproofList.get(0).getProtype()+"";
+        }
+
+        Iotype iotype=new Iotype();
+        iotype.setIotypeno(orderType);
+        List<Iotype> iotypeList = iIotypeService.selectIotypeList(iotype);
+        if (iotypeList.isEmpty() || iotypeList.size() <= 0) {
+            return error("单据类型错误");
+        }
+        Iotype iotype1=iotypeList.get(0);
+        String iotypeNo=iotype1.getData2()+"";
+
+        if(checkFlagRoom.equals("Y") && iotypeNo.equals("Y") ){
+            productCheck="Y";
+        }
+
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("productCheck",productCheck);
+        AjaxResult ajax = AjaxResult.success(jsonObject);
+        return ajax;
+    }
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.IotypeMapper">
+    
+    <resultMap type="Iotype" id="IotypeResult">
+        <result property="iotypeid"    column="iotypeid"    />
+        <result property="inout"    column="inout"    />
+        <result property="iotypeno"    column="iotypeno"    />
+        <result property="iotypename"    column="iotypename"    />
+        <result property="issystem"    column="issystem"    />
+        <result property="iotypedesc"    column="iotypedesc"    />
+        <result property="dataversion"    column="dataversion"    />
+        <result property="data1"    column="data1"    />
+        <result property="data2"    column="data2"    />
+        <result property="data3"    column="data3"    />
+        <result property="data4"    column="data4"    />
+        <result property="ismanual"    column="ismanual"    />
+        <result property="ischeck"    column="ischeck"    />
+    </resultMap>
+
+    <sql id="selectIotypeVo">
+        select iotypeid, inout, iotypeno, iotypename, issystem, iotypedesc, dataversion, data1, data2, data3, data4, ismanual, ischeck from iotype
+    </sql>
+
+    <select id="selectIotypeList" parameterType="Iotype" resultMap="IotypeResult">
+        <include refid="selectIotypeVo"/>
+        <where>  
+            <if test="inout != null  and inout != ''"> and inout = #{inout}</if>
+            <if test="iotypeno != null  and iotypeno != ''"> and iotypeno = #{iotypeno}</if>
+            <if test="iotypename != null  and iotypename != ''"> and iotypename like concat('%', #{iotypename}, '%')</if>
+            <if test="issystem != null "> and issystem = #{issystem}</if>
+            <if test="iotypedesc != null  and iotypedesc != ''"> and iotypedesc = #{iotypedesc}</if>
+            <if test="dataversion != null "> and dataversion = #{dataversion}</if>
+            <if test="data1 != null  and data1 != ''"> and data1 = #{data1}</if>
+            <if test="data2 != null  and data2 != ''"> and data2 = #{data2}</if>
+            <if test="data3 != null  and data3 != ''"> and data3 = #{data3}</if>
+            <if test="data4 != null  and data4 != ''"> and data4 = #{data4}</if>
+            <if test="ismanual != null "> and ismanual = #{ismanual}</if>
+            <if test="ischeck != null "> and ischeck = #{ischeck}</if>
+        </where>
+    </select>
+    
+    <select id="selectIotypeByIotypeid" parameterType="Long" resultMap="IotypeResult">
+        <include refid="selectIotypeVo"/>
+        where iotypeid = #{iotypeid}
+    </select>
+        
+    <insert id="insertIotype" parameterType="Iotype" useGeneratedKeys="true" keyProperty="iotypeid">
+        insert into iotype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inout != null">inout,</if>
+            <if test="iotypeno != null">iotypeno,</if>
+            <if test="iotypename != null">iotypename,</if>
+            <if test="issystem != null">issystem,</if>
+            <if test="iotypedesc != null">iotypedesc,</if>
+            <if test="dataversion != null">dataversion,</if>
+            <if test="data1 != null">data1,</if>
+            <if test="data2 != null">data2,</if>
+            <if test="data3 != null">data3,</if>
+            <if test="data4 != null">data4,</if>
+            <if test="ismanual != null">ismanual,</if>
+            <if test="ischeck != null">ischeck,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inout != null">#{inout},</if>
+            <if test="iotypeno != null">#{iotypeno},</if>
+            <if test="iotypename != null">#{iotypename},</if>
+            <if test="issystem != null">#{issystem},</if>
+            <if test="iotypedesc != null">#{iotypedesc},</if>
+            <if test="dataversion != null">#{dataversion},</if>
+            <if test="data1 != null">#{data1},</if>
+            <if test="data2 != null">#{data2},</if>
+            <if test="data3 != null">#{data3},</if>
+            <if test="data4 != null">#{data4},</if>
+            <if test="ismanual != null">#{ismanual},</if>
+            <if test="ischeck != null">#{ischeck},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIotype" parameterType="Iotype">
+        update iotype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inout != null">inout = #{inout},</if>
+            <if test="iotypeno != null">iotypeno = #{iotypeno},</if>
+            <if test="iotypename != null">iotypename = #{iotypename},</if>
+            <if test="issystem != null">issystem = #{issystem},</if>
+            <if test="iotypedesc != null">iotypedesc = #{iotypedesc},</if>
+            <if test="dataversion != null">dataversion = #{dataversion},</if>
+            <if test="data1 != null">data1 = #{data1},</if>
+            <if test="data2 != null">data2 = #{data2},</if>
+            <if test="data3 != null">data3 = #{data3},</if>
+            <if test="data4 != null">data4 = #{data4},</if>
+            <if test="ismanual != null">ismanual = #{ismanual},</if>
+            <if test="ischeck != null">ischeck = #{ischeck},</if>
+        </trim>
+        where iotypeid = #{iotypeid}
+    </update>
+
+    <delete id="deleteIotypeByIotypeid" parameterType="Long">
+        delete from iotype where iotypeid = #{iotypeid}
+    </delete>
+
+    <delete id="deleteIotypeByIotypeids" parameterType="String">
+        delete from iotype where iotypeid in 
+        <foreach item="iotypeid" collection="array" open="(" separator="," close=")">
+            #{iotypeid}
+        </foreach>
+    </delete>
+</mapper>

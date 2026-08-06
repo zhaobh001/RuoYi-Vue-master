@@ -126,13 +126,13 @@
         p.PARNAME
 
         FROM
-        deliverytask i,
-        deliverytaskitem ii,
+        intask i,
+        intaskitem ii,
         pm_material pm,
         storeroom str,
         storesite sts,
-        deliveryproof inf,
-        deliverybill ibl,
+        inproof inf,
+        inbill ibl,
         (select distinct r.USER_ID as userid,m.STOREROOMID as operation from sys_user_role r,sys_role_room m where
         r.ROLE_ID=m.ROLE_ID) e,
         partner p

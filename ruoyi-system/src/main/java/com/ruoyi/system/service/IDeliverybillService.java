@@ -53,9 +53,17 @@ public interface IDeliverybillService
 
     /**
      * 删除【请填写功能名称】信息
-     * 
+     *
      * @param inbillid 【请填写功能名称】主键
      * @return 结果
      */
     public int deleteDeliverybillByInbillid(Long inbillid);
+
+    /**
+     * 根据单个 OUTPROOFID，将该出库凭证对应的明细汇总写入 DELIVERYBILL。
+     *
+     * @param inproofid 出库凭证主键（对应 DELIVERYBILL.INPROOFID）
+     * @return 插入行数
+     */
+    public int insertDeliveryBillByOutProofId(Long inproofid);
 }

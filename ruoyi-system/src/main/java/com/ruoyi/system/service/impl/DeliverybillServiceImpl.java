@@ -81,7 +81,7 @@ public class DeliverybillServiceImpl implements IDeliverybillService
 
     /**
      * 删除【请填写功能名称】信息
-     * 
+     *
      * @param inbillid 【请填写功能名称】主键
      * @return 结果
      */
@@ -89,5 +89,14 @@ public class DeliverybillServiceImpl implements IDeliverybillService
     public int deleteDeliverybillByInbillid(Long inbillid)
     {
         return deliverybillMapper.deleteDeliverybillByInbillid(inbillid);
+    }
+
+    /**
+     * 根据单个 OUTPROOFID 将该出库凭证对应的明细汇总写入 DELIVERYBILL
+     */
+    @Override
+    public int insertDeliveryBillByOutProofId(Long outproofId)
+    {
+        return deliverybillMapper.insertDeliveryBillByOutProofId(outproofId);
     }
 }

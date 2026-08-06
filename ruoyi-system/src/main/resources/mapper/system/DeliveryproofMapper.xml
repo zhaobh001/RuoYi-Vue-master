@@ -228,9 +228,77 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteDeliveryproofByInproofids" parameterType="String">
-        delete from deliveryproof where inproofid in 
+        delete from deliveryproof where inproofid in
         <foreach item="inproofid" collection="array" open="(" separator="," close=")">
             #{inproofid}
         </foreach>
     </delete>
+
+    <!-- 查询待同步的 OUTPROOFID 列表：transaction_type=5、outstate=2、data7 非空、且尚未同步 -->
+    <select id="selectPendingOutProofIds" resultType="java.lang.Long">
+        SELECT OUTPROOFID FROM (
+        SELECT ROOF.OUTPROOFID,(select sum(FINISHQTY)  from OUTBILL bill where bill.OUTPROOFID=roof.OUTPROOFID) as FINISHQTY
+        FROM OUTPROOF ROOF
+        WHERE ROOF.TRANSACTION_TYPE = '5'
+        AND ROOF.OUTSTATE = '2'
+        AND ROOF.DATA1 IS NULL
+        AND NOT EXISTS (
+        SELECT 1 FROM DELIVERYPROOF DP WHERE DP.INPROOFID = ROOF.OUTPROOFID
+        )
+        ORDER BY ROOF.DATA7 DESC
+        ) WHERE FINISHQTY>0 and ROWNUM &lt; 100
+    </select>
+
+    <!-- 根据单个 OUTPROOFID 将该出库凭证写入 DELIVERYPROOF；INPROOFID 直接沿用 OUTPROOFID -->
+    <insert id="insertDeliveryProofById" parameterType="Long">
+        INSERT INTO DELIVERYPROOF (
+        INPROOFID, PROOFNO, PROSOURCE, ORDERNO, INBOXNO, ISWMS_CHECK, PROTYPE,
+        PRODATE, PROEMPID, PARTNERID, TRANSPORTINFO, PROSTATE, DEPOTNO, TOTALVOLUME,
+        TOTALWEIGHT, PRODESC, DATAVERSION, DATA1, DATA2, DATA3, DATA4, DATA5, DATA6,
+        DATA7, DATA8, DATA9, DATA10, ORDER_TRANSACTION_ID, PO_NUMBER, TRANSACTION_TYPE,
+        SENDSTATE, EXECUTEEMPID, PALLETNO, TRANSFERTYPE, OUTPROOFID, OUTPROOFNO,
+        CHUKUFANGSHI, SEND_STATS
+        )
+        SELECT
+        ROOF.OUTPROOFID AS INPROOFID,
+        ROOF.OUTPROOFNO AS PROOFNO,
+        ROOF.PRODESC AS PROSOURCE,
+        ROOF.ORDERNO AS ORDERNO,
+        NULL AS INBOXNO,
+        NULL AS ISWMS_CHECK,
+        ROOF.PROTYPE AS PROTYPE,
+        ROOF.PRODATE AS PRODATE,
+        ROOF.PROEMPID AS PROEMPID,
+        ROOF.PARTNERID AS PARTNERID,
+        NULL AS TRANSPORTINFO,
+        0 AS PROSTATE,
+        ROOF.DEPOTNO AS DEPOTNO,
+        NULL AS TOTALVOLUME,
+        NULL AS TOTALWEIGHT,
+        ROOF.PRODESC AS PRODESC,
+        1 AS DATAVERSION,
+        NULL AS DATA1,
+        NULL AS DATA2,
+        NULL AS DATA3,
+        NULL AS DATA4,
+        NULL AS DATA5,
+        NULL AS DATA6,
+        NULL AS DATA7,
+        'N' AS DATA8,
+        NULL AS DATA9,
+        NULL AS DATA10,
+        NULL AS ORDER_TRANSACTION_ID,
+        ROOF.PO_NUMBER AS PO_NUMBER,
+        NULL AS TRANSACTION_TYPE,
+        NULL AS SENDSTATE,
+        NULL AS EXECUTEEMPID,
+        NULL AS PALLETNO,
+        0 AS TRANSFERTYPE,
+        NULL AS OUTPROOFID,
+        NULL AS OUTPROOFNO,
+        NULL AS CHUKUFANGSHI,
+        NULL AS SEND_STATS
+        FROM OUTPROOF ROOF
+        WHERE ROOF.OUTPROOFID = #{inproofid}
+    </insert>
 </mapper>

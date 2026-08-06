@@ -32,7 +32,15 @@ public class DownShelvesInfo
     private String outTaskItemid;
     private String erpStore;
     private String trayNo;
+    private String productionDate;
 
+    public String getProductionDate() {
+        return productionDate;
+    }
+
+    public void setProductionDate(String productionDate) {
+        this.productionDate = productionDate;
+    }
 
     public String getTrayNo() {
         return trayNo;
