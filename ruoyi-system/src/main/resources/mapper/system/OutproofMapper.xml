@@ -93,6 +93,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectOutproofByOutproofid" parameterType="Long" resultMap="OutproofResult">
+        <include refid="selectOutproofVo"/>
+        where outproofid = #{outproofid}
     </select>
         
     <insert id="insertOutproof" parameterType="Outproof" useGeneratedKeys="true" keyProperty="outproofid">

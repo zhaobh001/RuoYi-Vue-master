@@ -2,7 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.Deliverybill;
-import io.lettuce.core.dynamic.annotation.Param;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 【请填写功能名称】Mapper接口
@@ -69,5 +69,5 @@ public interface DeliverybillMapper
      * @param inproofid 出库凭证主键（对应 DELIVERYBILL.INPROOFID）
      * @return 插入行数
      */
-    public int insertDeliveryBillByOutProofId(Long inproofid);
+    public int insertDeliveryBillByOutProofId(@Param("inproofid") Long inproofid);
 }

@@ -261,7 +261,6 @@
         AND (NVL(ii.qty,0)-NVL(ii.collectedqty,0)) > 0
         <if test="i_collecter != null ">and nvl(ii.collecter,0) = #{i_collecter}</if>
         <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
-        <if test="roomtag != null ">and nvl(str.roomtag,0)= #{roomtag}</if>
         <if test="transfertype != null ">and nvl(inf.transfertype,0) = #{transfertype}</if>
 
         <if test="searchKey == null || instate==1">
@@ -351,7 +350,6 @@
         AND str.storeroomid = e.operation
         <if test="i_collecter != null ">and nvl(ii.collecter,0) = #{i_collecter}</if>
         <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
-        <if test="roomtag != null ">and nvl(str.roomtag,0)= #{roomtag}</if>
         <if test="transfertype != null ">and nvl(inf.transfertype,0) = #{transfertype}</if>
 
         <if test="searchKey == null || instate==1">

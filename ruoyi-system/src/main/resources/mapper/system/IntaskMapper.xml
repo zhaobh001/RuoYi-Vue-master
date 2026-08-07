@@ -312,7 +312,6 @@
         </if>
 
         <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
-        <if test="roomTag != null ">and nvl(str.roomtag,0) = #{roomTag}</if>
         <if test="transferType != null ">and nvl(inf.transfertype,0) = #{transferType}</if>
         )
         GROUP BY
@@ -474,7 +473,6 @@
         </if>
 
         <if test="userId != null ">and nvl(e.userid,0) = #{userId}</if>
-        <if test="roomTag != null ">and nvl(str.roomtag,0) = #{roomTag}</if>
         <if test="transferType != null ">and nvl(inf.transfertype,0) = #{transferType}</if>
         )
         GROUP BY

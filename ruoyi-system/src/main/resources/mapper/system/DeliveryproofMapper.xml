@@ -249,8 +249,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         ) WHERE FINISHQTY>0 and ROWNUM &lt; 100
     </select>
 
-    <!-- 根据单个 OUTPROOFID 将该出库凭证写入 DELIVERYPROOF；INPROOFID 直接沿用 OUTPROOFID -->
-    <insert id="insertDeliveryProofById" parameterType="Long">
+    <!-- 根据单个 OUTPROOFID 将该出库凭证写入 DELIVERYPROOF；INPROOFID 直接沿用 OUTPROOFID。
+         这是 INSERT...SELECT，需关闭全局 useGeneratedKeys，否则 Oracle 报 ORA-00933。 -->
+    <insert id="insertDeliveryProofById" parameterType="Long" useGeneratedKeys="false">
         INSERT INTO DELIVERYPROOF (
         INPROOFID, PROOFNO, PROSOURCE, ORDERNO, INBOXNO, ISWMS_CHECK, PROTYPE,
         PRODATE, PROEMPID, PARTNERID, TRANSPORTINFO, PROSTATE, DEPOTNO, TOTALVOLUME,
@@ -262,12 +263,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT
         ROOF.OUTPROOFID AS INPROOFID,
         ROOF.OUTPROOFNO AS PROOFNO,
-        ROOF.PRODESC AS PROSOURCE,
+        '1' AS PROSOURCE,
         ROOF.ORDERNO AS ORDERNO,
         NULL AS INBOXNO,
         NULL AS ISWMS_CHECK,
         ROOF.PROTYPE AS PROTYPE,
-        ROOF.PRODATE AS PRODATE,
+        SYSDATE AS PRODATE,
         ROOF.PROEMPID AS PROEMPID,
         ROOF.PARTNERID AS PARTNERID,
         NULL AS TRANSPORTINFO,

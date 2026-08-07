@@ -405,8 +405,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <!-- 根据单个 OUTPROOFID 将该出库凭证对应的 OUTBILL/OUTTASKITEM/OUTCOLLECTDATA
-         汇总写入 DELIVERYBILL；INPROOFID = #{outproofId}，按 OUTBILLID 去重 -->
-    <insert id="insertDeliveryBillByOutProofId" parameterType="Long">
+         汇总写入 DELIVERYBILL；INPROOFID = #{inproofid}，按 OUTBILLID 去重。
+         INSERT...SELECT，需关闭全局 useGeneratedKeys，否则 Oracle 报 ORA-00933。 -->
+    <insert id="insertDeliveryBillByOutProofId" parameterType="Long" useGeneratedKeys="false">
         INSERT INTO DELIVERYBILL (
         INBILLID, INPROOFID, INBILLNO, ARRIVALBILLID, SOURCEID, CREATETIME, CREATEOR,
         MATERIALID, BATCHNO, SN, SITENO, TASKQTY, FINISHQTY, SUPPLIERID, TRANSPORTINFO,
@@ -501,7 +502,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         BILL1.OUTPROOFID AS INPROOFID,
         NULL AS ARRIVALBILLID,
         0 AS SOURCEID,
-        BILL1.CREATEDATE AS CREATETIME,
+        SYSDATE AS CREATETIME,
         BILL1.CREATOR AS CREATEOR,
         BILL1.MATERIALID AS MATERIALID,
         COLL.BATCHNO AS BATCHNO,
@@ -575,7 +576,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE BILL1.OUTPROOFID = #{inproofid} and nvl(COLL.QTY,0)>0
         GROUP BY
         BILL1.OUTPROOFID,
-        BILL1.CREATEDATE,
         BILL1.CREATOR,
         BILL1.MATERIALID,
         COLL.BATCHNO,
@@ -592,7 +592,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         COLL.PALLETNO,
         BILL1.PROJECT_NUM
 
-        )AA;
+        )AA
 
     </insert>
 </mapper>

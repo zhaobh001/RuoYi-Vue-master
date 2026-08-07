@@ -5,6 +5,7 @@ import com.ruoyi.common.domin.FebsResponse;
 import com.ruoyi.common.domin.FebsResponseUtil;
 import com.ruoyi.system.domain.CuxWmsOrderHeaderInterface;
 import com.ruoyi.system.domain.Incollectdata;
+import com.ruoyi.system.domain.Outproof;
 import com.ruoyi.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,14 @@ public class DeliverProofController {
     @Autowired
     private IDeliveryproofService iDeliveryproofService;
 
+    @Autowired
+    private IOutproofService iOutproofService;
+
     @RequestMapping("/insertDelivery")
     public FebsResponse insertDelivery() {
 
         System.out.println("同步数据作业开始");
+
         // 先查询待同步的 OUTPROOFID 列表（已按 data7 倒序、限量 100、排除已同步）
         List<Long> outProofIds = iDeliveryproofService.selectPendingOutProofIds();
 
@@ -53,6 +58,10 @@ public class DeliverProofController {
 
             // 2. 插入成功后，按 OUTPROOFID 精确写入该凭证对应的 DELIVERYBILL
             billCount += iDeliverybillService.insertDeliveryBillByOutProofId(outProofId);
+
+            Outproof outproof=iOutproofService.selectOutproofByOutproofid(outProofId);
+            outproof.setData1("1");
+            iOutproofService.updateOutproof(outproof);
         }
 
         System.out.println("同步数据作业结束");
