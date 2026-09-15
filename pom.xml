@@ -229,6 +229,18 @@
     </build>
 
     <repositories>
+        <!-- 项目内仓库：金风 edoc2 下载 SDK 等内部包（随 git 提交，构建机无需额外安装） -->
+        <repository>
+            <id>project-local</id>
+            <name>project local repo</name>
+            <url>file://${maven.multiModuleProjectDirectory}/repo</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <repository>
             <id>public</id>
             <name>aliyun nexus</name>

@@ -21,12 +21,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
@@ -164,6 +168,12 @@ public class SysTerminalController extends BaseController {
 
     @Autowired
     private IOutproofService iOutproofService;
+
+    @Autowired
+    private com.ruoyi.system.service.IEdocFileService edocFileService;
+
+    @Autowired
+    private com.ruoyi.common.config.EdocProperties edocProperties;
 
 
     @Autowired
@@ -17069,19 +17079,90 @@ public class SysTerminalController extends BaseController {
                 delivererSignature);
 
         // ---- 5. PDF 访问地址回写 DELIVERYTASK.DATA7 ----
-        if (StringUtils.isNotEmpty(pdfUrl) && inTaskId != null)
+        Deliverytask deliverytask = (StringUtils.isNotEmpty(pdfUrl) && inTaskId != null)
+                ? iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId) : null;
+        if (deliverytask != null)
         {
-            Deliverytask deliverytask = iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId);
-            if (deliverytask != null)
+            deliverytask.setData7(pdfUrl);
+            iDeliverytaskService.updateDeliverytask(deliverytask);
+        }
+
+        // ---- 5.1 PDF 上传到 edoc2，文件 ID 回写 DELIVERYTASK.DATA8 ----
+        // edoc 上传失败不影响核验主流程（PDF 已本地生成并回写 DATA7），仅记录日志
+        String edocFileId = "";
+        String edocDownloadUrl = "";
+        if (StringUtils.isNotEmpty(pdfUrl) && edocProperties.isEnabled())
+        {
+            try
             {
-                deliverytask.setData7(pdfUrl);
-                iDeliverytaskService.updateDeliverytask(deliverytask);
+                // pdfUrl 形如 /profile/delivery-verify/xxx.pdf，对应磁盘 RuoYiConfig.getProfile()/delivery-verify/xxx.pdf
+                String relative = pdfUrl.substring(com.ruoyi.common.constant.Constants.RESOURCE_PREFIX.length());
+                File pdfFile = new File(com.ruoyi.common.config.RuoYiConfig.getProfile(), relative);
+                if (pdfFile.exists() && pdfFile.length() > 0)
+                {
+                    String uploadName = billNo + ".pdf";
+                    long fid = edocFileService.upload(uploadName,
+                            java.nio.file.Files.readAllBytes(pdfFile.toPath()),
+                            "配送核验单 " + billNo);
+                    edocFileId = String.valueOf(fid);
+                    // 本系统的 edoc 下载/预览代理地址，App 可直接使用
+                    edocDownloadUrl = serverConfig.getUrl() + "/system/edoc/preview?fileId=" + fid;
+
+                    if (deliverytask != null)
+                    {
+                        deliverytask.setData8(edocFileId);
+                        iDeliverytaskService.updateDeliverytask(deliverytask);
+                    }
+                    logger.info("配送核验 PDF 已上传 edoc, inTaskId={}, fileId={}", inTaskId, fid);
+                }
+            }
+            catch (Exception edocEx)
+            {
+                logger.error("配送核验 PDF 上传 edoc 失败, inTaskId=" + inTaskId + ": " + edocEx.getMessage(), edocEx);
+            }
+        }
+
+        // ---- 5.2 签字后的 PDF 复制一份到 edoc 下载目录（D:/edoc-download），便于现场集中取件/归档 ----
+        if (StringUtils.isNotEmpty(pdfUrl))
+        {
+            try
+            {
+                String rel = pdfUrl.substring(com.ruoyi.common.constant.Constants.RESOURCE_PREFIX.length());
+                File srcPdf = new File(com.ruoyi.common.config.RuoYiConfig.getProfile(), rel);
+                if (srcPdf.exists() && srcPdf.length() > 0)
+                {
+                    File archiveDir = new File(edocProperties.getTempDir());
+                    if (!archiveDir.exists() && !archiveDir.mkdirs())
+                    {
+                        logger.warn("签字 PDF 归档目录创建失败: {}", archiveDir.getAbsolutePath());
+                    }
+                    else
+                    {
+                        File archivePdf = new File(archiveDir, srcPdf.getName());
+                        // 先删再复制，保证文件创建时间为本次签字时间（按创建时间清理，覆盖在 Windows 上会保留旧创建时间）
+                        if (archivePdf.exists())
+                        {
+                            archivePdf.delete();
+                        }
+                        java.nio.file.Files.copy(srcPdf.toPath(), archivePdf.toPath());
+                        logger.info("签字 PDF 已归档到下载目录: {}", archivePdf.getAbsolutePath());
+                    }
+                }
+            }
+            catch (Exception archiveEx)
+            {
+                // 归档失败不影响核验主流程
+                logger.error("签字 PDF 归档到下载目录失败, inTaskId=" + inTaskId + ": " + archiveEx.getMessage(), archiveEx);
             }
         }
 
         // 相对路径 → 绝对下载链接，供 App 直接下载查看 PDF / 签名图
         String baseUrl = serverConfig.getUrl();
-        String pdfDownloadUrl = StringUtils.isNotEmpty(pdfUrl) ? baseUrl + pdfUrl : "";
+        // PDA 打开 PDF 统一走终端 PDF 代理（/system/terminal/verify/<inTaskId>.pdf，匿名放行、URL 带 .pdf 后缀）：
+        // 代理内部优先从 edoc（DATA8 的 fileId）取流，无 fileId 或 edoc 不可用时回退本地 /profile 文件。
+        // 故 PDA 不再直连 /profile 静态目录；pdfUrl（相对路径）仍保留供管理端使用。
+        String pdfDownloadUrl = StringUtils.isNotEmpty(pdfUrl)
+                ? baseUrl + "/system/terminal/verify/" + inTaskId + ".pdf" : "";
         String receiverSignDownloadUrl = StringUtils.isNotEmpty(receiverSignUrl) ? baseUrl + receiverSignUrl : "";
         String delivererSignDownloadUrl = StringUtils.isNotEmpty(delivererSignUrl) ? baseUrl + delivererSignUrl : "";
 
@@ -17094,6 +17175,9 @@ public class SysTerminalController extends BaseController {
         resp.put("receiverSignDownloadUrl", receiverSignDownloadUrl);
         resp.put("delivererSignUrl", delivererSignUrl);
         resp.put("delivererSignDownloadUrl", delivererSignDownloadUrl);
+        // edoc2 归档信息（edocPreviewUrl 为带鉴权的直连预览地址，供管理端使用；PDA 用上面的 pdfDownloadUrl）
+        resp.put("edocFileId", edocFileId);
+        resp.put("edocPreviewUrl", edocDownloadUrl);
         // 兼容旧客户端字段
         resp.put("signatureUrl", receiverSignUrl);
         resp.put("downloadUrl", pdfDownloadUrl);
@@ -17135,14 +17219,138 @@ public class SysTerminalController extends BaseController {
         {
             pdfUrl = "";
         }
-        String pdfDownloadUrl = pdfUrl.isEmpty() ? "" : serverConfig.getUrl() + pdfUrl;
+        // PDA 下载统一走终端 PDF 代理（优先 edoc、回退本地），不再直连 /profile 静态目录
+        String pdfDownloadUrl = pdfUrl.isEmpty() ? ""
+                : serverConfig.getUrl() + "/system/terminal/verify/" + inTaskId + ".pdf";
+
+        // edoc 归档信息：DATA8 存 edoc 文件 ID
+        String edocFileId = deliverytask.getData8();
+        String edocPreviewUrl = StringUtils.isNotEmpty(edocFileId)
+                ? serverConfig.getUrl() + "/system/edoc/preview?fileId=" + edocFileId : "";
 
         Map<String, Object> data = new HashMap<>();
         data.put("inTaskId", inTaskId);
         data.put("pdfUrl", pdfUrl);
         data.put("pdfDownloadUrl", pdfDownloadUrl);
         data.put("downloadUrl", pdfDownloadUrl);
+        data.put("edocFileId", edocFileId == null ? "" : edocFileId);
+        data.put("edocPreviewUrl", edocPreviewUrl);
         return AjaxResult.success(data);
+    }
+
+    /**
+     * 配送核验 · PDA/PDF 统一下载代理（匿名可访问，挂在 /system/terminal/** 下）。
+     *
+     * <p>PDA 拿到的 pdfDownloadUrl 指向本端点。服务端按 inTaskId 解析 PDF 文件并以流返回：
+     * <ol>
+     *   <li>优先用 DELIVERYTASK.DATA8 里的 edoc 文件 ID，从 edoc2 下载（downloadToTemp 自带本地缓存，
+     *       未过期直接复用，不会每次都回源 edoc）；</li>
+     *   <li>没有 edoc 文件 ID（历史单据）或 edoc 下载失败时，回退到 DELIVERYTASK.DATA7 指向的
+     *       本地 /profile 静态文件，保证老单据仍可打开。</li>
+     * </ol>
+     * 以内嵌预览（inline application/pdf）方式返回，URL 以 .pdf 结尾，PDA 点击「打开 PDF」直接在线预览，不触发下载。
+     *
+     * @param inTaskId 配送任务 ID（DELIVERYTASK.INTASKID）
+     */
+    @GetMapping("/verify/{inTaskId}.pdf")
+    public void downloadVerifyPdf(@PathVariable("inTaskId") Long inTaskId, HttpServletResponse response)
+    {
+        if (inTaskId == null)
+        {
+            writePdfError(response, "inTaskId 不能为空");
+            return;
+        }
+        Deliverytask task = iDeliverytaskService.selectDeliverytaskByIntaskid(inTaskId);
+        if (task == null)
+        {
+            writePdfError(response, "配送任务不存在：" + inTaskId);
+            return;
+        }
+
+        // 1) 优先 edoc：DATA8 存文件 ID
+        String edocFileId = task.getData8();
+        if (StringUtils.isNotEmpty(edocFileId))
+        {
+            try
+            {
+                long fid = Long.parseLong(edocFileId.trim());
+                if (fid > 0)
+                {
+                    File pdf = edocFileService.downloadToTemp(fid);
+                    if (pdf != null && pdf.exists() && pdf.length() > 0)
+                    {
+                        streamPdf(response, pdf, inTaskId + ".pdf");
+                        return;
+                    }
+                }
+            }
+            catch (NumberFormatException nfe)
+            {
+                logger.warn("配送核验 PDF 代理：DATA8 不是合法 edoc 文件 ID, inTaskId={}, data8={}",
+                        inTaskId, edocFileId);
+            }
+            catch (Exception edocEx)
+            {
+                // edoc 下载失败不直接报错，回退本地文件
+                logger.warn("配送核验 PDF 代理：edoc 下载失败，回退本地文件, inTaskId={}, fileId={}, err={}",
+                        inTaskId, edocFileId, edocEx.getMessage());
+            }
+        }
+
+        // 2) 回退本地 /profile 静态文件：DATA7 存相对路径
+        String pdfUrl = task.getData7();
+        if (StringUtils.isNotEmpty(pdfUrl))
+        {
+            String prefix = com.ruoyi.common.constant.Constants.RESOURCE_PREFIX;
+            String rel = pdfUrl.startsWith(prefix) ? pdfUrl.substring(prefix.length()) : pdfUrl;
+            File local = new File(com.ruoyi.common.config.RuoYiConfig.getProfile(), rel);
+            if (local.exists() && local.length() > 0)
+            {
+                streamPdf(response, local, local.getName());
+                return;
+            }
+        }
+
+        writePdfError(response, "未找到配送核验 PDF：inTaskId=" + inTaskId);
+    }
+
+    /** 以内嵌预览方式（inline）把 PDF 写入响应流，PDA 点击直接打开预览，不触发文件下载 */
+    private void streamPdf(HttpServletResponse response, File pdf, String downloadName)
+    {
+        try
+        {
+            // inline + application/pdf：让浏览器/webview 直接内嵌打开 PDF（与 /profile 静态资源一致），而非下载
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition",
+                    "inline; filename=\"" + URLEncoder.encode(downloadName, StandardCharsets.UTF_8.name())
+                            .replace("+", "%20") + "\"");
+            response.setContentLengthLong(pdf.length());
+            try (InputStream in = new java.io.FileInputStream(pdf))
+            {
+                FileCopyUtils.copy(in, response.getOutputStream());
+                response.getOutputStream().flush();
+            }
+        }
+        catch (Exception e)
+        {
+            logger.error("配送核验 PDF 代理输出失败: {}", e.getMessage());
+            writePdfError(response, "PDF 输出失败: " + e.getMessage());
+        }
+    }
+
+    /** PDF 代理出错时返回 JSON 错误（重置已设置的响应头） */
+    private void writePdfError(HttpServletResponse response, String msg)
+    {
+        try
+        {
+            response.reset();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\":500,\"msg\":\"" + msg.replace("\"", "'") + "\"}");
+        }
+        catch (Exception ignore)
+        {
+        }
     }
 
     /**

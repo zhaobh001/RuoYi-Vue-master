@@ -136,3 +136,54 @@ push:
     appKey: YmNmPyWE008vzVbWgcXOk4
     masterSecret: 1OxiprkbnIA27fnioo6Rk5
     AppSecret: vmLSoh7ZNq57x4K5FnW3G4
+
+# edoc2 电子文档系统对接配置（生产环境）
+# 详见 edoc常用接口文档.txt；账号由开放平台统一分配，认证含 IP 白名单
+edoc:
+    # 是否启用
+    enabled: true
+    # 业务接口网关（/api/services/* 的统一前缀）
+    gateway-url: https://openapi.goldwind.com:26035/gateway/api-edoc/
+    #gateway-url: https://openapi.goldwind.com/gateway/api-edoc/
+
+  # 集成登录获取 token 的地址（api-eis 网关）
+    token-url: https://openapi.goldwind.com:26035/gateway/api-eis/portal/rest/getEdocToken
+    #token-url: https://openapi.goldwind.com/gateway/api-eis/portal/rest/getEdocToken
+
+  # edoc2 ECM 站点地址（下载 SDK 使用；上传两步实际走下面的 webcore-url 网关）
+    ecm-url: https://edoc.goldwind.com:26036
+    #ecm-url: https://edoc.goldwind.com
+
+  # WebCore/document 上传地址前缀。实测 /WebCore 与 /document/upload 均挂在 api-edoc 网关下可达，
+    # 直连 ECM 站点 edoc.goldwind.com 不通，故指向网关（勿留空回退 ecm-url）
+    webcore-url: https://openapi.goldwind.com:26035/gateway/api-edoc
+    #webcore-url: https://openapi.goldwind.com/gateway/api-edoc
+
+  # 文件下载接口路径（挂在 ecm-url 下，需 ECM 站点可达；网关无此路由）
+    download-path: /document/download
+    # BASIC 认证账号（开放平台应用凭证，网关应用级订阅授权）。
+    # U96176 作为应用的网关订阅授权尚未开通（curl 实测 941「You do not have permission」），
+    # 故 BASIC 暂用已授权的应用 dkwms 过网关（2026-09-08 上传/下载实测通过的组合）；
+    # 取 token 的 edoc2 用户仍为 U96176（见下方 user-id，dkwms 是应用账号、非 edoc2 用户）。
+    # 待平台给 U96176 应用开通 getEdocToken / WebCore / document/upload 订阅后，可把这两项切回 U96176。
+    auth-username: dkwms
+    auth-password: ybkI)3866S9x3tF2R3DedrFT
+
+    #auth-username: U96176
+    #auth-password: edoc-wms/KIu6kfz@
+
+    # 获取 token 的用户标识（edoc2 用户编号，内部做 MD5）。必须为 edoc2 用户 U96176，不能用应用账号 dkwms
+    user-id: "U96176"
+    # 默认上传文件夹 ID（企业内容库>金风>制造中心>仓储管理>电控WMS系统存储文档；显式指定，
+    # 避免调用网关未授权的 Folder 查找/创建接口）
+    default-folder-id: 1956664
+    # 默认上传文件夹名称（仅当 default-folder-id<=0 时使用）
+    default-folder-name: WMS配送核验单
+    # 超时（毫秒）
+    connect-timeout: 10000
+    read-timeout: 120000
+    # 本地文件目录（edoc 下载文件 + 签字后 PDF 归档；生产/开发均为 D 盘，D 盘根目录下自动创建）
+    temp-dir: D:/edoc-download
+    # 本地文件保留天数（可配置），按文件「创建时间」超过该天数即删除（每天凌晨 3:17 清理）。
+    # 以 edoc 永久存储为准，本地仅暂存；当前设 15 天
+    temp-retention-days: 15

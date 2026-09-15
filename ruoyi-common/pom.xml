@@ -72,6 +72,13 @@
             <artifactId>fastjson2</artifactId>
         </dependency>
 
+        <!-- 金风 edoc2 官方下载 SDK（内部包，来自项目内 repo/ 仓库；fat jar，自带 httpclient/fastjson1 等） -->
+        <dependency>
+            <groupId>com.edoc2</groupId>
+            <artifactId>edoc2-download-sdk</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- io常用工具类 -->
         <dependency>
             <groupId>commons-io</groupId>

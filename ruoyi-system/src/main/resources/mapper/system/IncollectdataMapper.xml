@@ -850,9 +850,11 @@ Order By Headerlist1.Order_Last_Date Desc
 ),
 bill_info as (
 Select
-Header2.Source_Number,Bill.Source_Header_Id,Bill.Source_Line_Id,Sum(Bill.Taskqty) As Taskqty,Sum(Bill.Occupyqty) As Occupyqty,
-nvl(Header2.ATTRIBUTE8,Header2.EXECUTE_DATE) EXECUTE_DATE
-From Outproof Roof,Outbill Bill
+         Header2.Source_Number,Bill.Source_Header_Id,Bill.Source_Line_Id,Sum(Bill.Taskqty) As Taskqty,Sum(col.QTY) As Occupyqty,
+         nvl(Header2.ATTRIBUTE8,Header2.EXECUTE_DATE) EXECUTE_DATE
+         From Outproof Roof,Outbill Bill
+         left join OUTTASKITEM item on item.OUTBILLID=bill.OUTBILLID
+         left join OUTCOLLECTDATA col on item.OUTTASKITEMID=col.OUTTASKITEMID
 Left Join Cux_Wms_Order_Header_Interface Header2 On Bill.Source_Header_Id=Header2.Source_Header_Id
 Where Roof.Protype='5' And Roof.Outproofid=Bill.Outproofid And  Nvl(Header2.Attribute8,Header2.Execute_Date)>=Trunc(SYSDATE-5) and exists(
 Select 1 From (
@@ -9554,8 +9556,24 @@ Left Join Pm_Material Pm On Bill.Materialid=Pm.Pm_Materialid
     <!--齐套率明细-->
     <select id="getIPQC"  parameterType="Incollectdata" resultMap="IncollectdataResult">
        select field0002 as data1, field0021 as data2,
-			 case when field0038='9041171989622377435' then '供应商责任'
-			      when field0038='-2671454090473617081' then '内部责任' else null end as data3,field0039 as data4,field0042 as data5 from formmain_1429
+        case
+        when field0032 = '-7632809957533465566' then '物料问题-尺寸不良'
+        when field0032 = '-2742690878181061860' then '物料问题-外观不良'
+        when field0032 = '-7773209986804135456' then '物料问题-功能不良'
+        when field0032 = '-1384777118563809533' then '物料问题-装配不良'
+        when field0032 = '7912105223006011702' then '物料问题-表面处理'
+        when field0032 = '-6457034747298101864' then '物料问题-缺附件'
+        when field0032 = '-8385306558167694528' then '物料问题-型号不符'
+        when field0032 = '-4828448432219077569' then '物料问题-连带损坏'
+        when field0032 = '7216234564589013146' then '技术工艺问题-技术变更'
+        when field0032 = '-8972574802873728550' then '技术工艺问题-设计问题'
+        when field0032 = '-2695884419715546068' then '技术工艺问题-工艺问题'
+        when field0032 = '5857629235813699341' then '设备原因-设备原因'
+        when field0032 = '5822140467717557017' then '制造自损-操作问题'
+        when field0032 = '1154249350319326485' then '制造自损-存储运输'
+        else null
+        end as data3,
+        field0039 as data4,field0042 as data5 from formmain_1429
 			      where field0002=#{data1}
 
     </select>
