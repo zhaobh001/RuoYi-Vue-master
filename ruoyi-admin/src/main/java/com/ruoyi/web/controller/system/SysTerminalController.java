@@ -17059,6 +17059,7 @@ public class SysTerminalController extends BaseController {
                 row.put("finishQty", line.getFinishqty());
                 row.put("subInventoryCode", line.getSubinventoryCode() == null ? "" : line.getSubinventoryCode());
                 row.put("hintDesc", line.getHintdesc() == null ? "" : line.getHintdesc());
+                row.put("batchNo", line.getBatchno() == null ? "" : line.getBatchno());
                 row.put("palletNo", line.getPalletno() == null ? "" : line.getPalletno());
                 pdfLines.add(row);
             }
