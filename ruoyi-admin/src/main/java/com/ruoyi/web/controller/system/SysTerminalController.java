@@ -17101,10 +17101,12 @@ public class SysTerminalController extends BaseController {
                 File pdfFile = new File(com.ruoyi.common.config.RuoYiConfig.getProfile(), relative);
                 if (pdfFile.exists() && pdfFile.length() > 0)
                 {
-                    String uploadName = billNo + ".pdf";
+                    // 文件名采用「任务号_出库凭证号」业务命名，方便客户识别；
+                    // 任务号可能有多个（空格/顿号等分隔），拆分去重去空后用「、」连接。
+                    String uploadName = buildEdocPdfName(poNumber, proofNo, billNo);
                     long fid = edocFileService.upload(uploadName,
                             java.nio.file.Files.readAllBytes(pdfFile.toPath()),
-                            "配送核验单 " + billNo);
+                            "配送核验单 " + uploadName);
                     edocFileId = String.valueOf(fid);
                     // 本系统的 edoc 下载/预览代理地址，App 可直接使用
                     edocDownloadUrl = serverConfig.getUrl() + "/system/edoc/preview?fileId=" + fid;
@@ -17183,6 +17185,57 @@ public class SysTerminalController extends BaseController {
         resp.put("signatureUrl", receiverSignUrl);
         resp.put("downloadUrl", pdfDownloadUrl);
         return AjaxResult.success(resp);
+    }
+
+    /**
+     * 构造上传到 edoc 的 PDF 文件名，格式为「任务号_出库凭证号.pdf」。
+     *
+     * <p>任务号（DELIVERYPROOF.PO_NUMBER）可能有多个，之间以空格/顿号/逗号等分隔，
+     * 这里拆分后去重去空，按业务要求用「、」连接；任务号为空时退化为出库凭证号；
+     * 出库凭证号也为空时用兜底单据号，避免文件名空缺。
+     *
+     * @param poNumber 任务号（可能含多个）
+     * @param proofNo  出库凭证号（DELIVERYPROOF.PROOFNO）
+     * @param billNo   兜底单据号
+     * @return 形如 {@code F2607100A2_OUT202609080042.pdf}；多任务号时
+     *         {@code 2407060D2、2407060D1_OUT202609080042.pdf}
+     */
+    private static String buildEdocPdfName(String poNumber, String proofNo, String billNo)
+    {
+        // 多个任务号按空白、顿号、逗号、分号、斜杠等常见分隔拆开，去重去空后用「、」连接
+        java.util.LinkedHashSet<String> taskNos = new java.util.LinkedHashSet<>();
+        if (StringUtils.isNotEmpty(poNumber))
+        {
+            for (String t : poNumber.trim().split("[\\s、，,;；/]+"))
+            {
+                if (StringUtils.isNotEmpty(t))
+                {
+                    taskNos.add(t.trim());
+                }
+            }
+        }
+        String taskPart = String.join("、", taskNos);
+
+        String proofPart = StringUtils.isNotEmpty(proofNo) ? proofNo.trim() : "";
+        if (taskPart.isEmpty() && proofPart.isEmpty() && StringUtils.isNotEmpty(billNo))
+        {
+            proofPart = billNo.trim();
+        }
+
+        StringBuilder name = new StringBuilder();
+        if (StringUtils.isNotEmpty(taskPart))
+        {
+            name.append(taskPart);
+            if (StringUtils.isNotEmpty(proofPart))
+            {
+                name.append('_');
+            }
+        }
+        if (StringUtils.isNotEmpty(proofPart))
+        {
+            name.append(proofPart);
+        }
+        return name.append(".pdf").toString();
     }
 
     /**
