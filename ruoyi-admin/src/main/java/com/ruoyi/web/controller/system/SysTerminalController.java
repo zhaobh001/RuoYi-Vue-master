@@ -16518,6 +16518,7 @@ public class SysTerminalController extends BaseController {
 
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("ipqcRes",ipqcRes);
+
         AjaxResult ajax = AjaxResult.success(jsonObject);
         return ajax;
     }

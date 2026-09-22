@@ -9555,7 +9555,10 @@ Left Join Pm_Material Pm On Bill.Materialid=Pm.Pm_Materialid
 
     <!--齐套率明细-->
     <select id="getIPQC"  parameterType="Incollectdata" resultMap="IncollectdataResult">
-       select field0002 as data1, field0021 as data2,
+        select field0002 as data1,
+        field0021 as data2,
+        case when field0038='9041171989622377435' then '供应商责任'
+        when field0038='-2671454090473617081' then '内部责任' else null end as data3,
         case
         when field0032 = '-7632809957533465566' then '物料问题-尺寸不良'
         when field0032 = '-2742690878181061860' then '物料问题-外观不良'
@@ -9572,9 +9575,10 @@ Left Join Pm_Material Pm On Bill.Materialid=Pm.Pm_Materialid
         when field0032 = '5822140467717557017' then '制造自损-操作问题'
         when field0032 = '1154249350319326485' then '制造自损-存储运输'
         else null
-        end as data3,
-        field0039 as data4,field0042 as data5 from formmain_1429
-			      where field0002=#{data1}
+        end  as data4,
+        field0042 as data5 from formmain_1429
+        where field0002=#{data1}
+
 
     </select>
 
