@@ -143,21 +143,21 @@ edoc:
     # 是否启用
     enabled: true
     # 业务接口网关（/api/services/* 的统一前缀）
-    gateway-url: https://openapi.goldwind.com:26035/gateway/api-edoc/
-    #gateway-url: https://openapi.goldwind.com/gateway/api-edoc/
+    #gateway-url: https://openapi.goldwind.com:26035/gateway/api-edoc/
+    gateway-url: https://openapi.goldwind.com/gateway/api-edoc/
 
   # 集成登录获取 token 的地址（api-eis 网关）
-    token-url: https://openapi.goldwind.com:26035/gateway/api-eis/portal/rest/getEdocToken
-    #token-url: https://openapi.goldwind.com/gateway/api-eis/portal/rest/getEdocToken
+    #token-url: https://openapi.goldwind.com:26035/gateway/api-eis/portal/rest/getEdocToken
+    token-url: https://openapi.goldwind.com/gateway/api-eis/portal/rest/getEdocToken
 
   # edoc2 ECM 站点地址（下载 SDK 使用；上传两步实际走下面的 webcore-url 网关）
-    ecm-url: https://edoc.goldwind.com:26036
-    #ecm-url: https://edoc.goldwind.com
+    #ecm-url: https://edoc.goldwind.com:26036
+    ecm-url: https://edoc.goldwind.com
 
   # WebCore/document 上传地址前缀。实测 /WebCore 与 /document/upload 均挂在 api-edoc 网关下可达，
     # 直连 ECM 站点 edoc.goldwind.com 不通，故指向网关（勿留空回退 ecm-url）
-    webcore-url: https://openapi.goldwind.com:26035/gateway/api-edoc
-    #webcore-url: https://openapi.goldwind.com/gateway/api-edoc
+    #webcore-url: https://openapi.goldwind.com:26035/gateway/api-edoc
+    webcore-url: https://openapi.goldwind.com/gateway/api-edoc
 
   # 文件下载接口路径（挂在 ecm-url 下，需 ECM 站点可达；网关无此路由）
     download-path: /document/download
